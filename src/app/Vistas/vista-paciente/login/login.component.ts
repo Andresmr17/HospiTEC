@@ -18,5 +18,9 @@ export class LoginComponent {
   async login_profesor(Correo: string, Contrasena: string) {
     const data = JSON.stringify({Correo, Contrasena});
     console.log(data);
+
+    window.location.href = 'http://localhost:4200/paciente-menu';
+
+
   }
 }

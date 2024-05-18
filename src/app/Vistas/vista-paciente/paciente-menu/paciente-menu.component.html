@@ -1,0 +1,29 @@
+<div class="vh-100 gradient-custom">
+  <div id="nav-bar">
+    <input id="nav-toggle" type="checkbox"/>
+    <div id="nav-header"><a id="nav-title" target="_blank"><i class="fa-solid fa-square-h fa-lg"></i>ospiTEC</a>
+      <label for="nav-toggle"><span id="nav-toggle-burger"></span></label>
+      <hr/>
+    </div>
+    <div id="nav-content">
+      <div class="nav-button"><i class="fas fa-calendar-days"></i><span>Reservación</span></div>
+      <div class="nav-button"><i class="fas fa-regular fa-eye"></i><span>Historial Clínico</span></div>
+      <div class="nav-button"><i class="fas fa-star"></i><span>Evaluación</span></div>
+      <div id="nav-content-highlight"></div>
+    </div>
+    <input id="nav-footer-toggle" type="checkbox"/>
+    <div id="nav-footer">
+      <div id="nav-footer-heading">
+        <div id="nav-footer-avatar" class="fa-solid fa-user"></div>
+        <div id="nav-footer-titlebox"><a id="nav-footer-title" target="_blank">Usuario</a></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container justify-content-center align-items-center" >
+    <aside>
+      <router-outlet></router-outlet>
+    </aside>
+  </div>
+
+</div>

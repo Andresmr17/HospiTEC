@@ -1,28 +1,44 @@
 
-.container {
-   /* 100% de la altura de la ventana gráfica */
-
+/* Estas son las caracteristicas del container que va a tener la info que se le muestra al paciente */
+#container {
   background-color: var(--navbar-dark-secondary);
-  color: #000000;
-
+  color: #b8babe;
   border-radius: 1rem; /* rounded-5 */
   position: absolute;
   height: calc(100% - 2vw);
   display: flex;
-  flex-direction: column;
-
-  left: 17vw;
   top: 1vw;
+  justify-content: center;
+  align-items: center;
+  transition: 0.3s ease;
 }
 
-.gradient-custom {
-  margin: 0;
+/* Este es el ancho y posicion en x del container cuando el menu se muestra */
+.container-expanded {
+  width: var(--container-width);
+  left: var(--left-expanded);
+  color: #b8babe;
+}
+
+/* Este es el ancho y posicion en x del container cuando el menu está oculto */
+.container-collapsed {
+  left: calc(var(--left-expanded) - 190px);
+  width: calc(var(--container-width) + 350px);
+  color: #b8babe;
+}
+
+/* Esto es nada mas para el fondo de pantalla*/
+#gradient-custom {
   background: var(--background);
 }
+
 
 #nav-toggle:checked ~ #nav-header {
   width: calc(var(--navbar-width-min) - 16px);
 }
+
+
+
 #nav-toggle:checked ~ #nav-content, #nav-toggle:checked ~ #nav-footer {
   width: var(--navbar-width-min);
 }
@@ -78,10 +94,10 @@
 #nav-bar hr {
   margin: 0;
   position: relative;
-  left: 16px;
+  left: 8px;
   width: calc(100% - 32px);
   border: none;
-  border-top: solid 1px var(--navbar-dark-secondary);
+  border-top: solid 2px var(--navbar-light-primary);
 }
 #nav-bar a {
   color: inherit;
@@ -111,6 +127,14 @@
 #nav-title {
   font-size: 1.5rem;
   transition: opacity 1s;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin-left: 40px;
+
+}
+#nav-title i {
+  margin-right: -8px; /* Ajusta este valor según sea necesario */
 }
 
 label[for=nav-toggle] {
@@ -240,6 +264,7 @@ label[for=nav-toggle] {
   min-width: 3rem;
   text-align: center;
 }
+
 
 #nav-footer {
   position: relative;

@@ -12,11 +12,13 @@ import { Router } from '@angular/router';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
+  constructor(private router: Router) {
+  }
 
   Correo: string ="";
   Contrasena: string = "";
 
-  login_profesor(Correo: string, Contrasena: string) {
-
+  login(Correo: string, Contrasena: string) {
+    this.router.navigate(['sidenav']);
   }
 }

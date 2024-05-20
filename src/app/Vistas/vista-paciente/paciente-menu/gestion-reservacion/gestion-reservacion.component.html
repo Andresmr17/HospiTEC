@@ -1,1 +1,193 @@
-<p>gestion-reservacion works!</p>
+<nav >
+  <div class="nav nav-tabs container-tabs" id="nav-tab" role="tablist">
+    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Crear reservación</button>
+    <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Modificar reservación</button>
+    <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Eliminar reservación</button>
+  </div>
+</nav>
+
+
+<div class="tab-content " id="nav-tabContent">
+  <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
+    <div class="col-md-7 col-lg-8 container">
+      <form (ngSubmit)="crearCuenta(Nombre, Cedula,  Fecha, Procedimientos)" #form="ngForm">
+        <div class="row g-3">
+
+          <hr class="my-4">
+
+          <div class="col">
+            <label for="Nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="Nombre" name="Nombre" [(ngModel)]="Nombre" #nombre="ngModel" required>
+            <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="invalid-feedback">
+              El nombre es requerido
+            </div>
+          </div>
+
+          <hr class="my-4">
+
+          <div class="col-12">
+            <label for="Cedula" class="form-label">Cédula</label>
+            <div class="input-group has-validation">
+              <input type="text" class="form-control" id="Cedula" name="Cedula" [(ngModel)]="Cedula" #cedula="ngModel" placeholder="000000000" required>
+              <div *ngIf="cedula.invalid && (cedula.dirty || cedula.touched)" class="invalid-feedback">
+                La cédula es requerida
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-4">
+
+          <div class="col-12">
+            <label for="ingreso">Fecha de ingreso:</label>
+            <input type="date" class="form-control" name="ingreso" id="ingreso" [(ngModel)]="Fecha" #fecha="ngModel" required>
+            <div *ngIf="fecha.invalid && (fecha.dirty || fecha.touched)" class="invalid-feedback">
+              La fecha de ingreso es requerida
+            </div>
+          </div>
+        </div>
+
+        <hr class="my-4">
+
+        <div class="col-12">
+          <div class="mb-3">
+            <label for="Info" class="form-label">Procedimientos médicos</label>
+            <p>Ingrese los procedimientos que se le van a realizar.</p>
+            <textarea class="form-control" id="Info" name="Info" placeholder="" rows="3" [(ngModel)]="Procedimientos" #procedimientos="ngModel"></textarea>
+          </div>
+        </div>
+
+        <hr class="my-4">
+
+        <div class="container-btn">
+          <button class="btn-custom" type="submit" [disabled]="form.invalid">Reservar</button>
+        </div>
+      </form>
+
+      <p class="fst-italic text-center">Importante: La reservación se hará sólo si en la fecha indicada existen camas disponibles.</p>
+
+    </div>
+
+  </div>
+  <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
+
+    <div class="col-md-7 col-lg-8 container">
+      <form (ngSubmit)="crearCuenta(Nombre, Cedula,  Fecha, Procedimientos)" #form="ngForm">
+        <div class="row g-3">
+
+          <hr class="my-4">
+
+          <div class="col">
+            <label for="Nombre2" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="Nombre2" name="Nombre2" [(ngModel)]="Nombre" #nombre="ngModel" required>
+            <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="invalid-feedback">
+              El nombre es requerido
+            </div>
+          </div>
+
+          <hr class="my-4">
+
+          <div class="col-12">
+            <label for="Cedula2" class="form-label">Cédula</label>
+            <div class="input-group has-validation">
+              <input type="text" class="form-control" id="Cedula2" name="Cedula2" [(ngModel)]="Cedula" #cedula="ngModel" placeholder="000000000" required>
+              <div *ngIf="cedula.invalid && (cedula.dirty || cedula.touched)" class="invalid-feedback">
+                La cédula es requerida
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-4">
+
+          <div class="col-12">
+            <label for="ingreso2">Fecha de ingreso:</label>
+            <input type="date" class="form-control" name="ingreso2" id="ingreso2" [(ngModel)]="Fecha" #fecha="ngModel" required>
+            <div *ngIf="fecha.invalid && (fecha.dirty || fecha.touched)" class="invalid-feedback">
+              La fecha de ingreso es requerida
+            </div>
+          </div>
+        </div>
+
+        <hr class="my-4">
+
+        <div class="col-12">
+          <div class="mb-3">
+            <label for="Info2" class="form-label">Procedimientos médicos</label>
+            <p>Ingrese los procedimientos que se le van a realizar.</p>
+            <textarea class="form-control" id="Info2" name="Info2" placeholder="" rows="3" [(ngModel)]="Procedimientos" #procedimientos="ngModel"></textarea>
+          </div>
+        </div>
+
+        <hr class="my-4">
+
+        <div class="container-btn">
+          <button class="btn-custom" type="submit" [disabled]="form.invalid">Modificar</button>
+        </div>
+      </form>
+
+    </div>
+
+  </div>
+  <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">
+
+    <div class="col-md-7 col-lg-8 container">
+      <form (ngSubmit)="crearCuenta(Nombre, Cedula,  Fecha, Procedimientos)" #form="ngForm">
+        <div class="row g-3">
+
+          <hr class="my-4">
+
+          <div class="col">
+            <label for="Nombre3" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="Nombre3" name="Nombre3" [(ngModel)]="Nombre" #nombre="ngModel" required>
+            <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="invalid-feedback">
+              El nombre es requerido
+            </div>
+          </div>
+
+          <hr class="my-4">
+
+          <div class="col-12">
+            <label for="Cedula3" class="form-label">Cédula</label>
+            <div class="input-group has-validation">
+              <input type="text" class="form-control" id="Cedula3" name="Cedula3" [(ngModel)]="Cedula" #cedula="ngModel" placeholder="000000000" required>
+              <div *ngIf="cedula.invalid && (cedula.dirty || cedula.touched)" class="invalid-feedback">
+                La cédula es requerida
+              </div>
+            </div>
+          </div>
+
+          <hr class="my-4">
+
+          <div class="col-12">
+            <label for="ingreso3">Fecha de ingreso:</label>
+            <input type="date" class="form-control" name="ingreso3" id="ingreso3" [(ngModel)]="Fecha" #fecha="ngModel" required>
+            <div *ngIf="fecha.invalid && (fecha.dirty || fecha.touched)" class="invalid-feedback">
+              La fecha de ingreso es requerida
+            </div>
+          </div>
+        </div>
+
+        <hr class="my-4">
+
+        <div class="col-12">
+          <div class="mb-3">
+            <label for="Info3" class="form-label">Procedimientos médicos</label>
+            <p>Ingrese los procedimientos que se le van a realizar.</p>
+            <textarea class="form-control" id="Info3" name="Info3" placeholder="" rows="3" [(ngModel)]="Procedimientos" #procedimientos="ngModel"></textarea>
+          </div>
+        </div>
+
+        <hr class="my-4">
+
+        <div class="container-btn">
+          <button class="btn-custom" type="submit" [disabled]="form.invalid">Eliminar</button>
+        </div>
+      </form>
+
+    </div>
+
+  </div>
+</div>
+
+
+
+

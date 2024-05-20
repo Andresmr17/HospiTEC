@@ -1,0 +1,49 @@
+.nav-link{
+  --bs-nav-link-hover-color: var(--background-color1);
+  --bs-nav-link-color: var(--background-color2);
+  --bs-nav-tabs-link-active-bg: var(--background-color2);
+  --bs-nav-underline-border-width: 5rem;
+}
+
+input.ng-invalid.ng-touched,
+textarea.ng-invalid.ng-touched {
+  border: 2px solid #dc3545;
+}
+
+div.invalid-feedback {
+  display: block;
+  color: #dc3545;
+}
+
+/*Este container es para la informacion de cada opcion */
+.container {
+  max-width: 700px;
+  max-height: 800px;
+
+  color: white;
+  border-radius: 1rem;
+  margin-top: 50px;
+}
+
+.container-btn{
+  text-align: center;
+  padding-bottom: 1rem;
+}
+
+.btn-custom {
+  padding: 0.5rem 1rem;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  border-radius: 0.3rem;
+  justify-content: center;
+
+  background-color: transparent;
+  border: 1px solid #ffffff; /* Color del borde si es necesario */
+  color: #ffffff; /* Color del texto */
+}
+
+/* Estilo del botón cuando se pasa el mouse por encima */
+.btn-custom:hover {
+  background-color: #355c7d;
+  color: #ffffff; /* Color del texto en el hover */
+}

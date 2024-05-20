@@ -1,10 +1,3 @@
-:root {
-  --background-color1: #f8b195;
-  --background-color2: #f67280;
-  --background-color3: #c06c84;
-  --background-color4: #6c5b7b;
-  --background-color5: #355c7d;
-}
 
 .container {
   max-width: 700px;
@@ -17,6 +10,18 @@
 .titulo {
   text-align: center;
 }
+
+input.ng-invalid.ng-touched,
+textarea.ng-invalid.ng-touched {
+  border: 2px solid #dc3545;
+}
+
+div.invalid-feedback {
+  display: block;
+  color: #dc3545;
+}
+
+
 
 .gradient-custom {
   /* fallback for old browsers */

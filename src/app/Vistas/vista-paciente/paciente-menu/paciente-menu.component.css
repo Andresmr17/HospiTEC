@@ -6,10 +6,7 @@
   border-radius: 1rem; /* rounded-5 */
   position: absolute;
   height: calc(100% - 2vw);
-  display: flex;
   top: 1vw;
-  justify-content: center;
-  align-items: center;
   transition: 0.3s ease;
 }
 
@@ -29,7 +26,11 @@
 
 /* Esto es nada mas para el fondo de pantalla*/
 #gradient-custom {
-  background: var(--background);
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: -webkit-linear-gradient(to right, var(--background-color4), var(--background-color5));
+
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(to right, var(--background-color4), var(--background-color5));
 }
 
 

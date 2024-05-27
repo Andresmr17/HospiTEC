@@ -103,3 +103,4 @@ C:\Users\Nacho\RiderProjects\HospiTECAPI\HospiTECAPI\obj\Debug\net8.0\refint\Hos
 C:\Users\Nacho\RiderProjects\HospiTECAPI\HospiTECAPI\obj\Debug\net8.0\HospiTECAPI.pdb
 C:\Users\Nacho\RiderProjects\HospiTECAPI\HospiTECAPI\obj\Debug\net8.0\HospiTECAPI.genruntimeconfig.cache
 C:\Users\Nacho\RiderProjects\HospiTECAPI\HospiTECAPI\obj\Debug\net8.0\ref\HospiTECAPI.dll
+C:\Users\Nacho\RiderProjects\HospiTECAPI\HospiTECAPI\obj\Debug\net8.0\HospiTECAPI.sourcelink.json

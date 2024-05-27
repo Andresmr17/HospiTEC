@@ -49,10 +49,10 @@
         <hr class="my-4">
 
         <div class="col-12">
-          <div class="mb-3">
-            <label for="Info" class="form-label">Procedimientos médicos</label>
-            <p>Ingrese los procedimientos que se le van a realizar.</p>
-            <textarea class="form-control" id="Info" name="Info" placeholder="" rows="3" [(ngModel)]="Procedimientos" #procedimientos="ngModel"></textarea>
+          <label  class="form-label">Procedimientos Quirúrgicos:</label>
+          <div *ngFor="let procedimiento of procedimientos">
+            <input class="form-check-input me-2" type="checkbox" id="{{procedimiento.nombre}}" [(ngModel)]="procedimiento.seleccionado" name="procedimientos_{{procedimiento.nombre}}" >
+            <label for="{{procedimiento.nombre}}">{{procedimiento.nombre}}</label>
           </div>
         </div>
 
@@ -109,14 +109,6 @@
 
         <hr class="my-4">
 
-        <div class="col-12">
-          <div class="mb-3">
-            <label for="Info2" class="form-label">Procedimientos médicos</label>
-            <p>Ingrese los procedimientos que se le van a realizar.</p>
-            <textarea class="form-control" id="Info2" name="Info2" placeholder="" rows="3" [(ngModel)]="Procedimientos" #procedimientos="ngModel"></textarea>
-          </div>
-        </div>
-
         <hr class="my-4">
 
         <div class="container-btn">
@@ -163,16 +155,6 @@
             <div *ngIf="fecha.invalid && (fecha.dirty || fecha.touched)" class="invalid-feedback">
               La fecha de ingreso es requerida
             </div>
-          </div>
-        </div>
-
-        <hr class="my-4">
-
-        <div class="col-12">
-          <div class="mb-3">
-            <label for="Info3" class="form-label">Procedimientos médicos</label>
-            <p>Ingrese los procedimientos que se le van a realizar.</p>
-            <textarea class="form-control" id="Info3" name="Info3" placeholder="" rows="3" [(ngModel)]="Procedimientos" #procedimientos="ngModel"></textarea>
           </div>
         </div>
 

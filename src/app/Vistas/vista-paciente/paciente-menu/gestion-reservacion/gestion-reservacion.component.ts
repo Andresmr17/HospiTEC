@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {NgIf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-gestion-reservacion',
@@ -8,7 +8,8 @@ import {NgIf} from "@angular/common";
   imports: [
     FormsModule,
     ReactiveFormsModule,
-    NgIf
+    NgIf,
+    NgForOf
   ],
   templateUrl: './gestion-reservacion.component.html',
   styleUrl: './gestion-reservacion.component.css'
@@ -25,5 +26,16 @@ export class GestionReservacionComponent {
     const data = JSON.stringify({Nombre, Cedula, Fecha, Procedimientos});
     console.log(data);
   }
+
+  procedimientos: { nombre: string, seleccionado: boolean }[] = [
+    { nombre: 'Apendicectomía', seleccionado: false },
+    { nombre: 'Biopsia de mama', seleccionado: false },
+    { nombre: 'Cirugía de cataratas', seleccionado: false },
+    { nombre: 'Cesárea', seleccionado: false },
+    { nombre: 'Histerectomía', seleccionado: false },
+    { nombre: 'Cirugía para la lumbalgia', seleccionado: false },
+    { nombre: 'Mastectomía', seleccionado: false },
+    { nombre: 'Amigdalectomía', seleccionado: false }
+  ];
 
 }

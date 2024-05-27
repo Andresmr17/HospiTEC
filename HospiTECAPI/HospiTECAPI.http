@@ -1,0 +1,6 @@
+@HospiTECAPI_HostAddress = http://localhost:5015
+
+GET {{HospiTECAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

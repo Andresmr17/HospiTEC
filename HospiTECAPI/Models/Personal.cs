@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace HospiTECAPI.Models;
 
@@ -19,7 +20,9 @@ public partial class Personal
 
     public DateOnly? Fechaingreso { get; set; }
 
+    [JsonIgnore] //Funciona para que se ignore y no aparezca en el request del POST
     public virtual ICollection<PersonalTelefono> PersonalTelefonos { get; set; } = new List<PersonalTelefono>();
 
+    [JsonIgnore] //Funciona para que se ignore y no aparezca en el request del POST
     public virtual ICollection<Rol> Rols { get; set; } = new List<Rol>();
 }

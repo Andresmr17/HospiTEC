@@ -1,1 +1,73 @@
-<p>equipo works!</p>
+<div class="container">
+  <h1>Equipo de hospitec</h1>
+  <div class="contenedorBotones">
+    <button class="btn btn-primary" (click)="obtenerEquipo()">
+      Mostrar salones
+    </button>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalActualizar" (click)="addRegistro(1)">
+      Añadir equipo médico
+    </button>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>id Equipo</th>
+        <th>Provedor</th>
+        <th>Nombre</th>
+        <th>Cantidad</th>
+        <th>Modificar</th>
+        <th>Eliminar</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let element of dataSource; let i = index">
+        <td>{{ element.idEquipo }}</td>
+        <td>{{ element.proveedor }}</td>
+        <td>{{ element.nombre}}</td>
+        <td>{{ element.cantidad }}</td>
+        <td><button class="btn btn-primary" (click)="modificarEquipo(i,0)" data-bs-toggle="modal" data-bs-target="#modalActualizar" >Modificar</button></td>
+        <td><button class="btn btn-primary" (click)="eliminarEquipo(i)" >Eliminar</button></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- LO DE ABAJO ES EL MODAL PARA HACER EL UPDATE Al equipo-->
+  <div class="modal fade" id="modalActualizar" tabindex="-1" role="dialog" aria-labelledby="modalAgregarLabel" aria-hidden="false" [class.show]="modalVisible">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalActualizarLabel">Agregar o actualizar camas</h5>
+          <button type="button" class="close"  data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Formulario del MODAL-->
+          <div class="form-group">
+            <label for="idEquipo">Id del equipo</label>
+            <input type="number" class="form-control" id="idEquipo" placeholder="Ingrese el nombre del equipo"  [value]="idEquipo"  [readonly]="isReadonly">
+          </div>
+          <div class="form-group">
+            <label for="proovedor">Provedor del equipo</label>
+            <input type="text" class="form-control" id="proovedor" placeholder="Ingrese la capacidad en camas">
+          </div>
+          <div class="form-group">
+            <label for="nombre">Nombre del equipo</label>
+            <input type="text" class="form-control" id="nombre" placeholder="Ingrese la capacidad en camas">
+          </div>
+          <div class="form-group">
+            <label for="cantidad">cantidad</label>
+            <input type="number" class="form-control" id="cantidad" placeholder="Ingrese el número de piso">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary"  (click)="guardarCambios()">Guardar Cambios</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ACA EMPIEZA EL MODAL PARA INSERTAR UN NUEVO SALON-->
+</div>

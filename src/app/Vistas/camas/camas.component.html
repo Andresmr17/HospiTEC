@@ -1,1 +1,71 @@
-<p>camas works!</p>
+<div class="container">
+  <h1>Camas de hospitec</h1>
+  <div class="contenedorBotones">
+    <button class="btn btn-primary" (click)="obtenerEquipo()">
+      Mostrar camas
+    </button>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalActualizar" (click)="addRegistro(1)">
+      Añadir cama
+    </button>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Id cama</th>
+        <th>Salon asociado</th>
+        <th>Cuidados intesivos</th>
+        <th>Modificar</th>
+        <th>Eliminar</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let element of dataSource; let i = index">
+        <td>{{ element.idCama }}</td>
+        <td>{{ element.nombreSalon }}</td>
+        <td>{{ element.estadoUCI}}</td>
+        <td><button class="btn btn-primary" (click)="modificarCamas(i,0)" data-bs-toggle="modal" data-bs-target="#modalActualizar" >Modificar</button></td>
+        <td><button class="btn btn-primary" (click)="eliminarEquipo(i)" >Eliminar</button></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- LO DE ABAJO ES EL MODAL PARA HACER EL UPDATE Al equipo-->
+  <div class="modal fade" id="modalActualizar" tabindex="-1" role="dialog" aria-labelledby="modalAgregarLabel" aria-hidden="false" [class.show]="modalVisible">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalActualizarLabel">Agregar o actualizar camas</h5>
+          <button type="button" class="close"  data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Formulario del MODAL-->
+          <div class="form-group">
+            <label for="idCama">Id de la cama</label>
+            <input type="number" class="form-control" id="idCama" placeholder="Ingrese el nombre del equipo"  [value]="idCama"  [readonly]="isReadonly">
+          </div>
+          <div class="form-group">
+            <label for="nombreSalon">Nombre del salon</label>
+            <input type="text" class="form-control" id="nombreSalon" placeholder="Ingrese la capacidad en camas">
+          </div>
+          <div class="form-group">
+            <label for="UIC">Unidad cuidados intensivos</label>
+            <select class="form-control" id="UIC">
+              <option value="true">Mujeres</option>
+              <option value="false">Hombres</option>
+            </select>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary"  (click)="guardarCambios()">Guardar Cambios</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ACA EMPIEZA EL MODAL PARA INSERTAR UN NUEVO SALON-->
+</div>

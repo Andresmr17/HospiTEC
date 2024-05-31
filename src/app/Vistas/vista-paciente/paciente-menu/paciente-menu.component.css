@@ -25,13 +25,18 @@
 }
 
 /* Esto es nada mas para el fondo de pantalla*/
-#gradient-custom {
+.gradient-custom {
+  width: 100%; /* Asegura que abarque todo el ancho */
+  min-height: 100vh; /* Abarca toda la altura de la ventana gráfica */
+
   /* Chrome 10-25, Safari 5.1-6 */
   background: -webkit-linear-gradient(to right, var(--background-color4), var(--background-color5));
 
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   background: linear-gradient(to right, var(--background-color4), var(--background-color5));
 }
+
+
 
 
 #nav-toggle:checked ~ #nav-header {

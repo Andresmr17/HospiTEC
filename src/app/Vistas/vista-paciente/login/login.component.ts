@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import {ComunicationService} from "../../../Servicios/Paciente/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -12,14 +14,36 @@ import { FormsModule } from '@angular/forms';
 })
 export class LoginComponent {
 
-  Correo: string ="";
-  Contrasena: string = "";
+  constructor(private servicio:ComunicationService, private router: Router) {}
 
-  async login_profesor(Correo: string, Contrasena: string) {
-    const data = JSON.stringify({Correo, Contrasena});
+  Nombre: string ="";
+  Cedula: string = "";
+
+  async login_profesor(Nombre: string, Cedula: string) {
+    const data = JSON.stringify({Nombre, Cedula});
     console.log(data);
 
-    window.location.href = 'http://localhost:4200/paciente-menu';
+    try {
+      const response = await fetch('http://localhost:5276/api/Paciente/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: data
+      });
+
+      if (!response.ok) {
+        throw new Error("Algo malo está pasando");
+      }
+
+      this.servicio.setCedula(Cedula);
+      this.servicio.setNombrePaciente(Nombre);
+      this.router.navigate(['/paciente-menu']);
+
+    } catch (error) {
+      console.error('Error:', error);
+      // Manejar el error, mostrar un mensaje al usuario, etc.
+    }
 
 
   }

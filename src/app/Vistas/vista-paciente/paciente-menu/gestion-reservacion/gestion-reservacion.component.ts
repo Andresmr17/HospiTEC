@@ -2,6 +2,12 @@ import { Component } from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgForOf, NgIf} from "@angular/common";
 
+interface InformacionType {
+  id: string;
+  nombre: string;
+  cedula: string;
+  fechaIngreso: string;
+}
 @Component({
   selector: 'app-gestion-reservacion',
   standalone: true,
@@ -21,6 +27,14 @@ export class GestionReservacionComponent {
   Fecha: string ="";
   Procedimientos: string ="";
 
+  data: InformacionType[] = [];
+
+  async OrdenaInformacion(Informacion: InformacionType[]) {
+    console.log(Informacion.length);
+
+    this.data = Informacion;
+  }
+
 
   crearCuenta(Nombre: string, Cedula: string, Fecha: string, Procedimientos: string) {
     const data = JSON.stringify({Nombre, Cedula, Fecha, Procedimientos});
@@ -37,5 +51,21 @@ export class GestionReservacionComponent {
     { nombre: 'Mastectomía', seleccionado: false },
     { nombre: 'Amigdalectomía', seleccionado: false }
   ];
+
+  async consultarSolicitudes(): Promise<void> {
+
+
+    fetch(`https://665856f45c361705264803d5.mockapi.io/HospiTEC/user`, {
+      method: 'Get',
+    })
+      .then(response => response.json())
+      .then(data => {
+
+        //console.log(this.Informacion);
+        this.OrdenaInformacion(data);
+      });
+
+
+  }
 
 }

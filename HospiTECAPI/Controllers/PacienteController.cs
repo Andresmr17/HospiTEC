@@ -66,6 +66,28 @@ public async Task<IActionResult> PostPaciente([FromBody] Paciente dto)
     return CreatedAtAction("GetAllPacientes", new { cedula = nuevoPaciente.Cedula }, nuevoPaciente);
 }
 
+// POST: api/Paciente/login
+[HttpPost("login")]
+public async Task<IActionResult> PostPacienteLogin([FromBody] PacienteLogin dto)
+{
+    var paciente = await _context.Pacientes.FirstOrDefaultAsync(p => p.Cedula == dto.Cedula);
+                         
+
+    if (paciente == null)
+    {
+        return Unauthorized("Cédula o contraseña incorrecta.");
+    }
+
+    // Aquí debes verificar la contraseña. Este ejemplo asume que la contraseña está guardada en texto plano,
+    // lo cual no es recomendable. Deberías almacenar contraseñas de forma segura utilizando un hash.
+    if (paciente.Nombre != dto.Nombre)
+    {
+        return Unauthorized("Cédula o contraseña incorrecta.");
+    }
+
+    return Ok();
+}
+
 // PUT: api/Paciente/{cedula}
 [HttpPut("{cedula}")]
 public async Task<IActionResult> UpdatePaciente(string cedula, [FromBody] Paciente pacienteUpdated)

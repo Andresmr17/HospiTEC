@@ -27,3 +27,11 @@ public partial class Paciente
     [JsonIgnore] //Funciona para que se ignore y no aparezca en el request del POST
     public virtual ICollection<Reserva> Reservas { get; set; } = new List<Reserva>();
 }
+
+public partial class PacienteLogin
+{
+    public string Cedula { get; set; } = null!;
+
+    public string? Nombre { get; set; }
+
+}

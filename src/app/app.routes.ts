@@ -5,6 +5,7 @@ import { SalonesComponent } from "./Vistas/salones/salones.component";
 import { EquipoComponent } from "./Vistas/equipo/equipo.component";
 import { CamasComponent } from "./Vistas/camas/camas.component";
 import { ProcedimientosComponent } from "./Vistas/procedimientos/procedimientos.component";
+import { PersonalComponent } from "./Vistas/personal/personal.component"; // Importa el nuevo componente
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -14,7 +15,8 @@ export const routes: Routes = [
       { path: 'salones', component: SalonesComponent },
       { path: 'equipo', component: EquipoComponent },
       { path: 'camas', component: CamasComponent },
-      { path: 'procedimientos', component: ProcedimientosComponent }
+      { path: 'procedimientos', component: ProcedimientosComponent },
+      { path: 'personal', component: PersonalComponent } // Añade la nueva ruta
     ]
   },
 ];

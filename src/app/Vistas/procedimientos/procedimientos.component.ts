@@ -4,7 +4,7 @@ import { FormsModule } from "@angular/forms";
 
 export interface Procedimientos {
   nombreProcedimiento: string;
-  recuperacionEnSalon: number;  // Cambié la propiedad aquí
+  recuperacionEnSalon: number;
 }
 
 @Component({
@@ -20,7 +20,7 @@ export class ProcedimientosComponent {
   dataSource: Procedimientos[] = [
     {
       nombreProcedimiento: "Procedimiento 1",
-      recuperacionEnSalon: 10,  // Asegúrate de que esta propiedad esté presente
+      recuperacionEnSalon: 10,
     },
     {
       nombreProcedimiento: "Procedimiento 2",
@@ -33,42 +33,56 @@ export class ProcedimientosComponent {
   ];
 
   nombreProcedimiento = "";
+  recuperacionEnSalon: number | null = null;
   modalVisible = false;
   tipoModal = 2;
   isReadonly = true;
+  indexToEdit: number | null = null;
 
   modificarRegistro(index: number, tipodeModal: number) {
     this.tipoModal = tipodeModal;
     this.isReadonly = true;
     const procedimientoSeleccionado = this.dataSource[index];
     this.nombreProcedimiento = procedimientoSeleccionado.nombreProcedimiento;
+    this.recuperacionEnSalon = procedimientoSeleccionado.recuperacionEnSalon;
     this.modalVisible = true;
-    console.log(' modificar el elemento :', this.nombreProcedimiento);
+    this.indexToEdit = index;
+    console.log('Se ha presionado el botón de modificar para el elemento en el índice:', this.nombreProcedimiento);
   }
 
   eliminarRegistro(index: number) {
-    const procedimientoSeleccionado = this.dataSource[index];
-    console.log('Se ha presionado el botón de eliminar para el elemento en el índice:', index);
+    this.dataSource.splice(index, 1);
+    console.log('Se ha eliminado el elemento en el índice:', index);
   }
 
   guardarCambios() {
-    const nombreProcedimiento1 = (document.getElementById('nombreProcedimiento') as HTMLInputElement).value;
-    const recuperacionEnSalon1 = (document.getElementById('recuperacionEnSalon') as HTMLInputElement).value;
+    if (this.nombreProcedimiento && this.recuperacionEnSalon !== null) {
+      const procedimiento = {
+        nombreProcedimiento: this.nombreProcedimiento,
+        recuperacionEnSalon: this.recuperacionEnSalon,
+      };
 
-    const datatoSend1 = {
-      nombreProcedimiento: nombreProcedimiento1,
-      recuperacionEnSalon: recuperacionEnSalon1,
-    };
-    console.log('El nombre del procedimiento es:', datatoSend1.nombreProcedimiento);
+      if (this.tipoModal === 1) {
+        // Añadir nuevo procedimiento
+        this.dataSource.push(procedimiento);
+      } else if (this.tipoModal === 0 && this.indexToEdit !== null) {
+        // Modificar procedimiento existente
+        this.dataSource[this.indexToEdit] = procedimiento;
+      }
+
+      // Resetear formulario y modal
+      this.nombreProcedimiento = "";
+      this.recuperacionEnSalon = null;
+      this.modalVisible = false;
+      this.indexToEdit = null;
+      console.log('Cambios guardados:', procedimiento);
+    }
   }
 
   addRegistro(numero: number) {
     this.tipoModal = numero;
     this.nombreProcedimiento = "";
+    this.recuperacionEnSalon = null;
     this.isReadonly = false;
-  }
-
-  obtenerReportes() {
-    // Método para obtener reportes de procedimientos
   }
 }

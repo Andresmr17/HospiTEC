@@ -1,9 +1,6 @@
 <div class="container">
   <h1>Gestión de Procedimientos Médicos</h1>
   <div class="contenedorBotones">
-    <button class="btn btn-primary" (click)="obtenerReportes()">
-      Mostrar procedimientos
-    </button>
     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalActualizar" (click)="addRegistro(1)">
       Añadir procedimiento
     </button>
@@ -23,8 +20,8 @@
       <tr *ngFor="let element of dataSource; let i = index">
         <td>{{ element.nombreProcedimiento }}</td>
         <td>{{ element.recuperacionEnSalon }}</td>
-        <td><button class="btn btn-primary" (click)="modificarRegistro(i,0)" data-bs-toggle="modal" data-bs-target="#modalActualizar" >Modificar</button></td>
-        <td><button class="btn btn-primary" (click)="eliminarRegistro(i)" >Eliminar</button></td>
+        <td><button class="btn btn-primary" (click)="modificarRegistro(i,0)" data-bs-toggle="modal" data-bs-target="#modalActualizar">Modificar</button></td>
+        <td><button class="btn btn-primary" (click)="eliminarRegistro(i)">Eliminar</button></td>
       </tr>
       </tbody>
     </table>
@@ -44,16 +41,16 @@
           <!-- Formulario del modal -->
           <div class="form-group">
             <label for="nombreProcedimiento">Nombre del Procedimiento</label>
-            <input type="text" class="form-control" id="nombreProcedimiento" placeholder="Ingrese el nombre del procedimiento" [value]="nombreProcedimiento" [readonly]="isReadonly">
+            <input type="text" class="form-control" id="nombreProcedimiento" placeholder="Ingrese el nombre del procedimiento" [(ngModel)]="nombreProcedimiento" [readonly]="isReadonly">
           </div>
           <div class="form-group">
             <label for="recuperacionEnSalon">Recuperación en Salón</label>
-            <input type="number" class="form-control" id="recuperacionEnSalon" placeholder="Ingrese la recuperación en salón">
+            <input type="number" class="form-control" id="recuperacionEnSalon" placeholder="Ingrese la recuperación en salón" [(ngModel)]="recuperacionEnSalon">
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-primary" (click)="guardarCambios()">Guardar Cambios</button>
+          <button type="button" class="btn btn-primary" (click)="guardarCambios()" data-bs-dismiss="modal">Guardar Cambios</button>
         </div>
       </div>
     </div>

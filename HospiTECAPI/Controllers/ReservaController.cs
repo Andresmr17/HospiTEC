@@ -1,4 +1,5 @@
 using HospiTECAPI.Models;
+using HospiTECAPI.ModelsDTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -49,19 +50,29 @@ public async Task<IActionResult> GetReserva(int idReservacion)
 
 // POST: api/Reserva
 [HttpPost]
-public async Task<IActionResult> PostReserva([FromBody] Reserva dto)
+public async Task<IActionResult> PostReserva([FromBody] ReservaDTO dto)
 {
-    var nuevaReserva = new Reserva
+    if (!DateTime.TryParse(dto.Fechaingreso, out var fechanacimientoParsed))
     {
-        Pacientecedula = dto.Pacientecedula,
-        Idcama = dto.Idcama,
-        Idproced = dto.Idproced,
-        Fechaingreso = dto.Fechaingreso,
-        Fechasalida = dto.Fechasalida
+        return BadRequest("Fecha inválida.");
+    }
+    if (!DateTime.TryParse(dto.Fechasalida, out var fechasalidaParsed))
+    {
+        return BadRequest("Fecha inválida.");
+    }
+    
+
+    var nuevoReserva = new Reserva
+    {
+       Pacientecedula = dto.Pacientecedula,
+       Idcama = dto.Idcama,
+       Idproced = dto.Idproced,
+       Fechaingreso = DateOnly.FromDateTime(fechanacimientoParsed),
+       Fechasalida = DateOnly.FromDateTime(fechasalidaParsed)
     };
-    _context.Reservas.Add(nuevaReserva);
+    _context.Reservas.Add(nuevoReserva);
     await _context.SaveChangesAsync();
-    return CreatedAtAction("GetAllReservas", new { idReservacion = nuevaReserva.Idreservacion }, nuevaReserva);
+    return CreatedAtAction("GetAllReservas", new { id = nuevoReserva.Idreservacion}, nuevoReserva);
 }
 
 // PUT: api/Reserva/{idReservacion}

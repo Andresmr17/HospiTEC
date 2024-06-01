@@ -1,4 +1,5 @@
 using HospiTECAPI.Models;
+using HospiTECAPI.ModelsDTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -48,18 +49,28 @@ public async Task<IActionResult> GetHorarioCama(int idHorario)
 
 // POST: api/Horarioscama
 [HttpPost]
-public async Task<IActionResult> PostHorarioCama([FromBody] Horarioscama dto)
+public async Task<IActionResult> PostHorariosCama([FromBody] HorarioscamaDTO dto)
 {
-    var nuevoHorario = new Horarioscama
+    if (!DateTime.TryParse(dto.Dialinicio, out var fechainicioParsed))
     {
-        Idcama = dto.Idcama,
-        Dialinicio = dto.Dialinicio,
-        Diafinal = dto.Diafinal,
-        Dni = dto.Dni
+        return BadRequest("Fecha inválida.");
+    }
+    if (!DateTime.TryParse(dto.Diafinal, out var fechafinalParsed))
+    {
+        return BadRequest("Fecha inválida.");
+    }
+    
+
+    var nuevoHorarioscama = new Horarioscama()
+    {
+       Idcama = dto.Idcama,
+       Dialinicio = DateOnly.FromDateTime(fechainicioParsed),
+       Diafinal = DateOnly.FromDateTime(fechafinalParsed),
+       Dni = dto.Dni
     };
-    _context.Horarioscamas.Add(nuevoHorario);
+    _context.Horarioscamas.Add(nuevoHorarioscama);
     await _context.SaveChangesAsync();
-    return CreatedAtAction("GetAllHorariosCama", new { idHorario = nuevoHorario.Idhorario }, nuevoHorario);
+    return CreatedAtAction("GetAllHorariosCama", new { id = nuevoHorarioscama.Idhorario}, nuevoHorarioscama);
 }
 
 // PUT: api/Horarioscama/{idHorario}

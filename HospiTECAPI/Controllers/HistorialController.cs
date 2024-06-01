@@ -1,4 +1,5 @@
 using HospiTECAPI.Models;
+using HospiTECAPI.ModelsDTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -49,18 +50,24 @@ public async Task<IActionResult> GetHistorial(int idHistorial)
 
 // POST: api/Historial
 [HttpPost]
-public async Task<IActionResult> PostHistorial([FromBody] Historial dto)
+public async Task<IActionResult> PostPaciente([FromBody] HistorialDTO dto)
 {
+    if (!DateTime.TryParse(dto.Fechaprocedimiento, out var fechaProcedimientoParsed))
+    {
+        return BadRequest("Fecha inválida.");
+    }
+    
+
     var nuevoHistorial = new Historial
     {
         Idproced = dto.Idproced,
         Idtratamiento = dto.Idtratamiento,
         Pacientecedula = dto.Pacientecedula,
-        Fechaprocedimiento = dto.Fechaprocedimiento
+        Fechaprocedimiento = DateOnly.FromDateTime(fechaProcedimientoParsed)
     };
     _context.Historials.Add(nuevoHistorial);
     await _context.SaveChangesAsync();
-    return CreatedAtAction("GetAllHistoriales", new { idHistorial = nuevoHistorial.Idhistorial }, nuevoHistorial);
+    return CreatedAtAction("GetALLHistoriales", new { id = nuevoHistorial.Idhistorial }, nuevoHistorial);
 }
 
 // PUT: api/Historial/{idHistorial}

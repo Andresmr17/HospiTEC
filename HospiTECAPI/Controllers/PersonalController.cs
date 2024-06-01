@@ -1,4 +1,5 @@
 using HospiTECAPI.Models;
+using HospiTECAPI.ModelsDTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -50,21 +51,32 @@ public async Task<IActionResult> GetPersonal(string cedula)
 
 // POST: api/Personal
 [HttpPost]
-public async Task<IActionResult> PostPersonal([FromBody] Personal dto)
+public async Task<IActionResult> PostPersonal([FromBody] PersonalDTO dto)
 {
+    if (!DateTime.TryParse(dto.Fechanacimiento, out var fechanacimientoParsed))
+    {
+        return BadRequest("Fecha inválida.");
+    }
+    if (!DateTime.TryParse(dto.Fechaingreso, out var fechaingresoParsed))
+    {
+        return BadRequest("Fecha inválida.");
+    }
+    
+
     var nuevoPersonal = new Personal
     {
-        Cedula = dto.Cedula,
-        Fechanacimiento = dto.Fechanacimiento,
-        Direccion = dto.Direccion,
-        Nombre = dto.Nombre,
-        Apellido1 = dto.Apellido1,
-        Apellido2 = dto.Apellido2,
-        Fechaingreso = dto.Fechaingreso
+       Cedula = dto.Cedula,
+       Fechanacimiento = DateOnly.FromDateTime(fechanacimientoParsed),
+       Direccion = dto.Direccion,
+       Nombre = dto.Nombre,
+       Apellido1 = dto.Apellido1,
+       Apellido2 = dto.Apellido2,
+       Fechaingreso = DateOnly.FromDateTime(fechaingresoParsed)
+       
     };
     _context.Personals.Add(nuevoPersonal);
     await _context.SaveChangesAsync();
-    return CreatedAtAction("GetAllPersonal", new { cedula = nuevoPersonal.Cedula }, nuevoPersonal);
+    return CreatedAtAction("GetAllPersonal", new { id = nuevoPersonal.Cedula}, nuevoPersonal);
 }
 
 // PUT: api/Personal/{cedula}

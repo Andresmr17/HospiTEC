@@ -1,6 +1,6 @@
 namespace HospiTECAPI.ModelsDTO;
 
-public class Horarioscama
+public class HorarioscamaDTO
 {
     public int? Idhorario { get; set; }
 

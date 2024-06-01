@@ -1,4 +1,5 @@
 using HospiTECAPI.Models;
+using HospiTECAPI.ModelsDTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -48,23 +49,6 @@ public async Task<IActionResult> GetPaciente(string cedula)
     return Ok(paciente);
 }
 
-// POST: api/Paciente
-[HttpPost]
-public async Task<IActionResult> PostPaciente([FromBody] Paciente dto)
-{
-    var nuevoPaciente = new Paciente
-    {
-        Cedula = dto.Cedula,
-        Direccion = dto.Direccion,
-        Fechanacimiento = dto.Fechanacimiento,
-        Nombre = dto.Nombre,
-        Apellido1 = dto.Apellido1,
-        Apellido2 = dto.Apellido2
-    };
-    _context.Pacientes.Add(nuevoPaciente);
-    await _context.SaveChangesAsync();
-    return CreatedAtAction("GetAllPacientes", new { cedula = nuevoPaciente.Cedula }, nuevoPaciente);
-}
 
 // POST: api/Paciente/login
 [HttpPost("login")]
@@ -86,6 +70,29 @@ public async Task<IActionResult> PostPacienteLogin([FromBody] PacienteLogin dto)
     }
 
     return Ok();
+}
+// POST: api/Paciente
+[HttpPost]
+public async Task<IActionResult> PostPaciente([FromBody] PacienteDTO dto)
+{
+    if (!DateTime.TryParse(dto.Fechanacimiento, out var fechaNacimientoParsed))
+    {
+        return BadRequest("Fecha inválida.");
+    }
+    
+
+    var nuevoPaciente = new Paciente
+    {
+        Cedula = dto.Cedula,
+        Direccion = dto.Direccion,
+        Fechanacimiento = DateOnly.FromDateTime(fechaNacimientoParsed),
+        Nombre = dto.Nombre,
+        Apellido1 = dto.Apellido1,
+        Apellido2 = dto.Apellido2
+    };
+    _context.Pacientes.Add(nuevoPaciente);
+    await _context.SaveChangesAsync();
+    return CreatedAtAction("GetALLPacientes", new { id = nuevoPaciente.Cedula }, nuevoPaciente);
 }
 
 // PUT: api/Paciente/{cedula}

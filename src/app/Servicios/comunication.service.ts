@@ -7,23 +7,19 @@ import { Observable } from 'rxjs';
 })
 export class ComunicationService {
   private servidorURL = 'http://localhost:5276/api';
-  private usuarioId = ""; //se almacena el id del operador
-  //metodos para setear y almacenar el id.
-  public getUsuarioId(): string {
-    return this.usuarioId;
-  }
 
-  public setUsuarioId(id: string): void {
-    this.usuarioId = id;
-  }
+  //metodos para setear y almacenar el id.
+
+
+
 
   constructor(private http: HttpClient) {}
   //obtiene los reportes de este usuario
 
   //COMPLETADA------
-  getReportes(username:string): Observable<any> {//idOperador es como lo tengo en la bd
+  getCamas(): Observable<any> {//idOperador es como lo tengo en la bd
     //DEBE DE SER EXACTAMENTE IGUAL EN LA API
-    return this.http.get<any>(`${this.servidorURL}/ReportesOperadores/getReportes?idOperador=${username}`);
+    return this.http.get<any>(`${this.servidorURL}/Cama`);
   }
   //obtiene los activos de este usuario.
 

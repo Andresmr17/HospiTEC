@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {NgForOf} from "@angular/common";
+import {ComunicationService} from "../../Servicios/comunication.service";
 
 export interface Camas {
   idCama: number;
@@ -16,6 +17,8 @@ export interface Camas {
   styleUrl: './camas.component.css'
 })
 export class CamasComponent {
+  constructor(private servicio:ComunicationService) {
+  }
   dataSource: Camas[] = [
     {
       "idCama": 1,
@@ -83,6 +86,17 @@ export class CamasComponent {
     //añadido de registros
   }
   obtenerEquipo(){ //esto es un get
+    this.servicio.getCamas().subscribe(
+      response => {
+        console.log('Datos recibidos de posgress', response);
+
+        this.dataSource = response;
+      },
+      error => {
+        console.error('Error al enviar datos al servidor:', error);
+        // Maneja el error adecuadamente aquí
+      }
+    );
   }
 
 }

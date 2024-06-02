@@ -1,0 +1,22 @@
+.container {
+  margin-top: 20px;
+}
+
+.report {
+  margin-bottom: 20px;
+}
+
+.stars {
+  display: flex;
+  align-items: center;
+}
+
+.stars i {
+  color: gold;
+  margin-right: 5px;
+}
+
+.stars span, .stars small {
+  margin-left: 10px;
+  font-weight: bold;
+}

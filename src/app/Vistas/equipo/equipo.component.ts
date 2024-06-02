@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 import {NgForOf} from "@angular/common";
 import {ReactiveFormsModule} from "@angular/forms";
+import {ComunicationService} from "../../Servicios/comunication.service";
 
 export interface Equipo {
   idEquipo: number;
+  idCama:number; //va a recibir el id cama pero no lo va a mostrar
+  //a menos que sea para el update o el insert
   proveedor: string;
   nombre: string;
   cantidad: number;
@@ -20,25 +23,10 @@ export interface Equipo {
   styleUrl: './equipo.component.css'
 })
 export class EquipoComponent {
+  constructor(private servicio:ComunicationService) {
+  }
   dataSource: Equipo[] = [
-    {
-      "idEquipo": 1,
-      "proveedor": "Proveedor A",
-      "nombre": "Equipo 1",
-      "cantidad": 10
-    },
-    {
-      "idEquipo": 2,
-      "proveedor": "Proveedor B",
-      "nombre": "Equipo 2",
-      "cantidad": 15
-    },
-    {
-      "idEquipo": 3,
-      "proveedor": "Proveedor C",
-      "nombre": "Equipo 3",
-      "cantidad": 20
-    }
+
 
   ];//aca se guardan los datos solicitados del servidor
 
@@ -92,7 +80,17 @@ export class EquipoComponent {
     //añadido de registros
   }
   obtenerEquipo(){ //esto es un get
+    this.servicio.getEquipos().subscribe(
+      response => {
+        console.log('Datos recibidos de posgress', response);
 
+        this.dataSource = response; //aca igualo a mi datasource
+      },
+      error => {
+        console.error('Error al enviar datos al servidor:', error);
+        // Maneja el error adecuadamente aquí
+      }
+    );
   }
 
 }

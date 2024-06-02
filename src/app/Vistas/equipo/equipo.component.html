@@ -47,19 +47,23 @@
           <!-- Formulario del MODAL-->
           <div class="form-group">
             <label for="idEquipo">Id del equipo</label>
-            <input type="number" class="form-control" id="idEquipo" placeholder="Ingrese el nombre del equipo"  [value]="idEquipo"  [readonly]="isReadonly">
+            <input type="number" class="form-control" id="idEquipo" placeholder="Ingrese un identificador para el equipo"  [value]="idEquipo"  [readonly]="isReadonly">
+          </div>
+          <div class="form-group">
+            <label for="idCama">Id de la cama asociada</label>
+            <input type="number" class="form-control" id="idCama" placeholder="Ingrese una cama en la que se encuentra este equipo"  >
           </div>
           <div class="form-group">
             <label for="proovedor">Provedor del equipo</label>
-            <input type="text" class="form-control" id="proovedor" placeholder="Ingrese la capacidad en camas">
+            <input type="text" class="form-control" id="proovedor" placeholder="Ingrese el proovedor">
           </div>
           <div class="form-group">
             <label for="nombre">Nombre del equipo</label>
-            <input type="text" class="form-control" id="nombre" placeholder="Ingrese la capacidad en camas">
+            <input type="text" class="form-control" id="nombre" placeholder="Ingrese el nombre">
           </div>
           <div class="form-group">
             <label for="cantidad">cantidad</label>
-            <input type="number" class="form-control" id="cantidad" placeholder="Ingrese el número de piso">
+            <input type="number" class="form-control" id="cantidad" placeholder="Ingrese la cantidad">
           </div>
         </div>
         <div class="modal-footer">

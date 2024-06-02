@@ -16,23 +16,39 @@ export class ComunicationService {
   constructor(private http: HttpClient) {}
   //obtiene los reportes de este usuario
 
-  //COMPLETADA------
+  //Para la VISTA CAMAS------
   getCamas(): Observable<any> {//idOperador es como lo tengo en la bd
     //DEBE DE SER EXACTAMENTE IGUAL EN LA API
     return this.http.get<any>(`${this.servidorURL}/Cama`);
   }
-  //obtiene los activos de este usuario.
+
+  //metodo para actualizar la información de las camas
+  postCamas(camasData: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.post<any>(`${this.servidorURL}/Cama`, camasData,httpOptions);
+  }
+  //Metodo para actualizar las camas
+  putCamas(idCama: number, camaData: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.put<any>(`${this.servidorURL}/Cama/${idCama}`, camaData, httpOptions);
+  }
 
 
-  //COMPLETADA------------
-  getActivos(): Observable<any> {
-    return this.http.get<any>(`${this.servidorURL}/Activos/activosDisponibles`);
+  //FIN VISTA CAMAS------------
+  //Para la VISTA EQUIPO MEDICO------
+  getEquipos(): Observable<any> {
+    //DEBE DE SER EXACTAMENTE IGUAL EN LA API la estructura que pide
+    return this.http.get<any>(`${this.servidorURL}/Equipo`);
   }
-  //metodo que obtiene los activos por aprobar por el operador.
-  getaprobarSolicitud(username:string): Observable<any> {
-    return this.http.get<any>(`${this.servidorURL}/getsolAprob?username=${username}`);
-  }
-  //COMPLETADA****
+  //FIN VISTA CAMAS -------------------------
   verifyLogin(Correo: string , Contrasena: string): Observable<any> {
     return this.http.get<any>(`${this.servidorURL}/Loginop/verificarLogin?correo=${Correo}&contrasena=${Contrasena}`);
   }

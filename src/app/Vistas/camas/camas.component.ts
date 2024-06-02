@@ -55,7 +55,6 @@ export class CamasComponent {
     //id del profesor
     this.modalVisible = true;
     console.log('Se ha presionado el botón de modificar para el elemento en el índice:', this.idCama);
-
   }
 
   //metodo para modificar los registros en base al index
@@ -65,19 +64,48 @@ export class CamasComponent {
     console.log('Se ha presionado el botón de eliminar para el elemento en el índice:', index);
 
   }
-  guardarCambios() {
+  guardarCambios() { //metodo para el post o update
     // Aquí puedes acceder a los datos del formulario usando el objeto 'formulario.value'
-    const idCama1 = (document.getElementById('idCama') as HTMLInputElement).value;
+    const idCamaElement = (document.getElementById('idCama') as HTMLInputElement).value.trim();
+    console.log('el id salon antes de parsear es :', idCamaElement);
+    const idCama1 = parseInt(idCamaElement, 10);
+    console.log('el id salon despues de parsear es :', idCama1);
     const nombreSalon1 = (document.getElementById('nombreSalon') as HTMLInputElement).value;
-    const esUIC = (document.getElementById('UIC') as HTMLSelectElement).value;
+    const esUIC =((document.getElementById('UIC') as HTMLSelectElement).value === 'true');
+
     //esta es la data que se va a enviar
     const datatoSend1={
-      idCama: idCama1,
-      nombreSalon: nombreSalon1,
-      estadoUCI: esUIC
+      Idcama: idCama1,
+      Nombresalon: nombreSalon1,
+      Estadouci: esUIC
     }
     //dependiendo si es 1 o 2 es un get o un post
-    console.log('el id salon es :', datatoSend1.idCama);
+
+    console.log('el id salon es :', datatoSend1.Idcama);
+    if(this.tipoModal ==1){//si el tipo de modal es 1 entonces es un post
+      this.servicio. postCamas(datatoSend1).subscribe(
+        response => {
+          console.log('Datos enviados a posgress', response);
+        },
+        error => {
+          console.error('Error al enviar datos al servidor:', error);
+          // Maneja el error adecuadamente aquí
+        }
+      );
+    }
+    else{ //si es 0 entonces es un update
+      this.servicio.putCamas(datatoSend1.Idcama, datatoSend1)
+        .subscribe(
+          () => {
+            console.log('La cama se actualizó correctamente.');
+            // Realizar cualquier otra acción necesaria después de la actualización
+          },
+          error => {
+            console.error('Error al actualizar la cama:', error);
+            // Manejar el error adecuadamente
+          }
+        );
+    }
   }
   addRegistro(numero:number){
     this.tipoModal=numero //setea el tipo de modal a un modal de
@@ -85,12 +113,12 @@ export class CamasComponent {
     this.isReadonly=false
     //añadido de registros
   }
-  obtenerEquipo(){ //esto es un get
+  obtenerEquipo(){ //Medoto get que obtiene todas las camas.
     this.servicio.getCamas().subscribe(
       response => {
         console.log('Datos recibidos de posgress', response);
 
-        this.dataSource = response;
+        this.dataSource = response; //aca igualo a mi datasource
       },
       error => {
         console.error('Error al enviar datos al servidor:', error);

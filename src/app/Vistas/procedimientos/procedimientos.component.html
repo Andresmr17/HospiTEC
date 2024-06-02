@@ -1,0 +1,58 @@
+<div class="container">
+  <h1>Gestión de Procedimientos Médicos</h1>
+  <div class="contenedorBotones">
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalActualizar" (click)="addRegistro(1)">
+      Añadir procedimiento
+    </button>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Recuperación en salón</th>
+        <th>Modificar</th>
+        <th>Eliminar</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let element of dataSource; let i = index">
+        <td>{{ element.nombreProcedimiento }}</td>
+        <td>{{ element.recuperacionEnSalon }}</td>
+        <td><button class="btn btn-primary" (click)="modificarRegistro(i,0)" data-bs-toggle="modal" data-bs-target="#modalActualizar">Modificar</button></td>
+        <td><button class="btn btn-primary" (click)="eliminarRegistro(i)">Eliminar</button></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal para agregar o actualizar procedimientos -->
+  <div class="modal fade" id="modalActualizar" tabindex="-1" role="dialog" aria-labelledby="modalAgregarLabel" aria-hidden="false" [class.show]="modalVisible">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalActualizarLabel">Agregar o actualizar procedimiento</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Formulario del modal -->
+          <div class="form-group">
+            <label for="nombreProcedimiento">Nombre del Procedimiento</label>
+            <input type="text" class="form-control" id="nombreProcedimiento" placeholder="Ingrese el nombre del procedimiento" [(ngModel)]="nombreProcedimiento" [readonly]="isReadonly">
+          </div>
+          <div class="form-group">
+            <label for="recuperacionEnSalon">Recuperación en Salón</label>
+            <input type="number" class="form-control" id="recuperacionEnSalon" placeholder="Ingrese la recuperación en salón" [(ngModel)]="recuperacionEnSalon">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" (click)="guardarCambios()" data-bs-dismiss="modal">Guardar Cambios</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

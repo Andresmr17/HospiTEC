@@ -58,28 +58,66 @@ export class EquipoComponent {
 
   }
   guardarCambios() {
-    // Aquí puedes acceder a los datos del formulario usando el objeto 'formulario.value'
-    const idEquipo1 = (document.getElementById('idEquipo') as HTMLInputElement).value;
-    const provedor1 = (document.getElementById('proovedor') as HTMLInputElement).value;
-    const nombre1 = (document.getElementById('nombre') as HTMLSelectElement).value;
-    const cantidad1 = (document.getElementById('cantidad') as HTMLInputElement).value;
-    //esta es la data que se va a enviar
+    const idEquipoElement = (document.getElementById('idEquipo') as HTMLInputElement).value.trim();
+    const idCamaElement = (document.getElementById('idCama') as HTMLInputElement).value.trim();
+
+    const provedorElement = (document.getElementById('proovedor') as HTMLInputElement).value;
+    const nombreElement = (document.getElementById('nombre') as HTMLSelectElement).value;
+    const cantidadElement = (document.getElementById('cantidad') as HTMLInputElement).value.trim();
+
+// Mostrar los valores antes de la conversión
+    console.log('El ID del equipo antes de la conversión es:', idEquipoElement);
+    console.log('El proveedor es:', provedorElement);
+    console.log('El nombre es:', nombreElement);
+    console.log('La cantidad antes de la conversión es:', cantidadElement);
+
+// Convertir los valores a los tipos de datos correctos
+    const idEquipo = parseInt(idEquipoElement, 10);
+    const idCama = parseInt(idCamaElement, 10)
+    const cantidad = parseInt(cantidadElement, 10);
+    //CONSTANTE DE COMO SE VA A ENVIAR AL BACKEND/API
     const datatoSend1={
-      idEquipo: idEquipo1,
-      proovedor: provedor1,
-      nombre: nombre1,
-      cantidad: cantidad1
+      Idequipo: idEquipo,
+      Idcama: idCama,
+      Proveedor: provedorElement,
+      Nombre: nombreElement,
+      Cantidad:cantidad
     }
     //dependiendo si es 1 o 2 es un get o un post
-    console.log('el id salon es :', datatoSend1.idEquipo);
+    console.log('el id salon es :', datatoSend1.Idequipo);
+    console.log('el id cama es :', datatoSend1.Idcama);
+    if(this.tipoModal ==1){//si el tipo de modal es 1 entonces es un post
+      this.servicio. postEquipos(datatoSend1).subscribe(
+        response => {
+          console.log('Datos enviados a posgress', response);
+        },
+        error => {
+          console.error('Error al enviar datos al servidor:', error);
+          // Maneja el error adecuadamente aquí
+        }
+      );
+    }
+    else{ //si no es un post, es un put
+      this.servicio.putEquipos(datatoSend1.Idequipo, datatoSend1)
+        .subscribe(
+          () => {
+            console.log('La cama se actualizó correctamente.');
+            // Realizar cualquier otra acción necesaria después de la actualización
+          },
+          error => {
+            console.error('Error al actualizar la cama:', error);
+            // Manejar el error adecuadamente
+          }
+        );
+    }
   }
   addRegistro(numero:number){
-    this.tipoModal=numero //setea el tipo de modal a un modal de
+    this.tipoModal=numero //setea el tipo de modal a un modal de insert
     this.idEquipo=0;
     this.isReadonly=false
     //añadido de registros
   }
-  obtenerEquipo(){ //esto es un get
+  obtenerEquipo(){ //esto es un get del equipo médico
     this.servicio.getEquipos().subscribe(
       response => {
         console.log('Datos recibidos de posgress', response);

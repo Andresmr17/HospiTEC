@@ -48,14 +48,50 @@ export class ComunicationService {
     //DEBE DE SER EXACTAMENTE IGUAL EN LA API la estructura que pide
     return this.http.get<any>(`${this.servidorURL}/Equipo`);
   }
-  //FIN VISTA CAMAS -------------------------
-  verifyLogin(Correo: string , Contrasena: string): Observable<any> {
-    return this.http.get<any>(`${this.servidorURL}/Loginop/verificarLogin?correo=${Correo}&contrasena=${Contrasena}`);
+  //post para un nuevo equipo
+  postEquipos(equipoData: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.post<any>(`${this.servidorURL}/Equipo`, equipoData,httpOptions);
   }
-  //metodo del servicio que le envia la información del usuario y la contraseña
-  //y verifica si es correcta
+  //put para los equipos
+  putEquipos(idEquipo: number, equipoData: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.put<any>(`${this.servidorURL}/Equipo/${idEquipo}`, equipoData, httpOptions);
+  }
 
-  //POST****************************************************************
+  //FIN VISTA CAMAS -------------------------
+  //INICIO VISTA SALONES -------------------------
+
+  getSalones(): Observable<any> {
+    //DEBE DE SER EXACTAMENTE IGUAL EN LA API la estructura que pide
+    return this.http.get<any>(`${this.servidorURL}/Salon`);
+  }
+  postSalones(equipoData: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.post<any>(`${this.servidorURL}/Salon`, equipoData,httpOptions);
+  }
+  putSalon(nombreSalon: string, equipoData: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.put<any>(`${this.servidorURL}/Salon/${nombreSalon}`, equipoData, httpOptions);
+  }
+
+  //FIN VISTA SALONES -------------------------
 
   //solicitud reserva activos estudiantes.
   solicitarReserva(reservaEdata: any): Observable<any> {

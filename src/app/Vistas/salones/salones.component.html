@@ -25,7 +25,7 @@
       <tr *ngFor="let element of dataSource; let i = index">
         <td>{{ element.nombreSalon }}</td>
         <td>{{ element.capacidadCamas }}</td>
-        <td>{{ element.tipoSalon}}</td>
+        <td>{{ element.tipoDeSalon}}</td>
         <td>{{ element.numeroDePiso }}</td>
         <td><button class="btn btn-primary" (click)="modificarRegistro(i,0)" data-bs-toggle="modal" data-bs-target="#modalActualizar" >Modificar</button></td>
         <td><button class="btn btn-primary" (click)="eliminarRegistro(i)" >Eliminar</button></td>

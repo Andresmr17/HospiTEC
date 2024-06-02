@@ -1,11 +1,12 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 import {NgFor} from "@angular/common";
 import {FormsModule, NgForm} from "@angular/forms";
+import {ComunicationService} from "../../Servicios/comunication.service";
 
 export interface Registros {
   nombreSalon: string;
   capacidadCamas: number;
-  tipoSalon: string;
+  tipoDeSalon: string;
   numeroDePiso: number
 }
 @Component({
@@ -18,27 +19,12 @@ export interface Registros {
 export class SalonesComponent {
   //en el datasource se va a guardar la informacion solicitada del
   //servidor
+  constructor(private servicio:ComunicationService) {
+  }
   @ViewChild('modalAgregar', {static: false}) modalAgregar!: ElementRef;
 
   dataSource: Registros[] = [
-    {
-      "nombreSalon": "Sala 1",
-      "capacidadCamas": 10,
-      "tipoSalon": "General",
-      "numeroDePiso": 1
-    },
-    {
-      "nombreSalon": "Sala 2",
-      "capacidadCamas": 8,
-      "tipoSalon": "UCI",
-      "numeroDePiso": 2
-    },
-    {
-      "nombreSalon": "Sala 3",
-      "capacidadCamas": 15,
-      "tipoSalon": "General",
-      "numeroDePiso": 1
-    }
+
   ];//aca se guardan los datos solicitados del servidor
   //titulos para las columnas;
   //metodo para modificar los registros en base al index
@@ -76,13 +62,40 @@ export class SalonesComponent {
     const tipoMedicina1 = (document.getElementById('tipoMedicina') as HTMLSelectElement).value;
     const numeroPiso1 = (document.getElementById('numeroPiso') as HTMLInputElement).value;
     //esta es la data que se va a enviar
+    const capacidadCama = parseInt(capacidadCamas1, 10);
+    const numeroPiso = parseInt(numeroPiso1, 10)
+
     const datatoSend1={
       nombreSalon: nombreSalon1,
-      capacidadCamas: capacidadCamas1,
-      tipoSalon: tipoMedicina1,
-      numeroDePiso: numeroPiso1
+      capacidadCamas: capacidadCama,
+      Tipodesalon: tipoMedicina1,
+      numeroDePiso: numeroPiso
     }
-    console.log('el id salon es :', datatoSend1.nombreSalon);
+    console.log('el tipo de salon es :', datatoSend1.Tipodesalon);
+    if(this.tipoModal ==1){//si el tipo de modal es 1 entonces es un post
+      this.servicio. postSalones(datatoSend1).subscribe(
+        response => {
+          console.log('Datos enviados a posgress', response);
+        },
+        error => {
+          console.error('Error al enviar datos al servidor:', error);
+          // Maneja el error adecuadamente aquí
+        }
+      );
+    }
+    else{ //si no es un post, es un put
+      this.servicio.putSalon(datatoSend1.nombreSalon, datatoSend1)
+        .subscribe(
+          () => {
+            console.log('La cama se actualizó correctamente.');
+            // Realizar cualquier otra acción necesaria después de la actualización
+          },
+          error => {
+            console.error('Error al actualizar la cama:', error);
+            // Manejar el error adecuadamente
+          }
+        );
+    }
   }
   addRegistro(numero:number){
     this.tipoModal=numero //setea el tipo de modal a un modal de
@@ -91,6 +104,17 @@ export class SalonesComponent {
     //añadido de registros
   }
   obtenerReportes(){
+    this.servicio.getSalones().subscribe(
+      response => {
+        console.log('Datos recibidos de posgress', response);
+
+        this.dataSource = response; //aca igualo a mi datasource
+      },
+      error => {
+        console.error('Error al enviar datos al servidor:', error);
+        // Maneja el error adecuadamente aquí
+      }
+    );
 
   }
 

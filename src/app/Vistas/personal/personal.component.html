@@ -1,14 +1,8 @@
 <div class="container">
-  <h1>Personal de Hospitec</h1>
+  <h1>Gestión de Personal</h1>
   <div class="contenedorBotones">
-    <button class="btn btn-primary" (click)="mostrarTabla('Administrativo')">
-      Personal Administrativo
-    </button>
-    <button class="btn btn-primary" (click)="mostrarTabla('Medico')">
-      Personal Médico
-    </button>
-    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalActualizar" (click)="addRegistro()">
-      Añadir empleado
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalActualizar" (click)="addRegistro(1)">
+      Añadir personal
     </button>
   </div>
 
@@ -16,43 +10,39 @@
     <table class="table">
       <thead>
       <tr>
+        <th>Cédula</th>
         <th>Nombre</th>
         <th>Apellido1</th>
         <th>Apellido2</th>
-        <th>Cédula</th>
-        <th>Teléfono</th>
+        <th>Fecha Nacimiento</th>
         <th>Dirección</th>
-        <th>Fecha de Nacimiento</th>
-        <th>Fecha de Contratación</th>
-        <th>Tipo</th>
+        <th>Fecha Ingreso</th>
         <th>Modificar</th>
         <th>Eliminar</th>
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let element of personal; let i = index" [class.d-none]="tipoPersonal !== null && element.tipo !== tipoPersonal">
+      <tr *ngFor="let element of dataSource; let i = index">
+        <td>{{ element.cedula }}</td>
         <td>{{ element.nombre }}</td>
         <td>{{ element.apellido1 }}</td>
         <td>{{ element.apellido2 }}</td>
-        <td>{{ element.cedula }}</td>
-        <td>{{ element.telefono }}</td>
+        <td>{{ element.fechaNacimiento | date }}</td>
         <td>{{ element.direccion }}</td>
-        <td>{{ element.fechaNacimiento }}</td>
-        <td>{{ element.fechaContratacion }}</td>
-        <td>{{ element.tipo }}</td>
-        <td><button class="btn btn-primary" (click)="modificarRegistro(i)" data-bs-toggle="modal" data-bs-target="#modalActualizar">Modificar</button></td>
-        <td><button class="btn btn-primary" (click)="eliminarRegistro(i)">Eliminar</button></td>
+        <td>{{ element.fechaIngreso | date }}</td>
+        <td><button class="btn btn-primary" (click)="modificarPersonal(i,0)" data-bs-toggle="modal" data-bs-target="#modalActualizar">Modificar</button></td>
+        <td><button class="btn btn-primary" (click)="eliminarPersonal(i)">Eliminar</button></td>
       </tr>
       </tbody>
     </table>
   </div>
 
-  <!-- Modal para agregar o actualizar empleados -->
+  <!-- Modal para agregar o actualizar personal -->
   <div class="modal fade" id="modalActualizar" tabindex="-1" role="dialog" aria-labelledby="modalAgregarLabel" aria-hidden="false" [class.show]="modalVisible">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalActualizarLabel">Agregar o actualizar empleado</h5>
+          <h5 class="modal-title" id="modalActualizarLabel">Agregar o actualizar personal</h5>
           <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -60,44 +50,32 @@
         <div class="modal-body">
           <!-- Formulario del modal -->
           <div class="form-group">
-            <label for="nombre">Nombre</label>
-            <input type="text" class="form-control" id="nombre" placeholder="Ingrese el nombre" [(ngModel)]="nombre">
-          </div>
-          <div class="form-group">
-            <label for="apellido1">Apellido1</label>
-            <input type="text" class="form-control" id="apellido1" placeholder="Ingrese el primer apellido" [(ngModel)]="apellido1">
-          </div>
-          <div class="form-group">
-            <label for="apellido2">Apellido2</label>
-            <input type="text" class="form-control" id="apellido2" placeholder="Ingrese el segundo apellido" [(ngModel)]="apellido2">
-          </div>
-          <div class="form-group">
             <label for="cedula">Cédula</label>
-            <input type="text" class="form-control" id="cedula" placeholder="Ingrese la cédula" [(ngModel)]="cedula">
+            <input type="text" class="form-control" id="cedula" placeholder="Ingrese la cédula" [value]="cedula" [readonly]="isReadonly">
           </div>
           <div class="form-group">
-            <label for="telefono">Teléfono</label>
-            <input type="text" class="form-control" id="telefono" placeholder="Ingrese el teléfono" [(ngModel)]="telefono">
+            <label for="nombre">Nombre</label>
+            <input type="text" class="form-control" id="nombre" placeholder="Ingrese el nombre" [value]="nombre">
           </div>
           <div class="form-group">
-            <label for="direccion">Dirección</label>
-            <input type="text" class="form-control" id="direccion" placeholder="Ingrese la dirección" [(ngModel)]="direccion">
+            <label for="apellido1">Primer Apellido</label>
+            <input type="text" class="form-control" id="apellido1" placeholder="Ingrese el primer apellido" [value]="apellido1">
+          </div>
+          <div class="form-group">
+            <label for="apellido2">Segundo Apellido</label>
+            <input type="text" class="form-control" id="apellido2" placeholder="Ingrese el segundo apellido" [value]="apellido2">
           </div>
           <div class="form-group">
             <label for="fechaNacimiento">Fecha de Nacimiento</label>
-            <input type="date" class="form-control" id="fechaNacimiento" [(ngModel)]="fechaNacimiento">
+            <input type="date" class="form-control" id="fechaNacimiento" [value]="fechaNacimiento">
           </div>
           <div class="form-group">
-            <label for="fechaContratacion">Fecha de Contratación</label>
-            <input type="date" class="form-control" id="fechaContratacion" [(ngModel)]="fechaContratacion">
+            <label for="direccion">Dirección</label>
+            <input type="text" class="form-control" id="direccion" placeholder="Ingrese la dirección" [value]="direccion">
           </div>
           <div class="form-group">
-            <label for="tipo">Tipo</label>
-            <select class="form-control" id="tipo" [(ngModel)]="tipo">
-              <option value="administrativo">Administrativo</option>
-              <option value="medico">Médico</option>
-              <option value="enfermero">Enfermero</option>
-            </select>
+            <label for="fechaIngreso">Fecha de Ingreso</label>
+            <input type="date" class="form-control" id="fechaIngreso" [value]="fechaIngreso">
           </div>
         </div>
         <div class="modal-footer">

@@ -183,7 +183,7 @@ export class ComunicationService {
     return this.http.post<any>(`${this.servidorURL}/Personal`, personalData, httpOptions);
   }
 
-  putPersonal(idPersonal: number, personalData: any): Observable<any> {
+  putPersonal(idPersonal: string, personalData: any): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'

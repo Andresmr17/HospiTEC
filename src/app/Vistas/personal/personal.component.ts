@@ -1,144 +1,138 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
+import { Component } from '@angular/core';
+import {DatePipe, NgForOf} from "@angular/common";
+import { ReactiveFormsModule } from "@angular/forms";
+import { ComunicationService } from "../../Servicios/comunication.service";
 
-interface Personal {
+export interface Personal {
+  cedula: string;
   nombre: string;
   apellido1: string;
   apellido2: string;
-  cedula: string;
-  telefono: string;
+  fechaNacimiento: Date | null;
   direccion: string;
-  fechaNacimiento: string;
-  fechaContratacion: string;
-  tipo: 'Administrativo' | 'Medico' | 'Enfermero' | null;
+  fechaIngreso: Date | null;
 }
 
 @Component({
   selector: 'app-personal',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    NgForOf,
+    ReactiveFormsModule,
+    DatePipe
+  ],
   templateUrl: './personal.component.html',
-  styleUrls: ['./personal.component.css']
+  styleUrl: './personal.component.css'
 })
 export class PersonalComponent {
-  @ViewChild('modalAgregar', { static: false }) modalAgregar!: ElementRef;
+  constructor(private servicio: ComunicationService) {
+    this.obtenerPersonal();
+  }
 
-  personal: Personal[] = [
-    {
-      nombre: "Juan",
-      apellido1: "Perez",
-      apellido2: "Gomez",
-      cedula: "123456789",
-      telefono: "987654321",
-      direccion: "Calle Falsa 123",
-      fechaNacimiento: "1990-01-01",
-      fechaContratacion: "2020-01-01",
-      tipo: 'Administrativo'
-    },
-    {
-      nombre: "Ana",
-      apellido1: "Martinez",
-      apellido2: "Lopez",
-      cedula: "987654321",
-      telefono: "123456789",
-      direccion: "Avenida Siempre Viva 456",
-      fechaNacimiento: "1985-05-05",
-      fechaContratacion: "2019-05-05",
-      tipo: "Medico"
-    }
-    // Añade más empleados aquí
-  ];
-
-  tipoPersonal: 'Administrativo' | 'Medico' | null = null;
-
-  nombre = "";
-  apellido1 = "";
-  apellido2 = "";
-  cedula = "";
-  telefono = "";
-  direccion = "";
-  fechaNacimiento = "";
-  fechaContratacion = "";
-  tipo: 'Administrativo' | 'Medico' | 'Enfermero' | null = null;
-
+  dataSource: Personal[] = [];
+  cedula = '';
   modalVisible = false;
+  tipoModal = 2;
   isReadonly = true;
-  indexToEdit: number | null = null;
 
-  mostrarTabla(tipo: 'Administrativo' | 'Medico') {
-    this.tipoPersonal = tipo;
-  }
+  // Variables para el formulario
+  nombre = '';
+  apellido1 = '';
+  apellido2 = '';
+  fechaNacimiento: Date | null = null;
+  direccion = '';
+  fechaIngreso: Date | null = null;
 
-  modificarRegistro(index: number) {
+  modificarPersonal(index: number, tipoModal: number) {
+    this.tipoModal = tipoModal;
     this.isReadonly = true;
-    this.indexToEdit = index;
-
-    let empleado = this.personal[index];
-
-    this.nombre = empleado.nombre;
-    this.apellido1 = empleado.apellido1;
-    this.apellido2 = empleado.apellido2;
-    this.cedula = empleado.cedula;
-    this.telefono = empleado.telefono;
-    this.direccion = empleado.direccion;
-    this.fechaNacimiento = empleado.fechaNacimiento;
-    this.fechaContratacion = empleado.fechaContratacion;
-    this.tipo = empleado.tipo;
-
+    const personalSeleccionado = this.dataSource[index];
+    this.cedula = personalSeleccionado.cedula;
+    this.nombre = personalSeleccionado.nombre;
+    this.apellido1 = personalSeleccionado.apellido1;
+    this.apellido2 = personalSeleccionado.apellido2;
+    this.fechaNacimiento = personalSeleccionado.fechaNacimiento;
+    this.direccion = personalSeleccionado.direccion;
+    this.fechaIngreso = personalSeleccionado.fechaIngreso;
     this.modalVisible = true;
+    console.log('modificarPersonal:', personalSeleccionado);
   }
 
-  eliminarRegistro(index: number) {
-    this.personal.splice(index, 1);
-    console.log('Se ha eliminado el elemento en el índice:', index);
+  eliminarPersonal(index: number) {
+    const personalSeleccionado = this.dataSource[index];
+    // Realizar el delete o update según sea necesario
+    console.log('eliminarPersonal:', personalSeleccionado);
   }
 
   guardarCambios() {
-    const empleado = {
-      nombre: this.nombre,
-      apellido1: this.apellido1,
-      apellido2: this.apellido2,
-      cedula: this.cedula,
-      telefono: this.telefono,
-      direccion: this.direccion,
-      fechaNacimiento: this.fechaNacimiento,
-      fechaContratacion: this.fechaContratacion,
-      tipo: this.tipo
-    } as Personal;
+    const cedula1 = (document.getElementById('cedula') as HTMLInputElement).value.trim();
+    const nombre1 = (document.getElementById('nombre') as HTMLInputElement).value;
+    const apellido11 = (document.getElementById('apellido1') as HTMLInputElement).value;
+    const apellido21 = (document.getElementById('apellido2') as HTMLInputElement).value;
+    const fechaNacimiento1 = (document.getElementById('fechaNacimiento') as HTMLInputElement).value;
+    const direccion1 = (document.getElementById('direccion') as HTMLInputElement).value;
+    const fechaIngreso1 = (document.getElementById('fechaIngreso') as HTMLInputElement).value;
 
-    if (this.indexToEdit !== null) {
-      this.personal[this.indexToEdit] = empleado;
-    } else {
-      this.personal.push(empleado);
+    const datatoSend1: Personal = {
+      cedula: cedula1,
+      nombre: nombre1,
+      apellido1: apellido11,
+      apellido2: apellido21,
+      fechaNacimiento: fechaNacimiento1 ? new Date(fechaNacimiento1) : null,
+      direccion: direccion1,
+      fechaIngreso: fechaIngreso1 ? new Date(fechaIngreso1) : null
+    };
+
+    console.log('guardarCambios - datatoSend1:', datatoSend1);
+
+    if (this.tipoModal === 1) { // Si el tipo de modal es 1 entonces es un post
+      console.log('guardarCambios - realizando POST');
+      this.servicio.postPersonal(datatoSend1).subscribe(
+        response => {
+          console.log('Datos enviados a posgress en POST:', response);
+          this.obtenerPersonal(); // Actualiza la lista después de agregar un personal
+        },
+        error => {
+          console.error('POST - Error al enviar datos al servidor:', error);
+        }
+      );
+    } else { // PUT para cuando hago el update
+      console.log('guardarCambios - realizando PUT');
+      this.servicio.putPersonal(datatoSend1.cedula, datatoSend1).subscribe(
+        () => {
+          console.log('Update PUT - personal se actualizó correctamente.');
+          this.obtenerPersonal(); // Actualiza la lista después de modificar un personal
+        },
+        error => {
+          console.error('PUT - Error al actualizar el personal:', error);
+        }
+      );
     }
-
-    // Resetear formulario y modal
-    this.nombre = "";
-    this.apellido1 = "";
-    this.apellido2 = "";
-    this.cedula = "";
-    this.telefono = "";
-    this.direccion = "";
-    this.fechaNacimiento = "";
-    this.fechaContratacion = "";
-    this.tipo = null;
-    this.modalVisible = false;
-    this.indexToEdit = null;
-    console.log('Cambios guardados:', empleado);
   }
 
-  addRegistro() {
-    this.indexToEdit = null;
-    this.nombre = "";
-    this.apellido1 = "";
-    this.apellido2 = "";
-    this.cedula = "";
-    this.telefono = "";
-    this.direccion = "";
-    this.fechaNacimiento = "";
-    this.fechaContratacion = "";
-    this.tipo = null;
+  addRegistro(numero: number) {
+    this.tipoModal = numero;
+    this.cedula = '';
+    this.nombre = '';
+    this.apellido1 = '';
+    this.apellido2 = '';
+    this.fechaNacimiento = null;
+    this.direccion = '';
+    this.fechaIngreso = null;
     this.isReadonly = false;
+    this.modalVisible = true;
+    console.log('addRegistro - tipoModal:', numero);
+  }
+
+  obtenerPersonal() {
+    this.servicio.getPersonal().subscribe(
+      response => {
+        console.log('obtenerPersonal - Datos recibidos de posgress:', response);
+        this.dataSource = response;
+      },
+      error => {
+        console.error('GET - Error al obtener datos del servidor:', error);
+      }
+    );
   }
 }

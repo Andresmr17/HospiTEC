@@ -203,7 +203,7 @@ export class ComunicationService {
   //#####################################################
   //PARA ROL PERSONAL
 
-  getRoles(): Observable<any> {
+  getAllRoles(): Observable<any> {
     return this.http.get<any>(`${this.servidorURL}/Rol`);
   }
 

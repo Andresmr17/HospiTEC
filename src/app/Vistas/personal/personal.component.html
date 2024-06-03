@@ -17,7 +17,8 @@
         <th>Fecha Nacimiento</th>
         <th>Dirección</th>
         <th>Fecha Ingreso</th>
-        <th>Teléfono</th> <!-- Nueva columna para el teléfono -->
+        <th>Teléfono</th>
+        <th>Rol</th> <!-- Nueva columna para la descripción del rol -->
         <th>Modificar</th>
         <th>Eliminar</th>
       </tr>
@@ -31,7 +32,8 @@
         <td>{{ element.fechaNacimiento | date }}</td>
         <td>{{ element.direccion }}</td>
         <td>{{ element.fechaIngreso | date }}</td>
-        <td>{{ element.telefono }}</td> <!-- Mostrar el teléfono -->
+        <td>{{ element.telefono }}</td>
+        <td>{{ element.rolDescripcion }}</td> <!-- Mostrar la descripción del rol -->
         <td>
           <button class="btn btn-primary" (click)="modificarPersonal(i, 0)" data-bs-toggle="modal" data-bs-target="#modalActualizar">Modificar</button>
         </td>

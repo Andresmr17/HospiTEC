@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { DatePipe, NgForOf } from "@angular/common";
 import { ReactiveFormsModule } from "@angular/forms";
 import { ComunicationService } from "../../Servicios/comunication.service";
+import { forkJoin } from 'rxjs';
 
 export interface Personal {
   cedula: string;
@@ -11,13 +12,20 @@ export interface Personal {
   fechaNacimiento: Date | null;
   direccion: string;
   fechaIngreso: Date | null;
-  telefono?: string; // Nuevo campo para el teléfono
+  telefono?: string;
+  rolDescripcion?: string; // Nuevo campo para la descripción del rol
 }
 
 export interface PersonalTelefono {
   item: number;
   personalCedula: string;
   telefono: string;
+}
+
+export interface Rol {
+  idRol: number;
+  personalCedula: string;
+  descripcion: string;
 }
 
 @Component({
@@ -136,17 +144,22 @@ export class PersonalComponent {
       personalResponse => {
         const personalList: Personal[] = personalResponse;
 
-        this.servicio.getAllPersonalTelefonos().subscribe(
-          (telefonosResponse: PersonalTelefono[]) => {
-            const telefonosList = telefonosResponse;
+        forkJoin({
+          telefonos: this.servicio.getAllPersonalTelefonos(),
+          roles: this.servicio.getAllRoles()
+        }).subscribe(
+          ({ telefonos, roles }) => {
+            const telefonosList: PersonalTelefono[] = telefonos;
+            const rolesList: Rol[] = roles;
 
             this.dataSource = personalList.map(personal => {
-              const telefono = telefonosList.find((t: PersonalTelefono) => t.personalCedula === personal.cedula)?.telefono || 'No disponible';
-              return { ...personal, telefono };
+              const telefono = telefonosList.find(t => t.personalCedula === personal.cedula)?.telefono || 'No disponible';
+              const rolDescripcion = rolesList.find(r => r.personalCedula === personal.cedula)?.descripcion || 'No disponible';
+              return { ...personal, telefono, rolDescripcion };
             });
           },
           error => {
-            console.error('Error al obtener los teléfonos del personal:', error);
+            console.error('Error al obtener los datos adicionales del personal:', error);
           }
         );
       },

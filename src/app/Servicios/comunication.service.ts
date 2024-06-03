@@ -135,4 +135,36 @@ export class ComunicationService {
     };
     return this.http.post<any>(`${this.servidorURL}/SesionesOperador`, logoutData,httpOptions);
   }
+
+
+
+  //#####################################################
+  //PARA PROCEDIMIENTOS
+  getProcedimientos(): Observable<any> {
+    return this.http.get<any>(`${this.servidorURL}/Procedimiento`);
+  }
+
+  postProcedimientos(procedimientoData: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.post<any>(`${this.servidorURL}/Procedimiento`, procedimientoData, httpOptions);
+  }
+
+  putProcedimientos(idProcedimiento: number, procedimientoData: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.put<any>(`${this.servidorURL}/Procedimiento/${idProcedimiento}`, procedimientoData, httpOptions);
+  }
+
+  //##################################################################
+
+
+
+
 }

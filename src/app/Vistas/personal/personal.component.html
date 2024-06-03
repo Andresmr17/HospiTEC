@@ -1,10 +1,10 @@
 <div class="container">
   <h1>Personal de Hospitec</h1>
   <div class="contenedorBotones">
-    <button class="btn btn-primary" (click)="mostrarTabla('administrativo')">
+    <button class="btn btn-primary" (click)="mostrarTabla('Administrativo')">
       Personal Administrativo
     </button>
-    <button class="btn btn-primary" (click)="mostrarTabla('medico')">
+    <button class="btn btn-primary" (click)="mostrarTabla('Medico')">
       Personal Médico
     </button>
     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalActualizar" (click)="addRegistro()">
@@ -12,40 +12,7 @@
     </button>
   </div>
 
-  <div class="table-responsive" *ngIf="tipoPersonal === 'administrativo'">
-    <table class="table">
-      <thead>
-      <tr>
-        <th>Nombre</th>
-        <th>Apellido1</th>
-        <th>Apellido2</th>
-        <th>Cédula</th>
-        <th>Teléfono</th>
-        <th>Dirección</th>
-        <th>Fecha de Nacimiento</th>
-        <th>Fecha de Contratación</th>
-        <th>Modificar</th>
-        <th>Eliminar</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let element of personalAdministrativo; let i = index">
-        <td>{{ element.nombre }}</td>
-        <td>{{ element.apellido1 }}</td>
-        <td>{{ element.apellido2 }}</td>
-        <td>{{ element.cedula }}</td>
-        <td>{{ element.telefono }}</td>
-        <td>{{ element.direccion }}</td>
-        <td>{{ element.fechaNacimiento }}</td>
-        <td>{{ element.fechaContratacion }}</td>
-        <td><button class="btn btn-primary" (click)="modificarRegistro(i, 'administrativo')" data-bs-toggle="modal" data-bs-target="#modalActualizar">Modificar</button></td>
-        <td><button class="btn btn-primary" (click)="eliminarRegistro(i, 'administrativo')">Eliminar</button></td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="table-responsive" *ngIf="tipoPersonal === 'medico'">
+  <div class="table-responsive">
     <table class="table">
       <thead>
       <tr>
@@ -63,7 +30,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let element of personalMedico; let i = index">
+      <tr *ngFor="let element of personal; let i = index" [class.d-none]="tipoPersonal !== null && element.tipo !== tipoPersonal">
         <td>{{ element.nombre }}</td>
         <td>{{ element.apellido1 }}</td>
         <td>{{ element.apellido2 }}</td>
@@ -73,8 +40,8 @@
         <td>{{ element.fechaNacimiento }}</td>
         <td>{{ element.fechaContratacion }}</td>
         <td>{{ element.tipo }}</td>
-        <td><button class="btn btn-primary" (click)="modificarRegistro(i, 'medico')" data-bs-toggle="modal" data-bs-target="#modalActualizar">Modificar</button></td>
-        <td><button class="btn btn-primary" (click)="eliminarRegistro(i, 'medico')">Eliminar</button></td>
+        <td><button class="btn btn-primary" (click)="modificarRegistro(i)" data-bs-toggle="modal" data-bs-target="#modalActualizar">Modificar</button></td>
+        <td><button class="btn btn-primary" (click)="eliminarRegistro(i)">Eliminar</button></td>
       </tr>
       </tbody>
     </table>
@@ -124,9 +91,10 @@
             <label for="fechaContratacion">Fecha de Contratación</label>
             <input type="date" class="form-control" id="fechaContratacion" [(ngModel)]="fechaContratacion">
           </div>
-          <div class="form-group" *ngIf="tipoPersonal === 'medico'">
+          <div class="form-group">
             <label for="tipo">Tipo</label>
             <select class="form-control" id="tipo" [(ngModel)]="tipo">
+              <option value="administrativo">Administrativo</option>
               <option value="medico">Médico</option>
               <option value="enfermero">Enfermero</option>
             </select>

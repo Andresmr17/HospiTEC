@@ -162,9 +162,113 @@ export class ComunicationService {
     return this.http.put<any>(`${this.servidorURL}/Procedimiento/${idProcedimiento}`, procedimientoData, httpOptions);
   }
 
+  // FIN PROCEDIMIENTOS
   //##################################################################
 
 
+
+  //#####################################################
+  //PARA PERSONAL
+
+  getPersonal(): Observable<any> {
+    return this.http.get<any>(`${this.servidorURL}/Personal`);
+  }
+
+  postPersonal(personalData: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.post<any>(`${this.servidorURL}/Personal`, personalData, httpOptions);
+  }
+
+  putPersonal(idPersonal: number, personalData: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.put<any>(`${this.servidorURL}/Personal/${idPersonal}`, personalData, httpOptions);
+  }
+
+
+  // FIN PERSONAL
+  //##################################################################
+
+
+
+
+
+  //#####################################################
+  //PARA ROL PERSONAL
+
+  getRoles(): Observable<any> {
+    return this.http.get<any>(`${this.servidorURL}/Rol`);
+  }
+
+  getRol(idRol: number): Observable<any> {
+    return this.http.get<any>(`${this.servidorURL}/Rol/${idRol}`);
+  }
+  postRol(rolData: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.post<any>(`${this.servidorURL}/Rol`, rolData, httpOptions);
+  }
+
+  putRol(idRol: number, rolData: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.put<any>(`${this.servidorURL}/Rol/${idRol}`, rolData, httpOptions);
+  }
+
+  deleteRol(idRol: number): Observable<any> {
+    return this.http.delete<any>(`${this.servidorURL}/Rol/${idRol}`);
+  }
+
+
+
+  // FIN ROL PERSONAL
+  //##################################################################
+
+
+
+  //#####################################################
+  //PARA TELEFONO PERSONAL
+
+  getPersonalTelefono(item: number): Observable<any> {
+    return this.http.get<any>(`${this.servidorURL}/PersonalTelefono/${item}`);
+  }
+
+  postPersonalTelefono(personalTelefonoData: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.post<any>(`${this.servidorURL}/PersonalTelefono`, personalTelefonoData, httpOptions);
+  }
+
+  putPersonalTelefono(item: number, personalTelefonoData: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.put<any>(`${this.servidorURL}/PersonalTelefono/${item}`, personalTelefonoData, httpOptions);
+  }
+
+  deletePersonalTelefono(item: number): Observable<any> {
+    return this.http.delete<any>(`${this.servidorURL}/PersonalTelefono/${item}`);
+  }
+  // FIN TELEFONO PERSONAL
+  //##################################################################
 
 
 }

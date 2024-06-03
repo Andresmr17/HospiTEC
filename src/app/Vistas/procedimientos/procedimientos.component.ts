@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NgForOf } from "@angular/common";
+import { ReactiveFormsModule } from "@angular/forms";
 import { ComunicationService } from "../../Servicios/comunication.service";
 
 export interface Procedimiento {
@@ -14,7 +15,8 @@ export interface Procedimiento {
   selector: 'app-procedimientos',
   standalone: true,
   imports: [
-    NgForOf
+    NgForOf,
+    ReactiveFormsModule
   ],
   templateUrl: './procedimientos.component.html',
   styleUrl: './procedimientos.component.css'
@@ -30,25 +32,29 @@ export class ProcedimientosComponent {
   tipoModal = 2;
   isReadonly = true;
 
-  // Agregando las variables que faltan
+  // Variables para el formulario
+  nombrePatologia = '';
   procedimientoNombre = '';
+  descripcion = '';
   duracionDias = 0;
 
-  modificarProcedimiento(index: number, tipodeModal: number) {
-    this.tipoModal = tipodeModal;
+  modificarProcedimiento(index: number, tipoModal: number) {
+    this.tipoModal = tipoModal;
     this.isReadonly = true;
     const procedimientoSeleccionado = this.dataSource[index];
     this.idProcedimiento = procedimientoSeleccionado.idProcedimiento;
+    this.nombrePatologia = procedimientoSeleccionado.nombrePatologia;
     this.procedimientoNombre = procedimientoSeleccionado.procedimientoNombre;
+    this.descripcion = procedimientoSeleccionado.descripcion;
     this.duracionDias = procedimientoSeleccionado.duracionDias;
     this.modalVisible = true;
-    console.log('Se ha presionado el botón de modificar para el elemento en el índice:', this.idProcedimiento);
+    console.log('modificarProcedimiento:', procedimientoSeleccionado);
   }
 
   eliminarProcedimiento(index: number) {
     const procedimientoSeleccionado = this.dataSource[index];
     // Realizar el delete o update según sea necesario
-    console.log('Se ha presionado el botón de eliminar para el elemento en el índice:', index);
+    console.log('eliminarProcedimiento:', procedimientoSeleccionado);
   }
 
   guardarCambios() {
@@ -60,29 +66,35 @@ export class ProcedimientosComponent {
     const duracionDias1 = parseInt((document.getElementById('duracionDias') as HTMLInputElement).value, 10);
 
     const datatoSend1 = {
-      idProcedimiento: idProcedimiento1,
-      nombrePatologia: nombrePatologia1,
-      procedimientoNombre: procedimientoNombre1,
-      descripcion: descripcion1,
-      duracionDias: duracionDias1
+      IDproced: idProcedimiento1,
+      Nombrepatologia: nombrePatologia1,
+      Procednombre: procedimientoNombre1,
+      Descripcion: descripcion1,
+      Duraciondias: duracionDias1
     };
 
-    if (this.tipoModal == 1) {
+    console.log('guardarCambios - datatoSend1:', datatoSend1);
+
+    if (this.tipoModal == 1) { // Si el tipo de modal es 1 entonces es un post
+      console.log('guardarCambios - realizando POST');
       this.servicio.postProcedimientos(datatoSend1).subscribe(
         response => {
-          console.log('Datos enviados a posgress', response);
+          console.log('Datos enviados a posgress en POST:', response);
+          this.obtenerProcedimientos(); // Actualiza la lista después de agregar un procedimiento
         },
         error => {
-          console.error('Error al enviar datos al servidor:', error);
+          console.error('POST - Error al enviar datos al servidor:', error);
         }
       );
-    } else {
-      this.servicio.putProcedimientos(datatoSend1.idProcedimiento, datatoSend1).subscribe(
+    } else { // PUT para cuando hago el update
+      console.log('guardarCambios - realizando PUT');
+      this.servicio.putProcedimientos(datatoSend1.IDproced, datatoSend1).subscribe(
         () => {
-          console.log('El procedimiento se actualizó correctamente.');
+          console.log('Update PUT - procedimiento se actualizó correctamente.');
+          this.obtenerProcedimientos(); // Actualiza la lista después de modificar un procedimiento
         },
         error => {
-          console.error('Error al actualizar el procedimiento:', error);
+          console.error('PUT - Error al actualizar el procedimiento:', error);
         }
       );
     }
@@ -91,19 +103,23 @@ export class ProcedimientosComponent {
   addRegistro(numero: number) {
     this.tipoModal = numero;
     this.idProcedimiento = 0;
+    this.nombrePatologia = '';
     this.procedimientoNombre = '';
+    this.descripcion = '';
     this.duracionDias = 0;
     this.isReadonly = false;
+    this.modalVisible = true;
+    console.log('addRegistro - tipoModal:', numero);
   }
 
   obtenerProcedimientos() {
     this.servicio.getProcedimientos().subscribe(
       response => {
-        console.log('Datos recibidos de posgress', response);
+        console.log('obtenerProcedimientos - Datos recibidos de posgress:', response);
         this.dataSource = response;
       },
       error => {
-        console.error('Error al obtener datos del servidor:', error);
+        console.error('GET - Error al obtener datos del servidor:', error);
       }
     );
   }

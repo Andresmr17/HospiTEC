@@ -47,7 +47,7 @@ public async Task<IActionResult> GetReserva(int idReservacion)
 
     return Ok(reserva);
 }
-
+/*
 // GET: api/Reserva/{cedula}
 [HttpGet("ObtieneReservas/{pacientecedula}")]
 
@@ -57,6 +57,29 @@ public async Task<IActionResult> GetReservaCedula(string pacientecedula)
 
     if (reserva == null)
         return NotFound($"No se encontró una reserva con el id {pacientecedula}.");
+
+    return Ok(reserva);
+}
+*/
+
+// GET: api/Reserva/{cedula}
+[HttpGet("ObtieneReservas/{pacientecedula}")]
+public async Task<IActionResult> GetPrestamoBypacientecedula(String pacientecedula)
+{
+    var reserva = await _context.Reservas
+        .Where(p => p.Pacientecedula == pacientecedula)
+        .Select(p => new {
+            p.Idreservacion,
+            p.Pacientecedula,
+            p.Idcama,
+            p.Idproced,
+            p.Fechaingreso,
+            p.Fechasalida
+        })
+        .FirstOrDefaultAsync();
+
+    if (reserva == null)
+        return NotFound($"No se encontró un préstamo con el ID {pacientecedula}.");
 
     return Ok(reserva);
 }

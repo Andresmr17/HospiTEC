@@ -114,5 +114,6 @@ public async Task<IActionResult> DeletePersonal(string cedula)
     return NoContent();
 }
 
+
     
 }

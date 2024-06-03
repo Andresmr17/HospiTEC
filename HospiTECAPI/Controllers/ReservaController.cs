@@ -47,20 +47,7 @@ public async Task<IActionResult> GetReserva(int idReservacion)
 
     return Ok(reserva);
 }
-/*
-// GET: api/Reserva/{cedula}
-[HttpGet("ObtieneReservas/{pacientecedula}")]
 
-public async Task<IActionResult> GetReservaCedula(string pacientecedula)
-{
-    var reserva = await _context.Reservas.FindAsync(pacientecedula);
-
-    if (reserva == null)
-        return NotFound($"No se encontró una reserva con el id {pacientecedula}.");
-
-    return Ok(reserva);
-}
-*/
 
 // GET: api/Reserva/{cedula}
 [HttpGet("ObtieneReservas/{pacientecedula}")]
@@ -76,7 +63,7 @@ public async Task<IActionResult> GetPrestamoBypacientecedula(String pacientecedu
             p.Fechaingreso,
             p.Fechasalida
         })
-        .FirstOrDefaultAsync();
+        .ToListAsync();
 
     if (reserva == null)
         return NotFound($"No se encontró un préstamo con el ID {pacientecedula}.");

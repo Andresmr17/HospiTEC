@@ -11,6 +11,9 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<HospitecContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Registrar el servicio PersonalService
+builder.Services.AddScoped<PersonalService>();
+
 
 
 // Add services to the container.

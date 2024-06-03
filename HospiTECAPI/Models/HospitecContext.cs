@@ -14,6 +14,7 @@ public partial class HospitecContext : DbContext
         : base(options)
     {
     }
+    
 
     public virtual DbSet<Cama> Camas { get; set; }
 
@@ -340,6 +341,21 @@ public partial class HospitecContext : DbContext
             entity.HasOne(d => d.NombrepatologiaNavigation).WithMany(p => p.Tratamientos)
                 .HasForeignKey(d => d.Nombrepatologia)
                 .HasConstraintName("fk_tratamiento_patologia");
+        });
+        modelBuilder.Entity<Personal>(entity =>
+        {
+            entity.HasKey(e => e.Cedula);
+            entity.Property(e => e.Fechanacimiento).HasColumnType("date");
+            entity.Property(e => e.Fechaingreso).HasColumnType("date");
+        });
+
+        modelBuilder.Entity<Rol>(entity =>
+        {
+            entity.HasKey(e => e.Idrol);
+            entity.HasOne(d => d.PersonalcedulaNavigation)
+                .WithMany(p => p.Rols)
+                .HasForeignKey(d => d.Personalcedula)
+                .HasConstraintName("FK_Rol_Personal");
         });
 
         OnModelCreatingPartial(modelBuilder);

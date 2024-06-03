@@ -59,6 +59,30 @@ public async Task<IActionResult> PostPersonalTelefono([FromBody] PersonalTelefon
     return CreatedAtAction("GetAllPersonalTelefonos", new { item = nuevoTelefono.Item }, nuevoTelefono);
 }
 
+// PUT: api/personaltelefono/personal/{personalcedula}
+[HttpPut("personal/{personalcedula}")]
+public async Task<IActionResult> Updatepersonaltelefono(string personalcedula, [FromBody] PersonalTelefono personaltelefonoUpdated)
+{
+    // Buscar el rol por la clave foránea Personalcedula
+    var personaltelefono = await _context.PersonalTelefonos.FirstOrDefaultAsync(r => r.Personalcedula == personalcedula);
+
+    if (personaltelefono == null)
+    {
+        return NotFound($"No se encontró un rol con el personal cedula {personalcedula}.");
+    }
+
+    // Actualizar el rol con los datos proporcionados en rolUpdated
+    if (personaltelefonoUpdated.Personalcedula!= null) personaltelefonoUpdated.Personalcedula = personaltelefonoUpdated.Personalcedula;
+    if (personaltelefonoUpdated.Telefono != null) personaltelefonoUpdated.Telefono  = personaltelefonoUpdated.Telefono;
+
+    // Marcar el rol como modificado y guardar los cambios en la base de datos
+    _context.PersonalTelefonos.Update(personaltelefono);
+    await _context.SaveChangesAsync();
+
+    return NoContent();
+}
+
+
 // PUT: api/PersonalTelefono/{item}
 [HttpPut("{item}")]
 public async Task<IActionResult> UpdatePersonalTelefono(int item, [FromBody] PersonalTelefono telefonoUpdated)

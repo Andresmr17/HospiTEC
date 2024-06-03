@@ -6,6 +6,7 @@ namespace HospiTECAPI.Models;
 
 public partial class PersonalTelefono
 {
+    [JsonIgnore] //Funciona para que se ignore y no aparezca en el request del POST
     public int? Item { get; set; }
 
     public string? Personalcedula { get; set; }

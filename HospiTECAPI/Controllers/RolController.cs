@@ -74,6 +74,29 @@ public class RolController : ControllerBase
         await _context.SaveChangesAsync();
         return NoContent();
     }
+    // PUT: api/Rol/{personalcedula}
+    [HttpPut("personal/{personalcedula}")]
+    public async Task<IActionResult> UpdateRol(string personalcedula, [FromBody] Rol rolUpdated)
+    {
+        // Buscar el rol por la clave foranea Personalcedula
+        var rol = await _context.Rols.FirstOrDefaultAsync(r => r.Personalcedula == personalcedula);
+
+        if (rol == null)
+        {
+            return NotFound($"No se encontró un rol con el personal cedula {personalcedula}.");
+        }
+
+        // Actualizar el rol con los datos proporcionados en rolUpdated
+        if (rolUpdated.Personalcedula != null) rol.Personalcedula = rolUpdated.Personalcedula;
+        if (rolUpdated.Descripcion != null) rol.Descripcion = rolUpdated.Descripcion;
+
+        // Marcar el rol como modificado y guardar los cambios en la base de datos
+        _context.Rols.Update(rol);
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
+
 
 // DELETE: api/Rol/{idRol}
     [HttpDelete("{idRol}")]

@@ -81,19 +81,18 @@ public async Task<IActionResult> PostPersonal([FromBody] PersonalDTO dto)
 
 // PUT: api/Personal/{cedula}
 [HttpPut("{cedula}")]
-public async Task<IActionResult> UpdatePersonal(string cedula, [FromBody] Personal personalUpdated)
+public async Task<IActionResult> UpdatePersonal(string cedula, [FromBody] PersonalDTO personalUpdated)
 {
     var personal = await _context.Personals.FindAsync(cedula);
     if (personal == null)
     {
         return NotFound($"No se encontró un personal con la cédula {cedula}.");
     }
-    if (personalUpdated.Fechanacimiento != null) personal.Fechanacimiento = personalUpdated.Fechanacimiento;
+    
     if (personalUpdated.Direccion != null) personal.Direccion = personalUpdated.Direccion;
     if (personalUpdated.Nombre != null) personal.Nombre = personalUpdated.Nombre;
     if (personalUpdated.Apellido1 != null) personal.Apellido1 = personalUpdated.Apellido1;
     if (personalUpdated.Apellido2 != null) personal.Apellido2 = personalUpdated.Apellido2;
-    if (personalUpdated.Fechaingreso != null) personal.Fechaingreso = personalUpdated.Fechaingreso;
     _context.Personals.Update(personal);
     await _context.SaveChangesAsync();
     return NoContent();

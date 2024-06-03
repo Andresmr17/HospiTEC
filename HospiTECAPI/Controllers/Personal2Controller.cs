@@ -31,6 +31,7 @@ namespace HospiTECAPI.Controllers
             var result = new
             {
                 Personal = personal,
+                Telefonos = personal.PersonalTelefonos.Select(t => t.Telefono),
                 Roles = personal.Rols.Select(r => r.Descripcion)
             };
 

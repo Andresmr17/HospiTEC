@@ -17,8 +17,10 @@ namespace HospiTECAPI.Models
         {
             return await _context.Personals
                 .Include(p => p.Rols)
+                .Include(p => p.PersonalTelefonos)
                 .FirstOrDefaultAsync(p => p.Cedula == cedula);
         }
+
     }
 }
 

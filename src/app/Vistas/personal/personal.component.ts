@@ -13,6 +13,8 @@ export interface Personal {
   fechaIngreso: Date | null;
 }
 
+
+
 @Component({
   selector: 'app-personal',
   standalone: true,
@@ -73,13 +75,13 @@ export class PersonalComponent {
     const direccion1 = (document.getElementById('direccion') as HTMLInputElement).value;
     const fechaIngreso1 = (document.getElementById('fechaIngreso') as HTMLInputElement).value;
 
-    const datatoSend1: Personal = {
-      cedula: cedula1,
-      nombre: nombre1,
-      apellido1: apellido11,
-      apellido2: apellido21,
-      fechaNacimiento: fechaNacimiento1 ? new Date(fechaNacimiento1) : null,
-      direccion: direccion1,
+    const datatoSend1= {
+      Cedula: cedula1,
+      Nombre: nombre1,
+      Apellido1: apellido11,
+      Apellido2: apellido21,
+      Fechanacimiento: fechaNacimiento1 ? new Date(fechaNacimiento1) : null,
+      Direccion: direccion1,
       fechaIngreso: fechaIngreso1 ? new Date(fechaIngreso1) : null
     };
 
@@ -98,7 +100,7 @@ export class PersonalComponent {
       );
     } else { // PUT para cuando hago el update
       console.log('guardarCambios - realizando PUT');
-      this.servicio.putPersonal(datatoSend1.cedula, datatoSend1).subscribe(
+      this.servicio.putPersonal(datatoSend1.Cedula, datatoSend1).subscribe(
         () => {
           console.log('Update PUT - personal se actualizó correctamente.');
           this.obtenerPersonal(); // Actualiza la lista después de modificar un personal

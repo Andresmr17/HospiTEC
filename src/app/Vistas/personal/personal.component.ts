@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {DatePipe, NgForOf} from "@angular/common";
+import { DatePipe, NgForOf } from "@angular/common";
 import { ReactiveFormsModule } from "@angular/forms";
 import { ComunicationService } from "../../Servicios/comunication.service";
 
@@ -11,9 +11,14 @@ export interface Personal {
   fechaNacimiento: Date | null;
   direccion: string;
   fechaIngreso: Date | null;
+  telefono?: string; // Nuevo campo para el teléfono
 }
 
-
+export interface PersonalTelefono {
+  item: number;
+  personalCedula: string;
+  telefono: string;
+}
 
 @Component({
   selector: 'app-personal',
@@ -24,7 +29,7 @@ export interface Personal {
     DatePipe
   ],
   templateUrl: './personal.component.html',
-  styleUrl: './personal.component.css'
+  styleUrls: ['./personal.component.css']
 })
 export class PersonalComponent {
   constructor(private servicio: ComunicationService) {
@@ -128,9 +133,22 @@ export class PersonalComponent {
 
   obtenerPersonal() {
     this.servicio.getPersonal().subscribe(
-      response => {
-        console.log('obtenerPersonal - Datos recibidos de posgress:', response);
-        this.dataSource = response;
+      personalResponse => {
+        const personalList: Personal[] = personalResponse;
+
+        this.servicio.getAllPersonalTelefonos().subscribe(
+          (telefonosResponse: PersonalTelefono[]) => {
+            const telefonosList = telefonosResponse;
+
+            this.dataSource = personalList.map(personal => {
+              const telefono = telefonosList.find((t: PersonalTelefono) => t.personalCedula === personal.cedula)?.telefono || 'No disponible';
+              return { ...personal, telefono };
+            });
+          },
+          error => {
+            console.error('Error al obtener los teléfonos del personal:', error);
+          }
+        );
       },
       error => {
         console.error('GET - Error al obtener datos del servidor:', error);

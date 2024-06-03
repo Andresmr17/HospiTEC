@@ -241,9 +241,14 @@ export class ComunicationService {
 
   //#####################################################
   //PARA TELEFONO PERSONAL
+  // Métodos para gestionar PersonalTelefono
+  getAllPersonalTelefonos(): Observable<any> {
+    return this.http.get<any>(`${this.servidorURL}/PersonalTelefono`);
+  }
 
-  getPersonalTelefono(item: number): Observable<any> {
-    return this.http.get<any>(`${this.servidorURL}/PersonalTelefono/${item}`);
+
+  getPersonalTelefonoByCedula(personalCedula: string): Observable<any> {
+    return this.http.get<any>(`${this.servidorURL}/PersonalTelefono/personal/${personalCedula}`);
   }
 
   postPersonalTelefono(personalTelefonoData: any): Observable<any> {

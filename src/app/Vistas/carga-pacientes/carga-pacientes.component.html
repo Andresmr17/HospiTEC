@@ -1,0 +1,10 @@
+<div>
+  <h2>Subir lista de pacientes </h2>
+  <input type="file" accept=".xlsx, .xls" (change)="onFileSelected($event)">
+  <button class="btn btn-primary" (click)="uploadFile()">Subir Archivo</button>
+  <button class="btn btn-primary" (click)="clearFile()">Limpiar</button>
+  <div *ngIf="selectedFileName">
+    <p>Archivo seleccionado: {{ selectedFileName }}</p>
+  </div>
+</div>
+

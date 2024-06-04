@@ -40,8 +40,6 @@ export class ComunicationService {
     };
     return this.http.put<any>(`${this.servidorURL}/Cama/${idCama}`, camaData, httpOptions);
   }
-
-
   //FIN VISTA CAMAS------------
   //Para la VISTA EQUIPO MEDICO------
   getEquipos(): Observable<any> {

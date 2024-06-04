@@ -7,6 +7,7 @@ import { CamasComponent } from "./Vistas/camas/camas.component";
 import { ProcedimientosComponent } from "./Vistas/procedimientos/procedimientos.component";
 import { PersonalComponent } from "./Vistas/personal/personal.component";
 import { ReportesComponent } from "./Vistas/reportes/reportes.component";
+import {CargaPacientesComponent} from "./Vistas/carga-pacientes/carga-pacientes.component";
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -18,7 +19,8 @@ export const routes: Routes = [
       { path: 'camas', component: CamasComponent },
       { path: 'procedimientos', component: ProcedimientosComponent },
       { path: 'personal', component: PersonalComponent },
-      { path: 'reportes', component: ReportesComponent }
+      { path: 'reportes', component: ReportesComponent },
+      { path: 'carga', component: CargaPacientesComponent }
     ]
   },
 ];

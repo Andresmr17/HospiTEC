@@ -35,7 +35,6 @@ export class CamasComponent {
       "nombreSalon": "Salón C",
       "estadoUCI": true
     }
-
   ];//aca se guardan los datos solicitados del servidor
 //variables para determinar si es un udptae o un insert.
   idCama = 0
@@ -83,7 +82,7 @@ export class CamasComponent {
 
     console.log('el id salon es :', datatoSend1.Idcama);
     if(this.tipoModal ==1){//si el tipo de modal es 1 entonces es un post
-      this.servicio. postCamas(datatoSend1).subscribe(
+      this.servicio.postCamas(datatoSend1).subscribe(
         response => {
           console.log('Datos enviados a posgress', response);
         },
@@ -126,5 +125,4 @@ export class CamasComponent {
       }
     );
   }
-
 }

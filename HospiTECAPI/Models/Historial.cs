@@ -34,3 +34,12 @@ public class HistorialView
     public DateTime FechaProcedimiento { get; set; }
 }
 
+public class HistorialRequest
+{
+    public string NombreProcedimiento { get; set; }
+    public string NombreTratamiento { get; set; }
+    public string PacienteCedula { get; set; }
+    public string FechaProcedimiento { get; set; }  // Ahora es string
+}
+
+

@@ -2,6 +2,7 @@ using HospiTECAPI.Models;
 using HospiTECAPI.ModelsDTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace HospiTECAPI.Controllers;
 
@@ -115,6 +116,59 @@ public async Task<IActionResult> GetHistorialByPacienteCedula(string pacienteCed
 
     return Ok(results);
 }
+[HttpPost("sp")]
+public async Task<IActionResult> PostHistorial([FromBody] HistorialRequest dto)
+{
+    DateTime fechaProcedimiento;
+    if (!DateTime.TryParseExact(dto.FechaProcedimiento, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out fechaProcedimiento))
+    {
+        return BadRequest("FechaProcedimiento debe estar en el formato 'año-mes-dia'.");
+    }
+
+    var nombreProcedimientoParam = new NpgsqlParameter("nombre_procedimiento", dto.NombreProcedimiento);
+    var nombreTratamientoParam = new NpgsqlParameter("nombre_tratamiento", dto.NombreTratamiento);
+    var pacienteCedulaParam = new NpgsqlParameter("paciente_cedula", dto.PacienteCedula);
+    var fechaProcedimientoParam = new NpgsqlParameter("fecha_procedimiento", fechaProcedimiento);
+
+    await _context.Database.ExecuteSqlRawAsync(
+        "CALL insert_historial(@nombre_procedimiento, @nombre_tratamiento, @paciente_cedula, @fecha_procedimiento)",
+        nombreProcedimientoParam, nombreTratamientoParam, pacienteCedulaParam, fechaProcedimientoParam
+    );
+
+    return Ok();
+}
+
+[HttpPut("sp/{id}")]
+public async Task<IActionResult> PutHistorial(int id, [FromBody] HistorialRequest dto)
+{
+    DateTime? fechaProcedimiento = null;
+    if (!string.IsNullOrEmpty(dto.FechaProcedimiento))
+    {
+        DateTime tempDate;
+        if (!DateTime.TryParseExact(dto.FechaProcedimiento, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out tempDate))
+        {
+            return BadRequest("FechaProcedimiento debe estar en el formato 'año-mes-dia'.");
+        }
+        fechaProcedimiento = tempDate;
+    }
+
+    var historialIdParam = new NpgsqlParameter("historial_id", id);
+    var nombreProcedimientoParam = new NpgsqlParameter("nombre_procedimiento", (object)dto.NombreProcedimiento ?? DBNull.Value);
+    var nombreTratamientoParam = new NpgsqlParameter("nombre_tratamiento", (object)dto.NombreTratamiento ?? DBNull.Value);
+    var pacienteCedulaParam = new NpgsqlParameter("paciente_cedula", (object)dto.PacienteCedula ?? DBNull.Value);
+    var fechaProcedimientoParam = new NpgsqlParameter("fecha_procedimiento", (object)fechaProcedimiento ?? DBNull.Value);
+
+    await _context.Database.ExecuteSqlRawAsync(
+        "CALL update_historial(@historial_id, @nombre_procedimiento, @nombre_tratamiento, @fecha_procedimiento)",
+        historialIdParam, nombreProcedimientoParam, nombreTratamientoParam, pacienteCedulaParam, fechaProcedimientoParam
+    );
+
+    return Ok();
+}
+
+
+
+
 
     
 }

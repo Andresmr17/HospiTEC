@@ -6,6 +6,7 @@ namespace HospiTECAPI.Models;
 
 public partial class Historial
 {
+    [JsonIgnore] //Funciona para que se ignore y no aparezca en el request del POST
     public int? Idhistorial { get; set; }
 
     public int? Idproced { get; set; }

@@ -189,6 +189,7 @@ $$;
 
 
 
+
 --dropear el procedure
 --DROP PROCEDURE insertar_paciente(character varying,character varying,character varying,character varying,timestamp without time zone,character varying,timestamp without time zone,character varying,character varying,character varying);
 

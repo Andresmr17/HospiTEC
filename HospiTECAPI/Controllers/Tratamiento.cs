@@ -45,6 +45,23 @@ public class TratamientoController : ControllerBase
 
         return Ok(tratamiento);
     }
+    // GET: api/Reserva/{cedula}
+    [HttpGet("pat/{nombrepatologia}")]
+    public async Task<IActionResult> GetTratamientoBynombrepatologia(String nombrepatologia)
+    {
+        var reserva = await _context.Tratamientos
+            .Where(p => p.Nombrepatologia == nombrepatologia)
+            .Select(p => new {
+                p.Nombretratamiento,
+                p.Descripcion
+            })
+            .ToListAsync();
+
+        if (reserva == null)
+            return NotFound($"No se encontró un préstamo con el ID {nombrepatologia}.");
+
+        return Ok(reserva);
+    }
 
 // POST: api/Tratamiento
     [HttpPost]

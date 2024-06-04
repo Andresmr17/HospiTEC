@@ -2,6 +2,8 @@ using HospiTECAPI.Models;
 using HospiTECAPI.ModelsDTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
+
 
 namespace HospiTECAPI.Controllers;
 
@@ -129,5 +131,105 @@ public async Task<IActionResult> DeletePaciente(string cedula)
     return NoContent();
 }
 
-    
-}
+
+    [HttpPost]
+        [Route("cargar")]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> CargarPacientes(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("No se ha enviado ningún archivo.");
+            }
+
+            // Verificar si el archivo no está vacío
+            if (file.Length == 0)
+            {
+                return BadRequest("El archivo está vacío.");
+            }
+
+            // mensaje de registro para verificar el archivo recibido
+            Console.WriteLine($"Archivo recibido: {file.FileName}, Tamaño: {file.Length} bytes");
+            try
+            {
+                using (var stream = new MemoryStream())
+                {
+                    await file.CopyToAsync(stream);
+                    stream.Position = 0;
+
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        if (package.Workbook.Worksheets.Count == 0)
+                        {
+                            return BadRequest("El archivo no contiene hojas.");
+                        }
+
+                        var worksheet = package.Workbook.Worksheets.FirstOrDefault();
+                        if (worksheet == null)
+                        {
+                            return BadRequest("No se pudo obtener la primera hoja del archivo.");
+                        }
+
+                        int rowCount = worksheet.Dimension?.Rows ?? 0;
+                        if (rowCount == 0)
+                        {
+                            return BadRequest("La hoja no contiene datos.");
+                        }
+
+                        var headers = new List<string> {
+                            worksheet.Cells[1, 1].Text,
+                            worksheet.Cells[1, 2].Text,
+                            worksheet.Cells[1, 3].Text,
+                            worksheet.Cells[1, 4].Text,
+                            worksheet.Cells[1, 5].Text,
+                            worksheet.Cells[1, 6].Text,
+                            worksheet.Cells[1, 7].Text,
+                            worksheet.Cells[1, 8].Text,
+                            worksheet.Cells[1, 9].Text
+                        };
+
+                        if (!headers.SequenceEqual(new List<string> { "Nombre", "Apellido", "Cedula", "FechaNacimiento", "Direccion", "Telefono1", "Telefono2", "Correo", "Usuario", "PWD" }))
+                        {
+                            return BadRequest("Los encabezados del archivo no son correctos.");
+                        }
+
+                        for (int row = 2; row <= rowCount; row++)
+                        {
+                            var paciente = new Paciente
+                            {
+                                Nombre = worksheet.Cells[row, 1].Text,
+                                Apellido1 = worksheet.Cells[row, 2].Text.Split(' ')[0],
+                                Apellido2 = worksheet.Cells[row, 2].Text.Split(' ').Length > 1 ? worksheet.Cells[row, 2].Text.Split(' ')[1] : "",
+                                Cedula = worksheet.Cells[row, 3].Text,
+                                Direccion = worksheet.Cells[row, 5].Text,
+                                Fechanacimiento = DateOnly.FromDateTime(DateTime.Parse(worksheet.Cells[row, 4].Text))
+                            };
+
+                            var telefono1 = new PacienteTelefono
+                            {
+                                Pacientecedula = paciente.Cedula,
+                                Telefono = worksheet.Cells[row, 6].Text.Replace(" ", "").Replace("-", "")
+                            };
+
+                            var telefono2 = new PacienteTelefono
+                            {
+                                Pacientecedula = paciente.Cedula,
+                                Telefono = worksheet.Cells[row, 7].Text.Replace(" ", "").Replace("-", "")
+                            };
+
+                            _context.Pacientes.Add(paciente);
+                            _context.PacienteTelefonos.AddRange(new[] { telefono1, telefono2 });
+                        }
+
+                        await _context.SaveChangesAsync();
+                    }
+                }
+
+                return Ok("Datos cargados exitosamente.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al procesar el archivo: {ex.Message}");
+            }
+        }
+    }

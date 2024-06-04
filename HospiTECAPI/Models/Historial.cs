@@ -23,3 +23,13 @@ public partial class Historial
     [JsonIgnore] //Funciona para que se ignore y no aparezca en el request del POST
     public virtual Paciente? PacientecedulaNavigation { get; set; }
 }
+
+public class HistorialView
+{
+    public int IdHistorial { get; set; }
+    public string NombrePatologia { get; set; }
+    public string ProcedNombre { get; set; }
+    public string NombreTratamiento { get; set; }
+    public DateTime FechaProcedimiento { get; set; }
+}
+

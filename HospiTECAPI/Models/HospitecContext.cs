@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace HospiTECAPI.Models;
 
@@ -21,6 +22,7 @@ public partial class HospitecContext : DbContext
     public virtual DbSet<Equipo> Equipos { get; set; }
 
     public virtual DbSet<Historial> Historials { get; set; }
+    public DbSet<HistorialView> HistorialView { get; set; }
 
     public virtual DbSet<Horarioscama> Horarioscamas { get; set; }
 
@@ -43,6 +45,13 @@ public partial class HospitecContext : DbContext
     public virtual DbSet<Salon> Salons { get; set; }
 
     public virtual DbSet<Tratamiento> Tratamientos { get; set; }
+    public async Task InsertarPacienteAsync(string nombre, string apellidos, string cedula, string telefono, string direccion, DateTime fechaNacimiento, string patologias, string tratamiento)
+    {
+        await Database.ExecuteSqlRawAsync("CALL insertar_paciente(@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7)", 
+            nombre, apellidos, cedula, telefono, direccion, fechaNacimiento, patologias, tratamiento);
+    }
+
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
@@ -358,7 +367,18 @@ public partial class HospitecContext : DbContext
                 .HasConstraintName("FK_Rol_Personal");
         });
 
+        modelBuilder.Entity<HistorialView>().HasNoKey();
         OnModelCreatingPartial(modelBuilder);
+        
+        
+    }
+    public async Task<List<HistorialView>> GetHistorialByPacienteCedulaAsync(string pacienteCedula)
+    {
+        var cedulaParam = new NpgsqlParameter("paciente_cedula", pacienteCedula);
+
+        return await HistorialView
+            .FromSqlRaw("SELECT * FROM get_historial_by_paciente_cedula({0})", cedulaParam)
+            .ToListAsync();
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

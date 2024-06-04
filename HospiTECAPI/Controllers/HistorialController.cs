@@ -103,5 +103,18 @@ public async Task<IActionResult> DeleteHistorial(int idHistorial)
     return NoContent();
 }
 
+[HttpGet("sp/{pacienteCedula}")]
+public async Task<IActionResult> GetHistorialByPacienteCedula(string pacienteCedula)
+{
+    var results = await _context.GetHistorialByPacienteCedulaAsync(pacienteCedula);
+
+    if (results == null || results.Count == 0)
+    {
+        return NotFound($"No se encontró historial para el paciente con cédula {pacienteCedula}.");
+    }
+
+    return Ok(results);
+}
+
     
 }

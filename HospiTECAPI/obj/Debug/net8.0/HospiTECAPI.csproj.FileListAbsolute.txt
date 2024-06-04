@@ -210,3 +210,11 @@ C:\Users\andre\RiderProjects\Backend_HostiTEC\HospiTEC\HospiTECAPI\obj\Debug\net
 C:\Users\andre\RiderProjects\Backend_HostiTEC\HospiTEC\HospiTECAPI\obj\Debug\net8.0\HospiTECAPI.pdb
 C:\Users\andre\RiderProjects\Backend_HostiTEC\HospiTEC\HospiTECAPI\obj\Debug\net8.0\HospiTECAPI.genruntimeconfig.cache
 C:\Users\andre\RiderProjects\Backend_HostiTEC\HospiTEC\HospiTECAPI\obj\Debug\net8.0\ref\HospiTECAPI.dll
+C:\Users\Nacho\RiderProjects\HospiTECAPI\HospiTECAPI\bin\Debug\net8.0\EPPlus.dll
+C:\Users\Nacho\RiderProjects\HospiTECAPI\HospiTECAPI\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\Nacho\RiderProjects\HospiTECAPI\HospiTECAPI\bin\Debug\net8.0\System.Drawing.Common.dll
+C:\Users\Nacho\RiderProjects\HospiTECAPI\HospiTECAPI\bin\Debug\net8.0\System.Xml.XPath.XmlDocument.dll
+C:\Users\Nacho\RiderProjects\HospiTECAPI\HospiTECAPI\bin\Debug\net8.0\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\Nacho\RiderProjects\HospiTECAPI\HospiTECAPI\bin\Debug\net8.0\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
+C:\Users\Nacho\RiderProjects\HospiTECAPI\HospiTECAPI\bin\Debug\net8.0\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
+C:\Users\Nacho\RiderProjects\HospiTECAPI\HospiTECAPI\bin\Debug\net8.0\Microsoft.IO.RecyclableMemoryStream.dll

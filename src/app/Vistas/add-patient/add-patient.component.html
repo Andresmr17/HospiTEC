@@ -7,20 +7,24 @@
 <div class="container">
   <form (ngSubmit)="submitForm(patientForm)" #patientForm="ngForm">
     <div class="form-group">
-      <label for="name">Nombre:</label>
-      <input type="text" class="form-control" id="name" name="name" required [(ngModel)]="patient.name">
+      <label for="nombre">Nombre:</label>
+      <input type="text" class="form-control" id="nombre" name="name" required [(ngModel)]="patient.name">
     </div>
     <div class="form-group">
-      <label for="lastName">Apellido:</label>
-      <input type="text" class="form-control" id="lastName" name="lastName" required [(ngModel)]="patient.lastName">
+      <label for="lastName1">Primer apellido:</label>
+      <input type="text" class="form-control" id="lastName1" name="lastName" required [(ngModel)]="patient.lastName">
+    </div>
+    <div class="form-group">
+      <label for="lastName2">Segundo apellido:</label>
+      <input type="text" class="form-control" id="lastName2" name="lastName" required [(ngModel)]="patient.lastName">
     </div>
     <div class="form-group">
       <label for="id">ID:</label>
-      <input type="text" class="form-control" id="id" name="id" required [(ngModel)]="patient.id">
+      <input type="number" class="form-control" id="id" name="id" required [(ngModel)]="patient.id">
     </div>
     <div class="form-group">
       <label for="phone">Teléfono:</label>
-      <input type="tel" class="form-control" id="phone" name="phone" [(ngModel)]="patient.phone">
+      <input type="number" class="form-control" id="phone" name="phone" [(ngModel)]="patient.phone">
     </div>
     <div class="form-group">
       <label for="address">Dirección:</label>
@@ -29,10 +33,6 @@
     <div class="form-group">
       <label for="birthdate">Fecha de Nacimiento:</label>
       <input type="date" class="form-control" id="birthdate" name="birthdate" [(ngModel)]="patient.birthdate">
-    </div>
-    <div class="form-group">
-      <label for="pathologies">Patologías:</label>
-      <textarea class="form-control" id="pathologies" name="pathologies" rows="3" [(ngModel)]="patient.pathologies"></textarea>
     </div>
     <button type="submit" class="btn btn-primary">Guardar</button>
   </form>

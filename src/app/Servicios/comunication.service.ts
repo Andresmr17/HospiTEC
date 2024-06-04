@@ -276,4 +276,16 @@ export class ComunicationService {
   //##################################################################
 
 
+  //PARA VISTA DOCTOR
+  //########################################################################
+
+  postPaciente(pacienteData: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.post<any>(`${this.servidorURL}/Paciente`, pacienteData,httpOptions);
+  }
+
 }

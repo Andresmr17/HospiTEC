@@ -13,8 +13,11 @@ import { ReportesComponent } from "./Vistas/reportes/reportes.component";
 export const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: '', redirectTo: 'login', pathMatch: 'full'},
-  {path: 'mainDoctor', component: MainDoctorComponent},
-  {path: 'addPatient', component: AddPatientComponent},
+  {path: 'mainDoctor', component: MainDoctorComponent,
+    children: [
+      {path: 'nuevoPaciente', component: AddPatientComponent}
+    ]
+  },
   {path: 'history', component: HistoryComponent},
   { path: 'sidenav', component: SidenavComponent,
     children: [

@@ -1,12 +1,16 @@
 import { Component } from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgForOf, NgIf} from "@angular/common";
+import {ComunicationService} from "../../../../Servicios/Paciente/auth.service";
+import {Router} from "@angular/router";
 
 interface InformacionType {
-  id: string;
-  nombre: string;
-  cedula: string;
-  fechaIngreso: string;
+  idreservacion: string;
+  pacientecedula: string;
+  idcama: string;
+  idproced: string;
+  fechaingreso: string;
+  fechasalida: string;
 }
 @Component({
   selector: 'app-gestion-reservacion',
@@ -22,41 +26,35 @@ interface InformacionType {
 })
 export class GestionReservacionComponent {
 
-  Nombre: string ="";
-  Cedula: string ="";
-  Fecha: string ="";
+  constructor(private servicio:ComunicationService, private router: Router) {}
+
+
+  fechaingreso: string ="";
   Procedimientos: string ="";
 
   data: InformacionType[] = [];
 
   async OrdenaInformacion(Informacion: InformacionType[]) {
-    console.log(Informacion.length);
-
     this.data = Informacion;
   }
 
-
-  crearCuenta(Nombre: string, Cedula: string, Fecha: string, Procedimientos: string) {
-    const data = JSON.stringify({Nombre, Cedula, Fecha, Procedimientos});
+  crearReserva(fechaingreso: string, Procedimientos: string) {
+    const data = JSON.stringify({fechaingreso, Procedimientos});
     console.log(data);
   }
 
   procedimientos: { nombre: string, seleccionado: boolean }[] = [
-    { nombre: 'Apendicectomía', seleccionado: false },
-    { nombre: 'Biopsia de mama', seleccionado: false },
-    { nombre: 'Cirugía de cataratas', seleccionado: false },
-    { nombre: 'Cesárea', seleccionado: false },
-    { nombre: 'Histerectomía', seleccionado: false },
-    { nombre: 'Cirugía para la lumbalgia', seleccionado: false },
-    { nombre: 'Mastectomía', seleccionado: false },
-    { nombre: 'Amigdalectomía', seleccionado: false }
+    { nombre: 'Procedimiento 1', seleccionado: false },
+    { nombre: 'Procedimiento 2', seleccionado: false },
+    { nombre: 'Procedimiento 3', seleccionado: false },
+    { nombre: 'Procedimiento 4', seleccionado: false },
+    { nombre: 'Procedimiento 5', seleccionado: false },
   ];
 
-  async consultarSolicitudes(): Promise<void> {
-
-
-    fetch(`https://665856f45c361705264803d5.mockapi.io/HospiTEC/user`, {
-      method: 'Get',
+  async consultarReservas(): Promise<void> {
+    const cedula = this.servicio.getCedulaPaciente();
+    fetch(`http://localhost:5276/api/Reserva/ObtieneReservas/${cedula}`, {
+      method: 'GET',
     })
       .then(response => response.json())
       .then(data => {
@@ -64,8 +62,24 @@ export class GestionReservacionComponent {
         //console.log(this.Informacion);
         this.OrdenaInformacion(data);
       });
-
-
   }
 
+  eliminarReserva(idreservacion: string) {
+    fetch(`http://localhost:5276/api/Reserva/${idreservacion}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Hubo un problema al eliminar la reserva.');
+        }
+        // Filtra la reserva eliminada del array de datos
+        this.data = this.data.filter(item => item.idreservacion !== idreservacion);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }
 }

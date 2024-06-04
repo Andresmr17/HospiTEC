@@ -1,13 +1,15 @@
 
 /* Estas son las caracteristicas del container que va a tener la info que se le muestra al paciente */
-#container {
+.container-info {
   background-color: var(--navbar-dark-secondary);
   color: #b8babe;
-  border-radius: 1rem; /* rounded-5 */
+  border-radius: 1rem;
   position: absolute;
   height: calc(100% - 2vw);
   top: 1vw;
   transition: 0.3s ease;
+
+  justify-content: center; /* Centra horizontalmente el contenido */
 }
 
 /* Este es el ancho y posicion en x del container cuando el menu se muestra */
@@ -19,8 +21,8 @@
 
 /* Este es el ancho y posicion en x del container cuando el menu está oculto */
 .container-collapsed {
-  left: calc(var(--left-expanded) - 190px);
   width: calc(var(--container-width) + 350px);
+  left: calc(var(--left-expanded) - 190px);
   color: #b8babe;
 }
 
@@ -36,14 +38,9 @@
   background: linear-gradient(to right, var(--background-color4), var(--background-color5));
 }
 
-
-
-
 #nav-toggle:checked ~ #nav-header {
   width: calc(var(--navbar-width-min) - 16px);
 }
-
-
 
 #nav-toggle:checked ~ #nav-content, #nav-toggle:checked ~ #nav-footer {
   width: var(--navbar-width-min);

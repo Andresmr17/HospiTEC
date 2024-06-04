@@ -32,7 +32,7 @@
     </div>
   </div>
 
-  <div [ngClass]="{'container-expanded': isExpanded, 'container-collapsed': !isExpanded}" id="container">
+  <div [ngClass]="{'container-collapsed': !isExpanded, 'container-expanded': isExpanded}" class="container-info">
     <aside>
       <router-outlet></router-outlet>
     </aside>

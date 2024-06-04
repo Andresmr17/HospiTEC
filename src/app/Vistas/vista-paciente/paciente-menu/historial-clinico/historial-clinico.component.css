@@ -1,6 +1,31 @@
-.container{
-  justify-content: center;
-  align-items: center;
-  position: absolute;
+.div-tabla {
+  position: absolute; /* Posiciona el div sobre el contenedor padre */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  color: white;
+  border-radius: 1rem;
+  padding: 20px; /* Espacio interior */
   display: flex;
+  margin-top: 50px;
+  background-color: rgba(0, 0, 0, 0); /* Ejemplo de fondo semi-transparente */
+  z-index: 2; /* Asegura que el overlay-div esté sobre el content-div */
 }
+
+.div-titulo{
+  margin-top: 30px;
+  text-align: center;
+}
+
+
+
+.table {
+  width: auto; /* Ajusta el ancho de la tabla para que no ocupe el 100% del div */
+  margin: 0 auto; /* Centra la tabla dentro del div */
+}
+
+.text-center-table th, .text-center-table td {
+  text-align: center; /* Centra el texto de las celdas */
+}
+

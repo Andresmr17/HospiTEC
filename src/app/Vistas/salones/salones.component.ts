@@ -70,7 +70,7 @@ export class SalonesComponent {
       capacidadCamas: capacidadCama,
       Tipodesalon: tipoMedicina1,
       numeroDePiso: numeroPiso
-    }
+    } // todo igual a los modelos
     console.log('el tipo de salon es :', datatoSend1.Tipodesalon);
     if(this.tipoModal ==1){//si el tipo de modal es 1 entonces es un post
       this.servicio. postSalones(datatoSend1).subscribe(

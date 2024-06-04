@@ -1,88 +1,126 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { NgFor } from "@angular/common";
-import { FormsModule } from "@angular/forms";
+import { Component } from '@angular/core';
+import { NgForOf } from "@angular/common";
+import { ReactiveFormsModule } from "@angular/forms";
+import { ComunicationService } from "../../Servicios/comunication.service";
 
-export interface Procedimientos {
-  nombreProcedimiento: string;
-  recuperacionEnSalon: number;
+export interface Procedimiento {
+  idProcedimiento: number;
+  nombrePatologia: string;
+  procedimientoNombre: string;
+  descripcion: string;
+  duracionDias: number;
 }
 
 @Component({
   selector: 'app-procedimientos',
   standalone: true,
-  imports: [NgFor, FormsModule],
+  imports: [
+    NgForOf,
+    ReactiveFormsModule
+  ],
   templateUrl: './procedimientos.component.html',
-  styleUrls: ['./procedimientos.component.css']
+  styleUrl: './procedimientos.component.css'
 })
 export class ProcedimientosComponent {
-  @ViewChild('modalAgregar', { static: false }) modalAgregar!: ElementRef;
+  constructor(private servicio: ComunicationService) {
+    this.obtenerProcedimientos();
+  }
 
-  dataSource: Procedimientos[] = [
-    {
-      nombreProcedimiento: "Procedimiento 1",
-      recuperacionEnSalon: 10,
-    },
-    {
-      nombreProcedimiento: "Procedimiento 2",
-      recuperacionEnSalon: 8,
-    },
-    {
-      nombreProcedimiento: "Procedimiento 3",
-      recuperacionEnSalon: 15,
-    }
-  ];
-
-  nombreProcedimiento = "";
-  recuperacionEnSalon: number | null = null;
+  dataSource: Procedimiento[] = [];
+  idProcedimiento = 0;
   modalVisible = false;
   tipoModal = 2;
   isReadonly = true;
-  indexToEdit: number | null = null;
 
-  modificarRegistro(index: number, tipodeModal: number) {
-    this.tipoModal = tipodeModal;
+  // Variables para el formulario
+  nombrePatologia = '';
+  procedimientoNombre = '';
+  descripcion = '';
+  duracionDias = 0;
+
+  modificarProcedimiento(index: number, tipoModal: number) {
+    this.tipoModal = tipoModal;
     this.isReadonly = true;
     const procedimientoSeleccionado = this.dataSource[index];
-    this.nombreProcedimiento = procedimientoSeleccionado.nombreProcedimiento;
-    this.recuperacionEnSalon = procedimientoSeleccionado.recuperacionEnSalon;
+    this.idProcedimiento = procedimientoSeleccionado.idProcedimiento;
+    this.nombrePatologia = procedimientoSeleccionado.nombrePatologia;
+    this.procedimientoNombre = procedimientoSeleccionado.procedimientoNombre;
+    this.descripcion = procedimientoSeleccionado.descripcion;
+    this.duracionDias = procedimientoSeleccionado.duracionDias;
     this.modalVisible = true;
-    this.indexToEdit = index;
-    console.log('Se ha presionado el botón de modificar para el elemento en el índice:', this.nombreProcedimiento);
+    console.log('modificarProcedimiento:', procedimientoSeleccionado);
   }
 
-  eliminarRegistro(index: number) {
-    this.dataSource.splice(index, 1);
-    console.log('Se ha eliminado el elemento en el índice:', index);
+  eliminarProcedimiento(index: number) {
+    const procedimientoSeleccionado = this.dataSource[index];
+    // Realizar el delete o update según sea necesario
+    console.log('eliminarProcedimiento:', procedimientoSeleccionado);
   }
 
   guardarCambios() {
-    if (this.nombreProcedimiento && this.recuperacionEnSalon !== null) {
-      const procedimiento = {
-        nombreProcedimiento: this.nombreProcedimiento,
-        recuperacionEnSalon: this.recuperacionEnSalon,
-      };
+    const idProcedimientoElement = (document.getElementById('idProcedimiento') as HTMLInputElement).value.trim();
+    const idProcedimiento1 = parseInt(idProcedimientoElement, 10);
+    const nombrePatologia1 = (document.getElementById('nombrePatologia') as HTMLInputElement).value;
+    const procedimientoNombre1 = (document.getElementById('procedimientoNombre') as HTMLInputElement).value;
+    const descripcion1 = (document.getElementById('descripcion') as HTMLTextAreaElement).value;
+    const duracionDias1 = parseInt((document.getElementById('duracionDias') as HTMLInputElement).value, 10);
 
-      if (this.tipoModal === 1) {
-        // Añadir nuevo procedimiento
-        this.dataSource.push(procedimiento);
-      } else if (this.tipoModal === 0 && this.indexToEdit !== null) {
-        // Modificar procedimiento existente
-        this.dataSource[this.indexToEdit] = procedimiento;
-      }
+    const datatoSend1 = {
+      IDproced: idProcedimiento1,
+      Nombrepatologia: nombrePatologia1,
+      Procednombre: procedimientoNombre1,
+      Descripcion: descripcion1,
+      Duraciondias: duracionDias1
+    };
 
-      // Resetear formulario y modal
-      this.nombreProcedimiento = "";
-      this.recuperacionEnSalon = null;
-      this.modalVisible = false;
-      this.indexToEdit = null;
-      console.log('Cambios guardados:', procedimiento);
+    console.log('guardarCambios - datatoSend1:', datatoSend1);
+
+    if (this.tipoModal == 1) { // Si el tipo de modal es 1 entonces es un post
+      console.log('guardarCambios - realizando POST');
+      this.servicio.postProcedimientos(datatoSend1).subscribe(
+        response => {
+          console.log('Datos enviados a posgress en POST:', response);
+          this.obtenerProcedimientos(); // Actualiza la lista después de agregar un procedimiento
+        },
+        error => {
+          console.error('POST - Error al enviar datos al servidor:', error);
+        }
+      );
+    } else { // PUT para cuando hago el update
+      console.log('guardarCambios - realizando PUT');
+      this.servicio.putProcedimientos(datatoSend1.IDproced, datatoSend1).subscribe(
+        () => {
+          console.log('Update PUT - procedimiento se actualizó correctamente.');
+          this.obtenerProcedimientos(); // Actualiza la lista después de modificar un procedimiento
+        },
+        error => {
+          console.error('PUT - Error al actualizar el procedimiento:', error);
+        }
+      );
     }
   }
 
   addRegistro(numero: number) {
     this.tipoModal = numero;
-    this.nombreProcedimiento = "";
-    this.recuperacionEnSalon = null;
+    this.idProcedimiento = 0;
+    this.nombrePatologia = '';
+    this.procedimientoNombre = '';
+    this.descripcion = '';
+    this.duracionDias = 0;
     this.isReadonly = false;
+    this.modalVisible = true;
+    console.log('addRegistro - tipoModal:', numero);
+  }
+
+  obtenerProcedimientos() {
+    this.servicio.getProcedimientos().subscribe(
+      response => {
+        console.log('obtenerProcedimientos - Datos recibidos de posgress:', response);
+        this.dataSource = response;
+      },
+      error => {
+        console.error('GET - Error al obtener datos del servidor:', error);
+      }
+    );
   }
 }

@@ -1,0 +1,40 @@
+<div class="gradient-custom">
+  <div id="nav-bar">
+    <input id="nav-toggle" type="checkbox" (change)="toggleContainerWidth($event)"/>
+    <div id="nav-header">
+      <a id="nav-title">
+        <i class="fas fa-square-h fa-lg"></i>ospiTEC
+      </a>
+      <label for="nav-toggle"><span id="nav-toggle-burger"></span></label>
+      <hr/>
+    </div>
+    <div id="nav-content">
+      <div class="nav-button" href="gestion-reservacion" routerLink="gestion-reservacion">
+        <i class="fas fa-calendar-days" ></i>
+        <span >Reservación</span>
+      </div>
+      <div class="nav-button" href="historial-clinico" routerLink="historial-clinico">
+        <i class="fas fa-regular fa-eye"></i>
+        <span>Historial Clínico</span>
+      </div>
+      <div class="nav-button" href="evaluacion-servicio" routerLink="evaluacion-servicio">
+        <i class="fas fa-star"></i>
+        <span>Evaluación</span>
+      </div>
+      <div id="nav-content-highlight"></div>
+    </div>
+    <input id="nav-footer-toggle" type="checkbox"/>
+    <div id="nav-footer">
+      <div id="nav-footer-heading">
+        <div id="nav-footer-avatar" class="fa-solid fa-user"></div>
+        <div id="nav-footer-titlebox"><a id="nav-footer-title" target="_blank">{{Nombre}}</a></div>
+      </div>
+    </div>
+  </div>
+
+  <div [ngClass]="{'container-expanded': isExpanded, 'container-collapsed': !isExpanded}" id="container">
+    <aside>
+      <router-outlet></router-outlet>
+    </aside>
+  </div>
+</div>

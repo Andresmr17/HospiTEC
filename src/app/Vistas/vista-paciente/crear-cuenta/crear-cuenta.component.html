@@ -1,0 +1,77 @@
+<div class="vh-100 gradient-custom">
+  <div class="col-md-7 col-lg-8 container">
+    <h2 class="titulo">Crear cuenta</h2>
+
+    <hr class="my-4">
+
+    <form (ngSubmit)="crearCuenta(Nombre, Apellidos, Cedula, Telefono, Direccion, Fecha, Patologias)" #form="ngForm">
+      <div class="row g-3">
+        <div class="col">
+          <label for="Nombre" class="form-label">Nombre</label>
+          <input type="text" class="form-control" id="Nombre" name="Nombre" [(ngModel)]="Nombre" #nombre="ngModel" required>
+          <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="invalid-feedback">
+            El nombre es requerido
+          </div>
+        </div>
+
+        <div class="col">
+          <label for="Apellidos" class="form-label">Apellidos</label>
+          <input type="text" class="form-control" id="Apellidos" name="Apellidos" [(ngModel)]="Apellidos" #apellidos="ngModel" required>
+          <div *ngIf="apellidos.invalid && (apellidos.dirty || apellidos.touched)" class="invalid-feedback">
+            Los apellidos son requeridos
+          </div>
+        </div>
+
+        <div class="col-12">
+          <label for="Cedula" class="form-label">Cédula</label>
+          <div class="input-group has-validation">
+            <input type="text" class="form-control" id="Cedula" name="Cedula" [(ngModel)]="Cedula" #cedula="ngModel" placeholder="000000000" required>
+            <div *ngIf="cedula.invalid && (cedula.dirty || cedula.touched)" class="invalid-feedback">
+              La cédula es requerida
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <label for="Telefono" class="form-label">Teléfono</label>
+          <input type="number" class="form-control" id="Telefono" name="Telefono" [(ngModel)]="Telefono" #telefono="ngModel" placeholder="12345678" required>
+          <div *ngIf="telefono.invalid && (telefono.dirty || telefono.touched)" class="invalid-feedback">
+            El teléfono es requerido
+          </div>
+        </div>
+
+        <div class="col-12">
+          <label for="Direccion" class="form-label">Dirección </label>
+          <input type="text" class="form-control" id="Direccion" name="Direccion" [(ngModel)]="Direccion" #direccion="ngModel" required>
+          <div *ngIf="direccion.invalid && (direccion.dirty || direccion.touched)" class="invalid-feedback">
+            La dirección es requerida
+          </div>
+        </div>
+
+        <div class="col-12">
+          <label for="nacimiento">Fecha de nacimiento:</label>
+          <input type="date" class="form-control" name="nacimiento" id="nacimiento" [(ngModel)]="Fecha" #fecha="ngModel" required>
+          <div *ngIf="fecha.invalid && (fecha.dirty || fecha.touched)" class="invalid-feedback">
+            La fecha de nacimiento es requerida
+          </div>
+        </div>
+      </div>
+
+      <hr class="my-4">
+
+      <div class="col-12">
+        <div class="mb-3">
+          <label for="Info" class="form-label">Patologías</label>
+          <p>Ingrese las patologías que padece y describa el tratamiento que toma para dicha patología.</p>
+          <textarea class="form-control" id="Info" name="Info" placeholder="Patología:Tratamiento." rows="3" [(ngModel)]="Patologias" #patologias="ngModel"></textarea>
+        </div>
+      </div>
+
+      <hr class="my-4">
+
+      <div class="container-btn">
+        <button class="btn-custom" type="submit" [disabled]="form.invalid">Crear cuenta</button>
+      </div>
+    </form>
+  </div>
+</div>

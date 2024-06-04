@@ -1,0 +1,60 @@
+
+.container {
+  max-width: 700px;
+  max-height: 1000px;
+  background-color: #212529;
+  color: white;
+  border-radius: 1rem;
+}
+
+.titulo {
+  text-align: center;
+}
+
+input.ng-invalid.ng-touched,
+textarea.ng-invalid.ng-touched {
+  border: 2px solid #dc3545;
+}
+
+div.invalid-feedback {
+  display: block;
+  color: #dc3545;
+}
+
+
+
+.gradient-custom {
+  /* fallback for old browsers */
+  background: #6a11cb;
+
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: -webkit-linear-gradient(to right, var(--background-color4), var(--background-color5));
+
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(to right, var(--background-color4), var(--background-color5));
+
+  padding: 3rem;
+}
+
+.container-btn{
+  text-align: center;
+  padding-bottom: 1rem;
+}
+
+.btn-custom {
+  padding: 0.5rem 1rem;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  border-radius: 0.3rem;
+  justify-content: center;
+
+  background-color: transparent;
+  border: 1px solid #ffffff; /* Color del borde si es necesario */
+  color: #ffffff; /* Color del texto */
+}
+
+/* Estilo del botón cuando se pasa el mouse por encima */
+.btn-custom:hover {
+  background-color: #355c7d;
+  color: #ffffff; /* Color del texto en el hover */
+}

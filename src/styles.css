@@ -1,2 +1,21 @@
 
+:root {
+  --background-color1: #f8b195;
+  --background-color2: #f67280;
+  --background-color3: #c06c84;
+  --background-color4: #6c5b7b;
+  --background-color5: #355c7d;
+
+  --container-width: 1350px;
+  --left-expanded: 300px;
+
+  --background: #6c5b7b;
+  --navbar-width: 256px;
+  --navbar-width-min: 80px;
+  --navbar-dark-primary: #355c7d;
+  --navbar-dark-secondary: #2c3e50;
+  --navbar-light-primary: #ffffff;
+  --navbar-light-secondary: #f5f6fa;
+
+}
 

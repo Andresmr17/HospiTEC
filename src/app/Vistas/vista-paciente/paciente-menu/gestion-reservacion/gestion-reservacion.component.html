@@ -1,8 +1,8 @@
 <nav >
   <div class="nav nav-tabs container-tabs" id="nav-tab" role="tablist">
     <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Crear reservación</button>
-    <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false" (click)="consultarSolicitudes()">Modificar reservación</button>
-    <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false" (click)="consultarSolicitudes()">Eliminar reservación</button>
+    <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false" (click)="consultarReservas()">Modificar reservación</button>
+    <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false" (click)="consultarReservas()">Eliminar reservación</button>
   </div>
 </nav>
 
@@ -12,29 +12,12 @@
   <!-- Esta parte es para la de Crear reservación-->
   <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
     <div class="col-md-7 col-lg-8 container">
-      <form (ngSubmit)="crearCuenta(Nombre, Cedula,  Fecha, Procedimientos)" #form="ngForm">
+      <form (ngSubmit)="crearReserva(fechaingreso, Procedimientos)" #form="ngForm">
         <div class="row g-3">
-          <div class="col">
-            <label for="Nombre" class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="Nombre" name="Nombre" [(ngModel)]="Nombre" #nombre="ngModel" required>
-            <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="invalid-feedback">
-              El nombre es requerido
-            </div>
-          </div>
-
-          <div class="col-12">
-            <label for="Cedula" class="form-label">Cédula</label>
-            <div class="input-group has-validation">
-              <input type="text" class="form-control" id="Cedula" name="Cedula" [(ngModel)]="Cedula" #cedula="ngModel" placeholder="000000000" required>
-              <div *ngIf="cedula.invalid && (cedula.dirty || cedula.touched)" class="invalid-feedback">
-                La cédula es requerida
-              </div>
-            </div>
-          </div>
 
           <div class="col-12">
             <label for="ingreso">Fecha de ingreso:</label>
-            <input type="date" class="form-control" name="ingreso" id="ingreso" [(ngModel)]="Fecha" #fecha="ngModel" required>
+            <input type="date" class="form-control" name="ingreso" id="ingreso" [(ngModel)]="fechaingreso" #fecha="ngModel" required>
             <div *ngIf="fecha.invalid && (fecha.dirty || fecha.touched)" class="invalid-feedback">
               La fecha de ingreso es requerida
             </div>
@@ -66,24 +49,28 @@
   <!-- Esta parte es para la de Modificar reservación-->
   <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
 
-    <div class="col-md-7 col-lg-8 container">
+    <div class="col-md-7 col-lg-8 div-tabla">
 
       <table class="table table-striped table-bordered rounded-4 text-center-table">
         <thead>
         <tr>
           <th scope="col">Número de reservación</th>
-          <th scope="col">Nombre</th>
-          <th scope="col">Cédula</th>
-          <th scope="col">Fecha de ingreso</th>
+          <th scope="col">Cédula del paciente</th>
+          <th scope="col"># de cama</th>
+          <th scope="col"># de procedimiento</th>
+          <th scope="col">Ingreso</th>
+          <th scope="col">Salida</th>
           <th scope="col">Opción</th>
         </tr>
         </thead>
         <tbody>
         <tr *ngFor="let item of data">
-          <td>{{ item.id }}</td>
-          <td>{{ item.nombre }}</td>
-          <td>{{ item.cedula }}</td>
-          <td>{{ item.fechaIngreso }}</td>
+          <td>{{ item.idreservacion }}</td>
+          <td>{{ item.pacientecedula }}</td>
+          <td>{{ item.idcama }}</td>
+          <td>{{ item.idproced }}</td>
+          <td>{{ item.fechaingreso }}</td>
+          <td>{{ item.fechasalida }}</td>
           <td>
             <button type="button" class="btn btn-primary" > <i class="fas fa-pen-to-square"></i></button>
           </td>
@@ -98,35 +85,37 @@
   <!-- Esta parte es para la de Eliminar reservación-->
   <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">
 
-    <div class="col-md-7 col-lg-8 container">
+    <div class="col-md-7 col-lg-8 div-tabla">
 
-      <table class="table table-striped table-bordered rounded-4 text-center-table">
+      <table class="table table-striped table-bordered text-center-table">
         <thead>
         <tr>
           <th scope="col">Número de reservación</th>
-          <th scope="col">Nombre</th>
-          <th scope="col">Cédula</th>
+          <th scope="col">Cédula del paciente</th>
+          <th scope="col">Número de cama</th>
+          <th scope="col">Número de procedimiento</th>
           <th scope="col">Fecha de ingreso</th>
+          <th scope="col">Fecha de fecha de salida</th>
           <th scope="col">Opción</th>
         </tr>
         </thead>
         <tbody>
         <tr *ngFor="let item of data">
-          <td>{{ item.id }}</td>
-          <td>{{ item.nombre }}</td>
-          <td>{{ item.cedula }}</td>
-          <td>{{ item.fechaIngreso }}</td>
+          <td>{{ item.idreservacion }}</td>
+          <td>{{ item.pacientecedula }}</td>
+          <td>{{ item.idcama }}</td>
+          <td>{{ item.idproced }}</td>
+          <td>{{ item.fechaingreso }}</td>
+          <td>{{ item.fechasalida }}</td>
           <td>
-            <button type="button" class="btn btn-danger" > <i class="fas fa-solid fa-trash"></i></button>
+            <button type="button" class="btn btn-danger" (click)="eliminarReserva(item.idreservacion)"> <i class="fas fa-solid fa-trash"></i></button>
           </td>
         </tr>
-
-
-
         </tbody>
       </table>
 
     </div>
+
 
   </div>
 </div>

@@ -26,17 +26,15 @@ export class CrearCuentaComponent  {
 
   constructor(private servicio:ComunicationService, private router: Router) {}
 
-  async crearCuenta(Nombre: string, Apellidos: string, Cedula: string, Telefono: string, Direccion: string, Fecha: string, Patologias: string) {
+  async crearCuenta(Nombre: string, Apellidos: string, Cedula: string, Telefono: string, Direccion: string, fechanacimiento: string, Patologias: string) {
 
     const apellidosArray = Apellidos.split(" ");
     const Apellido1 = apellidosArray[0] || "";
     const Apellido2 = apellidosArray[1] || "";
 
 
-    const data = JSON.stringify({Nombre, Apellido1, Apellido2, Cedula, Telefono, Direccion, Fecha, Patologias});
+    const data = JSON.stringify({Nombre, Apellido1, Apellido2, Cedula, Telefono, Direccion, fechanacimiento, Patologias});
     console.log(data);
-
-
 
     try {
       const response = await fetch('http://localhost:5276/api/Paciente', {
@@ -48,6 +46,7 @@ export class CrearCuentaComponent  {
       });
 
       if (!response.ok) {
+        console.error('Error:', response.text());
         throw new Error("Algo malo está pasando");
       }
 

@@ -18,10 +18,15 @@ public partial class HospitecContext : DbContext
     
 
     public virtual DbSet<Cama> Camas { get; set; }
+    
+    //para el store procedure
+    public DbSet<CamaYEquipos> CamaYEquipos { get; set; }
 
     public virtual DbSet<Equipo> Equipos { get; set; }
 
     public virtual DbSet<Historial> Historials { get; set; }
+    
+    //para el store procedure
     public DbSet<HistorialView> HistorialView { get; set; }
 
     public virtual DbSet<Horarioscama> Horarioscamas { get; set; }
@@ -367,17 +372,32 @@ public partial class HospitecContext : DbContext
                 .HasConstraintName("FK_Rol_Personal");
         });
 
+        
+        //clase de modelos solo para matear resultados de consultas
+        modelBuilder.Entity<CamaYEquipos>().HasNoKey().ToView(null);
         modelBuilder.Entity<HistorialView>().HasNoKey();
         OnModelCreatingPartial(modelBuilder);
         
         
     }
+    
+    //  método para llamar a la función almacenada para obtener los historiales asociados a la cedula del paciente
     public async Task<List<HistorialView>> GetHistorialByPacienteCedulaAsync(string pacienteCedula)
     {
         var cedulaParam = new NpgsqlParameter("paciente_cedula", pacienteCedula);
 
         return await HistorialView
             .FromSqlRaw("SELECT * FROM get_historial_by_paciente_cedula({0})", cedulaParam)
+            .ToListAsync();
+    }
+    
+    //  método para llamar a la función almacenada para obtener la cama y el equipo asociado
+    public async Task<List<CamaYEquipos>> GetCamaYEquiposAsync(int idCama)
+    {
+        var idCamaParam = new NpgsqlParameter("id_cama", idCama);
+
+        return await this.Set<CamaYEquipos>()
+            .FromSqlRaw("SELECT * FROM get_cama_y_equipos(@id_cama)", idCamaParam)
             .ToListAsync();
     }
 

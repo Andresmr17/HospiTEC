@@ -90,5 +90,18 @@ public class CamaController : ControllerBase
         await _context.SaveChangesAsync();
         return NoContent();
     }
+   //sp de obtener la cama con los equipos asociados 
+    [HttpGet("sp/{idCama}")]
+    public async Task<IActionResult> GetCamaYEquipos(int idCama)
+    {
+        var result = await _context.GetCamaYEquiposAsync(idCama);
+
+        if (result == null || !result.Any())
+        {
+            return NotFound();
+        }
+
+        return Ok(result);
+    }
 
 }

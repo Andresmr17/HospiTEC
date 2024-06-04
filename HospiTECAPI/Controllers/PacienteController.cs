@@ -1,7 +1,9 @@
+using System.Globalization;
 using HospiTECAPI.Models;
 using HospiTECAPI.ModelsDTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using OfficeOpenXml;
 
 
@@ -232,4 +234,8 @@ public async Task<IActionResult> DeletePaciente(string cedula)
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error al procesar el archivo: {ex.Message}");
             }
         }
+        
+    
+
+
     }

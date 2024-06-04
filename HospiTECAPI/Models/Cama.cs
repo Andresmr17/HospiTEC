@@ -22,3 +22,15 @@ public partial class Cama
     [JsonIgnore] //Funciona para que se ignore y no aparezca en el request del POST
     public virtual ICollection<Reserva> Reservas { get; set; } = new List<Reserva>();
 }
+
+
+public class CamaYEquipos
+{
+    public int IdCama { get; set; }
+    public string NombreSalon { get; set; }
+    public bool EstadoUCI { get; set; }
+    public int? IdEquipo { get; set; }
+    public string Proveedor { get; set; }
+    public string Nombre { get; set; }
+    public int? Cantidad { get; set; }
+}

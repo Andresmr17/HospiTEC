@@ -1,7 +1,9 @@
+using System.Globalization;
 using HospiTECAPI.Models;
 using HospiTECAPI.ModelsDTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace HospiTECAPI.Controllers;
 
@@ -112,6 +114,73 @@ public async Task<IActionResult> DeletePersonal(string cedula)
     await _context.SaveChangesAsync();
     return NoContent();
 }
+
+[HttpPost("sp")]
+public async Task<ActionResult> PostPersonal(PersonalRequest dto)
+{
+    DateTime fechaNacimiento;
+    if (!DateTime.TryParseExact(dto.FechaNacimiento, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out fechaNacimiento))
+    {
+        return BadRequest("FechaProcedimiento debe estar en el formato 'año-mes-dia'.");
+    }
+    
+    DateTime fechaIngreso;
+    if (!DateTime.TryParseExact(dto.FechaIngreso, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out fechaIngreso))
+    {
+        return BadRequest("FechaProcedimiento debe estar en el formato 'año-mes-dia'.");
+    }
+
+    var cedulaParam = new NpgsqlParameter("cedula_personal", NpgsqlTypes.NpgsqlDbType.Varchar)
+    {
+        Value = dto.Cedula
+    };
+    var fechaNacimientoParam = new NpgsqlParameter("fechanacimiento_personal", NpgsqlTypes.NpgsqlDbType.Timestamp)
+    {
+        Value = fechaNacimiento
+    };
+    var direccionParam = new NpgsqlParameter("direccion_personal", NpgsqlTypes.NpgsqlDbType.Varchar)
+    {
+        Value = dto.Direccion
+    };
+    var nombreParam = new NpgsqlParameter("nombre_personal", NpgsqlTypes.NpgsqlDbType.Varchar)
+    {
+        Value = dto.Nombre
+    };
+    var apellido1Param = new NpgsqlParameter("apellido1_personal", NpgsqlTypes.NpgsqlDbType.Varchar)
+    {
+        Value = dto.Apellido1
+    };
+    var apellido2Param = new NpgsqlParameter("apellido2_personal", NpgsqlTypes.NpgsqlDbType.Varchar)
+    {
+        Value = dto.Apellido2
+    };
+    var fechaIngresoParam = new NpgsqlParameter("fechaingreso_personal", NpgsqlTypes.NpgsqlDbType.Timestamp)
+    {
+        Value = fechaIngreso
+    };
+    var telefono1Param = new NpgsqlParameter("telefono1", NpgsqlTypes.NpgsqlDbType.Varchar)
+    {
+        Value = dto.Telefono1
+    };
+    var telefono2Param = new NpgsqlParameter("telefono2", NpgsqlTypes.NpgsqlDbType.Varchar)
+    {
+        Value = dto.Telefono2 
+    };
+    var rolParam = new NpgsqlParameter("rol_descripcion", NpgsqlTypes.NpgsqlDbType.Varchar)
+    {
+        Value = dto.Rol
+    };
+
+    await _context.Database.ExecuteSqlRawAsync(
+        "CALL insertar_paciente(@cedula_personal, @nombre_personal, @apellido1_personal, @apellido2_personal, @fechanacimiento_personal, @direccion_personal, @fechaingreso_personal, @telefono1, @telefono2, @rol_descripcion)",
+        cedulaParam, nombreParam, apellido1Param, apellido2Param, fechaNacimientoParam, direccionParam, fechaIngresoParam, telefono1Param, telefono2Param, rolParam
+    );
+
+    return Ok();
+}
+
+
+
 
 
     

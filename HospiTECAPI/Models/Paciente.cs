@@ -35,3 +35,5 @@ public partial class PacienteLogin
     public string? Nombre { get; set; }
 
 }
+
+

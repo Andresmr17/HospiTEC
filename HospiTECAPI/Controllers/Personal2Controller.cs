@@ -37,5 +37,7 @@ namespace HospiTECAPI.Controllers
 
             return Ok(result);
         }
+        
     }
+    
 }

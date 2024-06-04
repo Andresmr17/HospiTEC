@@ -1,11 +1,11 @@
 <div class="container">
-  <h1>Equipo de hospitec</h1>
+  <h1>Camas de hospitec</h1>
   <div class="contenedorBotones">
     <button class="btn btn-primary" (click)="obtenerEquipo()">
-      Mostrar salones
+      Mostrar camas
     </button>
     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalActualizar" (click)="addRegistro(1)">
-      Añadir equipo médico
+      Añadir cama
     </button>
   </div>
 
@@ -13,23 +13,19 @@
     <table class="table">
       <thead>
       <tr>
-        <th>id Equipo</th>
-        <th>id Cama asociada</th>
-        <th>Provedor</th>
-        <th>Nombre</th>
-        <th>Cantidad</th>
+        <th>Id cama</th>
+        <th>Salon asociado</th>
+        <th>Cuidados intesivos</th>
         <th>Modificar</th>
         <th>Eliminar</th>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let element of dataSource; let i = index">
-        <td>{{ element.idEquipo }}</td>
         <td>{{ element.idCama }}</td>
-        <td>{{ element.proveedor }}</td>
-        <td>{{ element.nombre}}</td>
-        <td>{{ element.cantidad }}</td>
-        <td><button class="btn btn-primary" (click)="modificarEquipo(i,0)" data-bs-toggle="modal" data-bs-target="#modalActualizar" >Modificar</button></td>
+        <td>{{ element.nombreSalon }}</td>
+        <td>{{ element.estadoUCI}}</td>
+        <td><button class="btn btn-primary" (click)="modificarCamas(i,0)" data-bs-toggle="modal" data-bs-target="#modalActualizar" >Modificar</button></td>
         <td><button class="btn btn-primary" (click)="eliminarEquipo(i)" >Eliminar</button></td>
       </tr>
       </tbody>
@@ -48,24 +44,19 @@
         <div class="modal-body">
           <!-- Formulario del MODAL-->
           <div class="form-group">
-            <label for="idEquipo">Id del equipo</label>
-            <input type="number" class="form-control" id="idEquipo" placeholder="Ingrese un identificador para el equipo"  [value]="idEquipo"  [readonly]="isReadonly">
+            <label for="idCama">Id de la cama</label>
+            <input type="number" class="form-control" id="idCama" placeholder="Ingrese el id de la cama"  [value]="idCama"  [readonly]="isReadonly">
           </div>
           <div class="form-group">
-            <label for="idCama">Id de la cama asociada</label>
-            <input type="number" class="form-control" id="idCama" placeholder="Ingrese una cama en la que se encuentra este equipo"  >
+            <label for="nombreSalon">Nombre del salon asociado</label>
+            <input type="text" class="form-control" id="nombreSalon" placeholder="Ingrese el salon asociado">
           </div>
           <div class="form-group">
-            <label for="proovedor">Provedor del equipo</label>
-            <input type="text" class="form-control" id="proovedor" placeholder="Ingrese el proovedor">
-          </div>
-          <div class="form-group">
-            <label for="nombre">Nombre del equipo</label>
-            <input type="text" class="form-control" id="nombre" placeholder="Ingrese el nombre">
-          </div>
-          <div class="form-group">
-            <label for="cantidad">cantidad</label>
-            <input type="number" class="form-control" id="cantidad" placeholder="Ingrese la cantidad">
+            <label for="UIC">Unidad cuidados intensivos</label>
+            <select class="form-control" id="UIC">
+              <option value="true">Si</option>
+              <option value="false">No</option>
+            </select>
           </div>
         </div>
         <div class="modal-footer">

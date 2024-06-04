@@ -1,36 +1,44 @@
 import { Component } from '@angular/core';
 import {NgForOf} from "@angular/common";
-import {ReactiveFormsModule} from "@angular/forms";
 import {ComunicationService} from "../../Servicios/comunication.service";
 
-export interface Equipo {
-  idEquipo: number;
-  idCama:number; //va a recibir el id cama pero no lo va a mostrar
-  //a menos que sea para el update o el insert
-  proveedor: string;
-  nombre: string;
-  cantidad: number;
+export interface Camas {
+  idCama: number;
+  nombreSalon: string;
+  estadoUCI: boolean;
 }
-
 @Component({
-  selector: 'app-equipo',
+  selector: 'app-camas',
   standalone: true,
-  imports: [
-    NgForOf,
-    ReactiveFormsModule
-  ],
-  templateUrl: './equipo.component.html',
-  styleUrl: './equipo.component.css'
+    imports: [
+        NgForOf
+    ],
+  templateUrl: './camas.component.html',
+  styleUrl: './camas.component.css'
 })
-export class EquipoComponent {
+export class CamasComponent {
   constructor(private servicio:ComunicationService) {
   }
-  dataSource: Equipo[] = [
-
+  dataSource: Camas[] = [
+    {
+      "idCama": 1,
+      "nombreSalon": "Salón A",
+      "estadoUCI": true
+    },
+    {
+      "idCama": 2,
+      "nombreSalon": "Salón B",
+      "estadoUCI": false
+    },
+    {
+      "idCama": 3,
+      "nombreSalon": "Salón C",
+      "estadoUCI": true
+    }
 
   ];//aca se guardan los datos solicitados del servidor
-
-  idEquipo = 0
+//variables para determinar si es un udptae o un insert.
+  idCama = 0
   modalVisible = false;
   tipoModal = 2; //me indica el tipo de modal, si es añadido o update
   isReadonly = true; //para habilitar el id
@@ -38,16 +46,15 @@ export class EquipoComponent {
   * por temas de que solo se puede usar un "modal" por componente
   * se utilizara este metodo tamto para modificar como para añadir
   * utilizando el mismo modal*/
-  modificarEquipo(index: number, tipodeModal: number) {
+  modificarCamas(index: number, tipodeModal: number) {
     this.tipoModal =tipodeModal
     this.isReadonly = true;
     //modificar mas adelante
     const salonSeleccionado = this.dataSource[index];
-    this.idEquipo= salonSeleccionado.idEquipo;
+    this.idCama= salonSeleccionado.idCama;
     //id del profesor
     this.modalVisible = true;
-    console.log('Se ha presionado el botón de modificar para el elemento en el índice:', this.idEquipo);
-
+    console.log('Se ha presionado el botón de modificar para el elemento en el índice:', this.idCama);
   }
 
   //metodo para modificar los registros en base al index
@@ -57,37 +64,26 @@ export class EquipoComponent {
     console.log('Se ha presionado el botón de eliminar para el elemento en el índice:', index);
 
   }
-  guardarCambios() {
-    const idEquipoElement = (document.getElementById('idEquipo') as HTMLInputElement).value.trim();
+  guardarCambios() { //metodo para el post o update
+    // Aquí puedes acceder a los datos del formulario usando el objeto 'formulario.value'
     const idCamaElement = (document.getElementById('idCama') as HTMLInputElement).value.trim();
+    console.log('el id salon antes de parsear es :', idCamaElement);
+    const idCama1 = parseInt(idCamaElement, 10);
+    console.log('el id salon despues de parsear es :', idCama1);
+    const nombreSalon1 = (document.getElementById('nombreSalon') as HTMLInputElement).value;
+    const esUIC =((document.getElementById('UIC') as HTMLSelectElement).value === 'true');
 
-    const provedorElement = (document.getElementById('proovedor') as HTMLInputElement).value;
-    const nombreElement = (document.getElementById('nombre') as HTMLSelectElement).value;
-    const cantidadElement = (document.getElementById('cantidad') as HTMLInputElement).value.trim();
-
-// Mostrar los valores antes de la conversión
-    console.log('El ID del equipo antes de la conversión es:', idEquipoElement);
-    console.log('El proveedor es:', provedorElement);
-    console.log('El nombre es:', nombreElement);
-    console.log('La cantidad antes de la conversión es:', cantidadElement);
-
-// Convertir los valores a los tipos de datos correctos
-    const idEquipo = parseInt(idEquipoElement, 10);
-    const idCama = parseInt(idCamaElement, 10)
-    const cantidad = parseInt(cantidadElement, 10);
-    //CONSTANTE DE COMO SE VA A ENVIAR AL BACKEND/API
+    //esta es la data que se va a enviar
     const datatoSend1={
-      Idequipo: idEquipo,
-      Idcama: idCama,
-      Proveedor: provedorElement,
-      Nombre: nombreElement,
-      Cantidad:cantidad
+      Idcama: idCama1,
+      Nombresalon: nombreSalon1,
+      Estadouci: esUIC
     }
     //dependiendo si es 1 o 2 es un get o un post
-    console.log('el id salon es :', datatoSend1.Idequipo);
-    console.log('el id cama es :', datatoSend1.Idcama);
+
+    console.log('el id salon es :', datatoSend1.Idcama);
     if(this.tipoModal ==1){//si el tipo de modal es 1 entonces es un post
-      this.servicio. postEquipos(datatoSend1).subscribe(
+      this.servicio. postCamas(datatoSend1).subscribe(
         response => {
           console.log('Datos enviados a posgress', response);
         },
@@ -97,8 +93,8 @@ export class EquipoComponent {
         }
       );
     }
-    else{ //si no es un post, es un put
-      this.servicio.putEquipos(datatoSend1.Idequipo, datatoSend1)
+    else{ //si es 0 entonces es un update
+      this.servicio.putCamas(datatoSend1.Idcama, datatoSend1)
         .subscribe(
           () => {
             console.log('La cama se actualizó correctamente.');
@@ -112,13 +108,13 @@ export class EquipoComponent {
     }
   }
   addRegistro(numero:number){
-    this.tipoModal=numero //setea el tipo de modal a un modal de insert
-    this.idEquipo=0;
+    this.tipoModal=numero //setea el tipo de modal a un modal de
+    this.idCama=0;
     this.isReadonly=false
     //añadido de registros
   }
-  obtenerEquipo(){ //esto es un get del equipo médico
-    this.servicio.getEquipos().subscribe(
+  obtenerEquipo(){ //Medoto get que obtiene todas las camas.
+    this.servicio.getCamas().subscribe(
       response => {
         console.log('Datos recibidos de posgress', response);
 

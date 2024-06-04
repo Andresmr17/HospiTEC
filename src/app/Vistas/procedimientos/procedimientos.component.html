@@ -1,0 +1,70 @@
+<div class="container">
+  <h1>Gestión de Procedimientos Médicos</h1>
+  <div class="contenedorBotones">
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalActualizar" (click)="addRegistro(1)">
+      Añadir procedimiento
+    </button>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Recuperación en salón</th>
+        <th>Modificar</th>
+        <th>Eliminar</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let element of dataSource; let i = index">
+        <td>{{ element.procedimientoNombre }}</td>
+        <td>{{ element.duracionDias }}</td>
+        <td><button class="btn btn-primary" (click)="modificarProcedimiento(i,0)" data-bs-toggle="modal" data-bs-target="#modalActualizar">Modificar</button></td>
+        <td><button class="btn btn-primary" (click)="eliminarProcedimiento(i)">Eliminar</button></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal para agregar o actualizar procedimientos -->
+  <div class="modal fade" id="modalActualizar" tabindex="-1" role="dialog" aria-labelledby="modalAgregarLabel" aria-hidden="false" [class.show]="modalVisible">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalActualizarLabel">Agregar o actualizar procedimiento</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Formulario del modal -->
+          <div class="form-group">
+            <label for="idProcedimiento">ID del Procedimiento</label>
+            <input type="number" class="form-control" id="idProcedimiento" placeholder="Ingrese el ID del procedimiento" [value]="idProcedimiento" [readonly]="isReadonly">
+          </div>
+          <div class="form-group">
+            <label for="nombrePatologia">Nombre de la Patología</label>
+            <input type="text" class="form-control" id="nombrePatologia" placeholder="Ingrese el nombre de la patología" [value]="nombrePatologia">
+          </div>
+          <div class="form-group">
+            <label for="procedimientoNombre">Nombre del Procedimiento</label>
+            <input type="text" class="form-control" id="procedimientoNombre" placeholder="Ingrese el nombre del procedimiento" [value]="procedimientoNombre">
+          </div>
+          <div class="form-group">
+            <label for="duracionDias">Recuperación en Salón</label>
+            <input type="number" class="form-control" id="duracionDias" placeholder="Ingrese la recuperación en salón" [value]="duracionDias">
+          </div>
+          <div class="form-group">
+            <label for="descripcion">Descripción</label>
+            <textarea class="form-control" id="descripcion" placeholder="Ingrese la descripción del procedimiento" [value] ="descripcion"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" (click)="guardarCambios()" data-bs-dismiss="modal">Guardar Cambios</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

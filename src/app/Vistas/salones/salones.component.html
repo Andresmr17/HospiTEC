@@ -1,8 +1,11 @@
 <div class="container">
-  <h1>Reportes del usuario</h1>
+  <h1>Salones de hospitec</h1>
   <div class="contenedorBotones">
     <button class="btn btn-primary" (click)="obtenerReportes()">
-      Mostrar reportes
+      Mostrar salones
+    </button>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalActualizar" (click)="addRegistro(1)">
+      Añadir salones
     </button>
   </div>
 
@@ -10,23 +13,27 @@
     <table class="table">
       <thead>
       <tr>
-        <th>Fecha</th>
-        <th>Ingreso</th>
-        <th>Salida</th>
-        <th>Horas trabajadas</th>
+        <th>Nombre</th>
+        <th>Capacidad de camas</th>
+        <th>Medicina de</th>
+        <th>Piso</th>
+        <th>Modificar</th>
+        <th>Eliminar</th>
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let element of dataSource">
-        <td>{{ element.fecha }}</td>
-        <td>{{ element.ingreso }}</td>
-        <td>{{ element.salida }}</td>
-        <td>{{ element.horasTrabajadas }}</td>
+      <tr *ngFor="let element of dataSource; let i = index">
+        <td>{{ element.nombreSalon }}</td>
+        <td>{{ element.capacidadCamas }}</td>
+        <td>{{ element.tipoDeSalon}}</td>
+        <td>{{ element.numeroDePiso }}</td>
+        <td><button class="btn btn-primary" (click)="modificarRegistro(i,0)" data-bs-toggle="modal" data-bs-target="#modalActualizar" >Modificar</button></td>
+        <td><button class="btn btn-primary" (click)="eliminarRegistro(i)" >Eliminar</button></td>
       </tr>
       </tbody>
     </table>
   </div>
-
+  <!--
   <nav aria-label="Page navigation">
     <ul class="pagination">
       <li class="page-item">
@@ -45,5 +52,48 @@
         </a>
       </li>
     </ul>
-  </nav>
+  </nav>-->
+  <!-- LO DE ABAJO ES EL MODAL PARA HACER EL UPDATE A LOS SALONES-->
+  <div class="modal fade" id="modalActualizar" tabindex="-1" role="dialog" aria-labelledby="modalAgregarLabel" aria-hidden="false" [class.show]="modalVisible">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalActualizarLabel">Agregar o actualizar camas</h5>
+          <button type="button" class="close"  data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Formulario del MODAL-->
+          <div class="form-group">
+            <label for="nombreSalon">Nombre del Salón</label>
+            <input type="text" class="form-control" id="nombreSalon" placeholder="Ingrese el nombre del salón"  [value]="nombreSalon"  [readonly]="isReadonly">
+          </div>
+          <div class="form-group">
+            <label for="capacidadCamas">Capacidad en Camas</label>
+            <input type="number" class="form-control" id="capacidadCamas" placeholder="Ingrese la capacidad en camas">
+          </div>
+          <div class="form-group">
+            <label for="tipoMedicina">Tipo de Medicina</label>
+            <select class="form-control" id="tipoMedicina">
+              <option value="mujeres">Mujeres</option>
+              <option value="hombres">Hombres</option>
+              <option value="niños">Niños</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="numeroPiso">Número de Piso</label>
+            <input type="number" class="form-control" id="numeroPiso" placeholder="Ingrese el número de piso">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary"  (click)="guardarCambios()">Guardar Cambios</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ACA EMPIEZA EL MODAL PARA INSERTAR UN NUEVO SALON-->
 </div>
+<!-- Inicio de la estructura del modal-->
+

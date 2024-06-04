@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import {RouterLink, RouterOutlet} from "@angular/router";
-import {NgClass} from "@angular/common";
-
+import { Router } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-sidenav',
@@ -12,11 +12,11 @@ import {NgClass} from "@angular/common";
     RouterLink
   ],
   templateUrl: './sidenav.component.html',
-  styleUrl: './sidenav.component.css'
+  styleUrls: ['./sidenav.component.css']
 })
 export class SidenavComponent {
+  constructor(private router: Router) {}
 
-  constructor() { }
   toggleSidebar() {
     const sidebar = document.getElementById("sidebar");
     if (sidebar) {

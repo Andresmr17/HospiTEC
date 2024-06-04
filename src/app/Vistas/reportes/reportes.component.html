@@ -1,0 +1,36 @@
+<div class="container">
+  <h1>Reportes de Áreas de Mejora</h1>
+
+  <div class="report">
+    <h3>Aseo</h3>
+    <div class="stars">
+      <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
+        <i class="bi" [ngClass]="star <= aseoAverage ? 'bi-star-fill' : 'bi-star'"></i>
+      </ng-container>
+      <span>{{ aseoAverage.toFixed(1) }} / 5</span>
+      <small>({{ aseoCount }} calificaciones)</small>
+    </div>
+  </div>
+
+  <div class="report">
+    <h3>Trato</h3>
+    <div class="stars">
+      <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
+        <i class="bi" [ngClass]="star <= tratoAverage ? 'bi-star-fill' : 'bi-star'"></i>
+      </ng-container>
+      <span>{{ tratoAverage.toFixed(1) }} / 5</span>
+      <small>({{ tratoCount }} calificaciones)</small>
+    </div>
+  </div>
+
+  <div class="report">
+    <h3>Puntualidad</h3>
+    <div class="stars">
+      <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
+        <i class="bi" [ngClass]="star <= puntualidadAverage ? 'bi-star-fill' : 'bi-star'"></i>
+      </ng-container>
+      <span>{{ puntualidadAverage.toFixed(1) }} / 5</span>
+      <small>({{ puntualidadCount }} calificaciones)</small>
+    </div>
+  </div>
+</div>

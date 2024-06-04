@@ -1,0 +1,96 @@
+<div class="container">
+  <h1>Gestión de Personal</h1>
+  <div class="contenedorBotones">
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalActualizar" (click)="addRegistro(1)">
+      Añadir personal
+    </button>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Cédula</th>
+        <th>Nombre</th>
+        <th>Apellido1</th>
+        <th>Apellido2</th>
+        <th>Fecha Nacimiento</th>
+        <th>Dirección</th>
+        <th>Fecha Ingreso</th>
+        <th>Teléfono</th>
+        <th>Rol</th> <!-- Nueva columna para la descripción del rol -->
+        <th>Modificar</th>
+        <th>Eliminar</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let element of dataSource; let i = index">
+        <td>{{ element.cedula }}</td>
+        <td>{{ element.nombre }}</td>
+        <td>{{ element.apellido1 }}</td>
+        <td>{{ element.apellido2 }}</td>
+        <td>{{ element.fechaNacimiento | date }}</td>
+        <td>{{ element.direccion }}</td>
+        <td>{{ element.fechaIngreso | date }}</td>
+        <td>{{ element.telefono }}</td>
+        <td>{{ element.rolDescripcion }}</td> <!-- Mostrar la descripción del rol -->
+        <td>
+          <button class="btn btn-primary" (click)="modificarPersonal(i, 0)" data-bs-toggle="modal" data-bs-target="#modalActualizar">Modificar</button>
+        </td>
+        <td>
+          <button class="btn btn-primary" (click)="eliminarPersonal(i)">Eliminar</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal para agregar o actualizar personal -->
+  <div class="modal fade" id="modalActualizar" tabindex="-1" role="dialog" aria-labelledby="modalAgregarLabel" aria-hidden="false" [class.show]="modalVisible">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalActualizarLabel">Agregar o actualizar personal</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Formulario del modal -->
+          <div class="form-group">
+            <label for="cedula">Cédula</label>
+            <input type="text" class="form-control" id="cedula" placeholder="Ingrese la cédula" [value]="cedula" [readonly]="isReadonly">
+          </div>
+          <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" class="form-control" id="nombre" placeholder="Ingrese el nombre" [value]="nombre">
+          </div>
+          <div class="form-group">
+            <label for="apellido1">Primer Apellido</label>
+            <input type="text" class="form-control" id="apellido1" placeholder="Ingrese el primer apellido" [value]="apellido1">
+          </div>
+          <div class="form-group">
+            <label for="apellido2">Segundo Apellido</label>
+            <input type="text" class="form-control" id="apellido2" placeholder="Ingrese el segundo apellido" [value]="apellido2">
+          </div>
+          <div class="form-group">
+            <label for="fechaNacimiento">Fecha de Nacimiento</label>
+            <input type="date" class="form-control" id="fechaNacimiento" [value]="fechaNacimiento">
+          </div>
+          <div class="form-group">
+            <label for="direccion">Dirección</label>
+            <input type="text" class="form-control" id="direccion" placeholder="Ingrese la dirección" [value]="direccion">
+          </div>
+          <div class="form-group">
+            <label for="fechaIngreso">Fecha de Ingreso</label>
+            <input type="date" class="form-control" id="fechaIngreso" [value]="fechaIngreso">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" (click)="guardarCambios()" data-bs-dismiss="modal">Guardar Cambios</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

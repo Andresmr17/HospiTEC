@@ -7,43 +7,91 @@ import { Observable } from 'rxjs';
 })
 export class ComunicationService {
   private servidorURL = 'http://localhost:5276/api';
-  private usuarioId = ""; //se almacena el id del operador
-  //metodos para setear y almacenar el id.
-  public getUsuarioId(): string {
-    return this.usuarioId;
-  }
 
-  public setUsuarioId(id: string): void {
-    this.usuarioId = id;
-  }
+  //metodos para setear y almacenar el id.
+
+
+
 
   constructor(private http: HttpClient) {}
   //obtiene los reportes de este usuario
 
-  //COMPLETADA------
-  getReportes(username:string): Observable<any> {//idOperador es como lo tengo en la bd
+  //Para la VISTA CAMAS------
+  getCamas(): Observable<any> {//idOperador es como lo tengo en la bd
     //DEBE DE SER EXACTAMENTE IGUAL EN LA API
-    return this.http.get<any>(`${this.servidorURL}/ReportesOperadores/getReportes?idOperador=${username}`);
+    return this.http.get<any>(`${this.servidorURL}/Cama`);
   }
-  //obtiene los activos de este usuario.
+
+  //metodo para actualizar la información de las camas
+  postCamas(camasData: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.post<any>(`${this.servidorURL}/Cama`, camasData,httpOptions);
+  }
+  //Metodo para actualizar las camas
+  putCamas(idCama: number, camaData: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.put<any>(`${this.servidorURL}/Cama/${idCama}`, camaData, httpOptions);
+  }
 
 
-  //COMPLETADA------------
-  getActivos(): Observable<any> {
-    return this.http.get<any>(`${this.servidorURL}/Activos/activosDisponibles`);
+  //FIN VISTA CAMAS------------
+  //Para la VISTA EQUIPO MEDICO------
+  getEquipos(): Observable<any> {
+    //DEBE DE SER EXACTAMENTE IGUAL EN LA API la estructura que pide
+    return this.http.get<any>(`${this.servidorURL}/Equipo`);
   }
-  //metodo que obtiene los activos por aprobar por el operador.
-  getaprobarSolicitud(username:string): Observable<any> {
-    return this.http.get<any>(`${this.servidorURL}/getsolAprob?username=${username}`);
+  //post para un nuevo equipo
+  postEquipos(equipoData: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.post<any>(`${this.servidorURL}/Equipo`, equipoData,httpOptions);
   }
-  //COMPLETADA****
-  verifyLogin(Correo: string , Contrasena: string): Observable<any> {
-    return this.http.get<any>(`${this.servidorURL}/Loginop/verificarLogin?correo=${Correo}&contrasena=${Contrasena}`);
+  //put para los equipos
+  putEquipos(idEquipo: number, equipoData: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.put<any>(`${this.servidorURL}/Equipo/${idEquipo}`, equipoData, httpOptions);
   }
-  //metodo del servicio que le envia la información del usuario y la contraseña
-  //y verifica si es correcta
 
-  //POST****************************************************************
+  //FIN VISTA CAMAS -------------------------
+  //INICIO VISTA SALONES -------------------------
+
+  getSalones(): Observable<any> {
+    //DEBE DE SER EXACTAMENTE IGUAL EN LA API la estructura que pide
+    return this.http.get<any>(`${this.servidorURL}/Salon`);
+  }
+  postSalones(equipoData: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.post<any>(`${this.servidorURL}/Salon`, equipoData,httpOptions);
+  }
+  putSalon(nombreSalon: string, equipoData: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.put<any>(`${this.servidorURL}/Salon/${nombreSalon}`, equipoData, httpOptions);
+  }
+
+  //FIN VISTA SALONES -------------------------
 
   //solicitud reserva activos estudiantes.
   solicitarReserva(reservaEdata: any): Observable<any> {
@@ -87,4 +135,145 @@ export class ComunicationService {
     };
     return this.http.post<any>(`${this.servidorURL}/SesionesOperador`, logoutData,httpOptions);
   }
+
+
+
+  //#####################################################
+  //PARA PROCEDIMIENTOS
+  getProcedimientos(): Observable<any> {
+    return this.http.get<any>(`${this.servidorURL}/Procedimiento`);
+  }
+
+  postProcedimientos(procedimientoData: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.post<any>(`${this.servidorURL}/Procedimiento`, procedimientoData, httpOptions);
+  }
+
+  putProcedimientos(idProcedimiento: number, procedimientoData: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.put<any>(`${this.servidorURL}/Procedimiento/${idProcedimiento}`, procedimientoData, httpOptions);
+  }
+
+  // FIN PROCEDIMIENTOS
+  //##################################################################
+
+
+
+  //#####################################################
+  //PARA PERSONAL
+
+  getPersonal(): Observable<any> {
+    return this.http.get<any>(`${this.servidorURL}/Personal`);
+  }
+
+  postPersonal(personalData: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.post<any>(`${this.servidorURL}/Personal`, personalData, httpOptions);
+  }
+
+  putPersonal(idPersonal: string, personalData: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.put<any>(`${this.servidorURL}/Personal/${idPersonal}`, personalData, httpOptions);
+  }
+
+
+  // FIN PERSONAL
+  //##################################################################
+
+
+
+
+
+  //#####################################################
+  //PARA ROL PERSONAL
+
+  getAllRoles(): Observable<any> {
+    return this.http.get<any>(`${this.servidorURL}/Rol`);
+  }
+
+  getRol(idRol: number): Observable<any> {
+    return this.http.get<any>(`${this.servidorURL}/Rol/${idRol}`);
+  }
+  postRol(rolData: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.post<any>(`${this.servidorURL}/Rol`, rolData, httpOptions);
+  }
+
+  putRol(idRol: number, rolData: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.put<any>(`${this.servidorURL}/Rol/${idRol}`, rolData, httpOptions);
+  }
+
+  deleteRol(idRol: number): Observable<any> {
+    return this.http.delete<any>(`${this.servidorURL}/Rol/${idRol}`);
+  }
+
+
+
+  // FIN ROL PERSONAL
+  //##################################################################
+
+
+
+  //#####################################################
+  //PARA TELEFONO PERSONAL
+  // Métodos para gestionar PersonalTelefono
+  getAllPersonalTelefonos(): Observable<any> {
+    return this.http.get<any>(`${this.servidorURL}/PersonalTelefono`);
+  }
+
+
+  getPersonalTelefonoByCedula(personalCedula: string): Observable<any> {
+    return this.http.get<any>(`${this.servidorURL}/PersonalTelefono/personal/${personalCedula}`);
+  }
+
+  postPersonalTelefono(personalTelefonoData: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.post<any>(`${this.servidorURL}/PersonalTelefono`, personalTelefonoData, httpOptions);
+  }
+
+  putPersonalTelefono(item: number, personalTelefonoData: any): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.put<any>(`${this.servidorURL}/PersonalTelefono/${item}`, personalTelefonoData, httpOptions);
+  }
+
+  deletePersonalTelefono(item: number): Observable<any> {
+    return this.http.delete<any>(`${this.servidorURL}/PersonalTelefono/${item}`);
+  }
+  // FIN TELEFONO PERSONAL
+  //##################################################################
+
+
 }

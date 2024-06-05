@@ -117,14 +117,12 @@ $$;
 
 
 --sp para las camas y los equipos relacioandos
-
-CREATE OR REPLACE FUNCTION get_cama_y_equipos(id_cama INT)
+CREATE OR REPLACE FUNCTION get_cama_y_equipos()
 RETURNS TABLE(
     idCama INT,
     nombreSalon VARCHAR,
     estadoUCI BOOLEAN,
     idEquipo INT,
-    proveedor VARCHAR,
     nombre VARCHAR,
     cantidad INT
 ) 
@@ -137,45 +135,16 @@ BEGIN
         c.nombreSalon,
         c.estadoUCI,
         e.idEquipo,
-        e.proveedor,
         e.nombre,
         e.cantidad
     FROM Cama c
-    LEFT JOIN Equipo e ON c.idCama = e.idCama
-    WHERE c.idCama = id_cama;
+    LEFT JOIN Equipo e ON c.idCama = e.idCama;
 END;
 $$;
 
 
-SELECT * FROM get_cama_y_equipos(15);
 
---sp para todas las camas y sus equipos asociados
-CREATE OR REPLACE FUNCTION get_cama_y_equipos(id_cama INT)
-RETURNS TABLE(
-    idCama INT,
-    nombreSalon VARCHAR,
-    estadoUCI BOOLEAN,
-    nombre VARCHAR,
-    cantidad INT
-) 
-LANGUAGE plpgsql
-AS $$
-BEGIN
-    RETURN QUERY
-    SELECT 
-        c.idCama,
-        c.nombreSalon,
-        c.estadoUCI,
-        e.nombre,
-        e.cantidad
-    FROM Cama c
-    LEFT JOIN Equipo e ON c.idCama = e.idCama
-    WHERE c.idCama = id_cama;
-END;
-$$;
-
-
-SELECT * FROM get_cama_y_equipos(15);
+SELECT * FROM get_cama_y_equipos();
 
 
 --sp de post personal

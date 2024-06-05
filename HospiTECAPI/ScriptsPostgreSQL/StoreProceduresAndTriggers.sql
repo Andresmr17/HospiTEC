@@ -149,6 +149,34 @@ $$;
 
 SELECT * FROM get_cama_y_equipos(15);
 
+--sp para todas las camas y sus equipos asociados
+CREATE OR REPLACE FUNCTION get_cama_y_equipos(id_cama INT)
+RETURNS TABLE(
+    idCama INT,
+    nombreSalon VARCHAR,
+    estadoUCI BOOLEAN,
+    nombre VARCHAR,
+    cantidad INT
+) 
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT 
+        c.idCama,
+        c.nombreSalon,
+        c.estadoUCI,
+        e.nombre,
+        e.cantidad
+    FROM Cama c
+    LEFT JOIN Equipo e ON c.idCama = e.idCama
+    WHERE c.idCama = id_cama;
+END;
+$$;
+
+
+SELECT * FROM get_cama_y_equipos(15);
+
 
 --sp de post personal
 CREATE OR REPLACE PROCEDURE insertar_paciente(
@@ -186,6 +214,144 @@ BEGIN
     COMMIT;
 END;
 $$;
+
+
+--sp para el PUT de personal
+CREATE OR REPLACE FUNCTION actualizar_paciente(
+    cedula_personal VARCHAR,
+    nombre_personal VARCHAR,
+    apellido1_personal VARCHAR,
+    apellido2_personal VARCHAR,
+    fecha_nacimiento DATE,
+    direccion_personal VARCHAR,
+    fecha_ingreso DATE,
+    telefono1 VARCHAR,
+    telefono2 VARCHAR,
+    rol_descripcion VARCHAR
+)
+RETURNS VOID AS $$
+BEGIN
+    -- Actualizar la tabla Personal
+    UPDATE Personal
+    SET 
+        nombre = COALESCE(nombre_personal, nombre),
+        apellido1 = COALESCE(apellido1_personal, apellido1),
+        apellido2 = COALESCE(apellido2_personal, apellido2),
+        fechaNacimiento = COALESCE(fecha_nacimiento, fechaNacimiento),
+        direccion = COALESCE(direccion_personal, direccion),
+        fechaIngreso = COALESCE(fecha_ingreso, fechaIngreso)
+    WHERE cedula = cedula_personal;
+
+    -- Actualizar la tabla Personal_Telefono para telefono1
+    IF telefono1 IS NOT NULL THEN
+        UPDATE Personal_Telefono
+        SET telefono = telefono1
+        WHERE personalCedula = cedula_personal
+        AND telefono != telefono1; -- Evitar actualizaciones innecesarias
+    END IF;
+
+    -- Actualizar la tabla Personal_Telefono para telefono2
+    IF telefono2 IS NOT NULL THEN
+        UPDATE Personal_Telefono
+        SET telefono = telefono2
+        WHERE personalCedula = cedula_personal
+        AND telefono != telefono2; -- Evitar actualizaciones innecesarias
+    END IF;
+
+    -- Actualizar la tabla Rol
+	IF rol_descripcion IS NOT NULL THEN
+	    UPDATE Rol
+	    SET descripcion = rol_descripcion
+	    WHERE personalCedula = cedula_personal;
+END IF;
+
+END;
+$$ LANGUAGE plpgsql;
+--dropear el procedue anterior
+--DROP FUNCTION IF EXISTS actualizar_paciente( cedula_personal VARCHAR, nombre_personal VARCHAR,apellido1_personal VARCHAR, apellido2_personal VARCHAR,fecha_nacimiento DATE, direccion_personal VARCHAR,
+--    fecha_ingreso DATE,
+--    telefono1 VARCHAR,
+ --   telefono2 VARCHAR,
+  --  rol_descripcion VARCHAR
+--);
+
+--sp para informacion paciente
+CREATE OR REPLACE FUNCTION obtener_informacion_paciente(cedula_paciente VARCHAR)
+RETURNS TABLE (
+    cedula VARCHAR(20),
+    direccion VARCHAR(255),
+    fechaNacimiento DATE,
+    nombre VARCHAR(50),
+    apellido1 VARCHAR(50),
+    apellido2 VARCHAR(50),
+    telefonos VARCHAR[],
+    patologias_patentes VARCHAR[]
+)
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        p.cedula,
+        p.direccion,
+        p.fechaNacimiento,
+        p.nombre,
+        p.apellido1,
+        p.apellido2,
+        ARRAY(SELECT pt.telefono FROM Paciente_Telefono pt WHERE pt.pacienteCedula = p.cedula),
+        ARRAY(SELECT pp.nombrePatologia FROM patologiaspresentes pp WHERE pp.pacienteCedula = p.cedula)
+    FROM Paciente p
+    WHERE p.cedula = cedula_paciente;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP FUNCTION IF EXISTS obtener_informacion_paciente(cedula_paciente VARCHAR);
+
+
+--sp de historial
+CREATE OR REPLACE FUNCTION obtener_informacion_paciente(cedula_paciente VARCHAR)
+RETURNS TABLE (
+    cedula VARCHAR(20),
+    direccion VARCHAR(255),
+    fechaNacimiento DATE,
+    nombre VARCHAR(50),
+    apellido1 VARCHAR(50),
+    apellido2 VARCHAR(50),
+    telefonos VARCHAR [],
+    patologias_patentes VARCHAR [],
+    descripciones VARCHAR[]
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT 
+        p.cedula,
+        p.direccion,
+        p.fechaNacimiento,
+        p.nombre,
+        p.apellido1,
+        p.apellido2,
+        array_agg(DISTINCT t.telefono) AS telefonos,
+        array_agg(DISTINCT pp.nombrePatologia) AS patologias_patentes,
+        array_agg(DISTINCT pp.descripcionTratamiento) AS descripciones
+    FROM 
+        Paciente p
+    LEFT JOIN 
+        patologiaspresentes pp ON p.cedula = pp.pacienteCedula
+    LEFT JOIN 
+        Paciente_Telefono t ON p.cedula = t.pacienteCedula
+    WHERE 
+        p.cedula = cedula_paciente
+    GROUP BY
+        p.cedula, p.direccion, p.fechaNacimiento, p.nombre, p.apellido1, p.apellido2;
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT * FROM obtener_informacion_paciente('305370401');
+
+DROP FUNCTION obtener_informacion_paciente(character varying)
+
+
+
+
 
 
 

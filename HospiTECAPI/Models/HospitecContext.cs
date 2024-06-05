@@ -421,14 +421,13 @@ public partial class HospitecContext : DbContext
     }
     
     //  método para llamar a la función almacenada para obtener la cama y el equipo asociado
-    public async Task<List<CamaYEquipos>> GetCamaYEquiposAsync(int idCama)
+    public async Task<List<CamaYEquipos>> GetCamaYEquiposAsync()
     {
-        var idCamaParam = new NpgsqlParameter("id_cama", idCama);
-
         return await this.Set<CamaYEquipos>()
-            .FromSqlRaw("SELECT * FROM get_cama_y_equipos(@id_cama)", idCamaParam)
+            .FromSqlRaw("SELECT * FROM get_cama_y_equipos()")
             .ToListAsync();
     }
+
     //metodo para llamar el store procedure de la informacion del paciente
     public async Task<InformacionPaciente> ObtenerInformacionPaciente(string cedula)
     {

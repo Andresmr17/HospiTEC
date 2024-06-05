@@ -91,17 +91,18 @@ public class CamaController : ControllerBase
         return NoContent();
     }
    //sp de obtener la cama con los equipos asociados 
-    [HttpGet("sp/{idCama}")]
-    public async Task<IActionResult> GetCamaYEquipos(int idCama)
-    {
-        var result = await _context.GetCamaYEquiposAsync(idCama);
+   [HttpGet("sp")]
+   public async Task<IActionResult> GetCamaYEquipos()
+   {
+       var result = await _context.GetCamaYEquiposAsync();
 
-        if (result == null || !result.Any())
-        {
-            return NotFound();
-        }
+       if (result == null || !result.Any())
+       {
+           return NotFound();
+       }
 
-        return Ok(result);
-    }
+       return Ok(result);
+   }
+
 
 }

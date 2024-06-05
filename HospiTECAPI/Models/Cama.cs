@@ -30,7 +30,7 @@ public class CamaYEquipos
     public string NombreSalon { get; set; }
     public bool EstadoUCI { get; set; }
     public int? IdEquipo { get; set; }
-    public string Proveedor { get; set; }
-    public string Nombre { get; set; }
-    public int? Cantidad { get; set; }
+    public string? Nombre { get; set; }  
+    public int? Cantidad { get; set; }   
 }
+

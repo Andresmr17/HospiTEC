@@ -30,7 +30,7 @@ export class AddPatientComponent {
     console.log(data);
 
     try {
-      const response = await fetch('http://localhost:5276/api/Paciente', {
+      const response = await fetch('https://hospiapi.azurewebsites.net/api/Paciente', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

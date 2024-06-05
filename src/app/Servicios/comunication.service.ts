@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ComunicationService {
-  private servidorURL = 'http://localhost:5276/api';
+  private servidorURL = 'https://hospiapi.azurewebsites.net/api';
 
   //metodos para setear y almacenar el id.
 
@@ -71,6 +71,7 @@ export class ComunicationService {
 
   getSalones(): Observable<any> {
     //DEBE DE SER EXACTAMENTE IGUAL EN LA API la estructura que pide
+    console.log(`${this.servidorURL}/Salon`)
     return this.http.get<any>(`${this.servidorURL}/Salon`);
   }
   postSalones(equipoData: any): Observable<any> {

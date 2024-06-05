@@ -24,7 +24,7 @@ export class LoginComponent {
     console.log(data);
 
     try {
-      const response = await fetch('http://localhost:5276/api/Paciente/login', {
+      const response = await fetch('hospiapi.azurewebsites.net/api/Paciente/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

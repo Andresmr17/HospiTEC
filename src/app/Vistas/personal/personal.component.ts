@@ -61,6 +61,8 @@ export class PersonalComponent {
   fechaIngreso: Date | null = null;
   telefonos: string[] = [''];
   rolDescripcion = '';
+  rolId: number | null = null; // ID del rol para la modificación
+  telefonoItems: number[] = []; // Items de los teléfonos para la modificación
 
   modificarPersonal(index: number, tipoModal: number) {
     this.tipoModal = tipoModal;
@@ -76,6 +78,20 @@ export class PersonalComponent {
     this.telefonos = personalSeleccionado.telefono || [''];
     this.rolDescripcion = personalSeleccionado.rolDescripcion || '';
     this.modalVisible = true;
+
+    // Obtener IDs necesarios para las modificaciones
+    this.servicio.getAllRoles().subscribe(roles => {
+      const rol = roles.find((r: { personalCedula: string; }) => r.personalCedula === personalSeleccionado.cedula);
+      if (rol) {
+        this.rolId = rol.idRol;
+      }
+    });
+
+    this.servicio.getAllPersonalTelefonos().subscribe(telefonos => {
+      const telefonosDelPersonal = telefonos.filter((t: { personalCedula: string; }) => t.personalCedula === personalSeleccionado.cedula);
+      this.telefonoItems = telefonosDelPersonal.map((t: { item: any; }) => t.item);
+    });
+
     console.log('modificarPersonal:', personalSeleccionado);
   }
 
@@ -144,8 +160,35 @@ export class PersonalComponent {
       this.servicio.putPersonal(datatoSend1.Cedula, datatoSend1).subscribe(
         () => {
           console.log('Update PUT - personal se actualizó correctamente.');
-          this.obtenerPersonal(); // Actualiza la lista después de modificar un personal
-          this.resetForm();
+
+          // Actualizar el rol si se ha cambiado
+          if (this.rolId !== null) {
+            const rolData = { personalCedula: cedula1, descripcion: this.rolDescripcion };
+            this.servicio.putRol(this.rolId, rolData).subscribe(
+              rolResponse => {
+                console.log('Rol actualizado:', rolResponse);
+
+                // Actualizar los teléfonos
+                const telefonoRequests = this.telefonos.map((telefono, index) => {
+                  const telefonoData = { personalCedula: cedula1, telefono: telefono };
+                  return this.servicio.putPersonalTelefono(this.telefonoItems[index], telefonoData);
+                });
+                forkJoin(telefonoRequests).subscribe(
+                  telefonoResponses => {
+                    console.log('Teléfonos actualizados:', telefonoResponses);
+                    this.obtenerPersonal(); // Actualiza la lista después de modificar un personal
+                    this.resetForm();
+                  },
+                  error => {
+                    console.error('Error al actualizar teléfonos:', error);
+                  }
+                );
+              },
+              error => {
+                console.error('Error al actualizar rol:', error);
+              }
+            );
+          }
         },
         error => {
           console.error('PUT - Error al actualizar el personal:', error);
@@ -165,6 +208,8 @@ export class PersonalComponent {
     this.fechaIngreso = null;
     this.telefonos = [''];
     this.rolDescripcion = '';
+    this.rolId = null;
+    this.telefonoItems = [];
     this.isReadonly = false;
     this.modalVisible = true;
     console.log('addRegistro - tipoModal:', numero);
@@ -206,6 +251,7 @@ export class PersonalComponent {
 
   eliminarTelefono(index: number) {
     this.telefonos.splice(index, 1);
+    this.telefonoItems.splice(index, 1); // Asegúrate de que también se elimine el item correspondiente
   }
 
   resetForm() {
@@ -218,5 +264,7 @@ export class PersonalComponent {
     this.fechaIngreso = null;
     this.telefonos = [''];
     this.rolDescripcion = '';
+    this.rolId = null;
+    this.telefonoItems = [];
   }
 }

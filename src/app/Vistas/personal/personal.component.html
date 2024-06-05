@@ -18,7 +18,7 @@
         <th>Dirección</th>
         <th>Fecha Ingreso</th>
         <th>Teléfonos</th>
-        <th>Rol</th> <!-- Nueva columna para la descripción del rol -->
+        <th>Rol</th>
         <th>Modificar</th>
         <th>Eliminar</th>
       </tr>
@@ -33,7 +33,7 @@
         <td>{{ element.direccion }}</td>
         <td>{{ element.fechaIngreso | date }}</td>
         <td>{{ element.telefono?.join(', ') || 'No disponible' }}</td>
-        <td>{{ element.rolDescripcion }}</td> <!-- Mostrar la descripción del rol -->
+        <td>{{ element.rolDescripcion }}</td>
         <td>
           <button class="btn btn-primary" (click)="modificarPersonal(i, 0)" data-bs-toggle="modal" data-bs-target="#modalActualizar">Modificar</button>
         </td>
@@ -56,7 +56,6 @@
           </button>
         </div>
         <div class="modal-body">
-          <!-- Formulario del modal -->
           <div class="form-group">
             <label for="cedula">Cédula</label>
             <input type="text" class="form-control" id="cedula" placeholder="Ingrese la cédula" [value]="cedula" [readonly]="isReadonly">

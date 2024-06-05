@@ -297,4 +297,14 @@ export class ComunicationService {
   //##################################################################
 
 
+  //#####################################################
+  //PARA PATOLOGIAS
+
+  getPatologias(): Observable<any> {
+    return this.http.get<any>(`${this.servidorURL}/Patologium`);
+  }
+  // FIN PATOLOGIAS
+  //##################################################################
+
+
 }

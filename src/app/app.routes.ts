@@ -21,6 +21,8 @@ import {
 import {
   EvaluacionServicioComponent
 } from "./Vistas/vista-paciente/paciente-menu/evaluacion-servicio/evaluacion-servicio.component";
+import {CargaPacientesComponent} from "./Vistas/carga-pacientes/carga-pacientes.component";
+
 export const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'crear-cuenta', component: CrearCuentaComponent},
@@ -39,7 +41,8 @@ export const routes: Routes = [
       { path: 'camas', component: CamasComponent },
       { path: 'procedimientos', component: ProcedimientosComponent },
       { path: 'personal', component: PersonalComponent },
-      { path: 'reportes', component: ReportesComponent }
+      { path: 'reportes', component: ReportesComponent },
+      { path: 'carga', component: CargaPacientesComponent }
     ]
   },
   {path: 'paciente-menu', component: PacienteMenuComponent,

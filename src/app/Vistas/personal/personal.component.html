@@ -17,8 +17,8 @@
         <th>Fecha Nacimiento</th>
         <th>Dirección</th>
         <th>Fecha Ingreso</th>
-        <th>Teléfono</th>
-        <th>Rol</th> <!-- Nueva columna para la descripción del rol -->
+        <th>Teléfonos</th>
+        <th>Rol</th>
         <th>Modificar</th>
         <th>Eliminar</th>
       </tr>
@@ -32,8 +32,8 @@
         <td>{{ element.fechaNacimiento | date }}</td>
         <td>{{ element.direccion }}</td>
         <td>{{ element.fechaIngreso | date }}</td>
-        <td>{{ element.telefono }}</td>
-        <td>{{ element.rolDescripcion }}</td> <!-- Mostrar la descripción del rol -->
+        <td>{{ element.telefono?.join(', ') || 'No disponible' }}</td>
+        <td>{{ element.rolDescripcion }}</td>
         <td>
           <button class="btn btn-primary" (click)="modificarPersonal(i, 0)" data-bs-toggle="modal" data-bs-target="#modalActualizar">Modificar</button>
         </td>
@@ -56,7 +56,6 @@
           </button>
         </div>
         <div class="modal-body">
-          <!-- Formulario del modal -->
           <div class="form-group">
             <label for="cedula">Cédula</label>
             <input type="text" class="form-control" id="cedula" placeholder="Ingrese la cédula" [value]="cedula" [readonly]="isReadonly">
@@ -84,6 +83,18 @@
           <div class="form-group">
             <label for="fechaIngreso">Fecha de Ingreso</label>
             <input type="date" class="form-control" id="fechaIngreso" [value]="fechaIngreso">
+          </div>
+          <div class="form-group">
+            <label for="rolDescripcion">Rol</label>
+            <input type="text" class="form-control" id="rolDescripcion" placeholder="Ingrese la descripción del rol" [(ngModel)]="rolDescripcion">
+          </div>
+          <div class="form-group">
+            <label>Teléfonos</label>
+            <div *ngFor="let telefono of telefonos; let i = index">
+              <input type="text" class="form-control" [(ngModel)]="telefonos[i]" placeholder="Ingrese el teléfono">
+              <button *ngIf="telefonos.length > 1" type="button" class="btn btn-danger" (click)="eliminarTelefono(i)">Eliminar</button>
+            </div>
+            <button type="button" class="btn btn-secondary" (click)="agregarTelefono()">Agregar Teléfono</button>
           </div>
         </div>
         <div class="modal-footer">

@@ -191,6 +191,10 @@ export class ComunicationService {
   }
 
 
+  deletePersonal(cedula: string): Observable<any> {
+    return this.http.delete<any>(`${this.servidorURL}/Personal/${cedula}`);
+  }
+
   // FIN PERSONAL
   //##################################################################
 

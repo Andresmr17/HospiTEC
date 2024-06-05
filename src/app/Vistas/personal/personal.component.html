@@ -86,7 +86,11 @@
           </div>
           <div class="form-group">
             <label for="rolDescripcion">Rol</label>
-            <input type="text" class="form-control" id="rolDescripcion" placeholder="Ingrese la descripción del rol" [(ngModel)]="rolDescripcion">
+            <select class="form-control" id="rolDescripcion" [(ngModel)]="rolDescripcion">
+              <option value="Administrativo">Administrativo</option>
+              <option value="Enfermero">Enfermero</option>
+              <option value="Doctor">Doctor</option>
+            </select>
           </div>
           <div class="form-group">
             <label>Teléfonos</label>

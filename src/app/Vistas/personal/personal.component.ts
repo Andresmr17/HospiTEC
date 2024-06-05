@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { CommonModule, DatePipe, NgForOf } from "@angular/common"; // Añadir CommonModule
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { CommonModule, DatePipe, NgForOf } from "@angular/common";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ComunicationService } from "../../Servicios/comunication.service";
 import { forkJoin } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 export interface Personal {
   cedula: string;
@@ -80,11 +82,10 @@ export class PersonalComponent {
     this.modalVisible = true;
 
     // Obtener IDs necesarios para las modificaciones
+
     this.servicio.getAllRoles().subscribe(roles => {
       const rol = roles.find((r: { personalCedula: string; }) => r.personalCedula === personalSeleccionado.cedula);
-      if (rol) {
-        this.rolId = rol.idRol;
-      }
+      this.rolId = rol ? rol.idRol : null;
     });
 
     this.servicio.getAllPersonalTelefonos().subscribe(telefonos => {
@@ -92,14 +93,88 @@ export class PersonalComponent {
       this.telefonoItems = telefonosDelPersonal.map((t: { item: any; }) => t.item);
     });
 
+
     console.log('modificarPersonal:', personalSeleccionado);
   }
 
+
+
   eliminarPersonal(index: number) {
     const personalSeleccionado = this.dataSource[index];
-    // Realizar el delete o update según sea necesario
-    console.log('eliminarPersonal:', personalSeleccionado);
+
+    // Obtener IDs necesarios para la eliminación
+    this.servicio.getAllRoles().subscribe(roles => {
+      const rol = roles.find((r: { personalCedula: string; }) => r.personalCedula === personalSeleccionado.cedula);
+      const rolId = rol ? rol.idRol : null;
+
+      this.servicio.getAllPersonalTelefonos().subscribe(telefonos => {
+        const telefonosDelPersonal = telefonos.filter((t: { personalCedula: string; }) => t.personalCedula === personalSeleccionado.cedula);
+        const telefonoItems = telefonosDelPersonal.map((t: { item: number }) => t.item);
+
+        // Verificar si se han obtenido los IDs necesarios para la eliminación
+        if (rolId === null || telefonoItems.length === 0) {
+          console.error('No se han obtenido correctamente los IDs necesarios para la eliminación.');
+          return;
+        }
+
+        // Primero eliminar los teléfonos del personal
+        const eliminarTelefonos = telefonoItems.map((item: number) =>
+          this.servicio.deletePersonalTelefono(item).pipe(
+            catchError(error => {
+              console.error(`Error al eliminar el teléfono con item ${item}:`, error);
+              return throwError(error);
+            })
+          )
+        );
+
+        forkJoin(eliminarTelefonos).subscribe(
+          () => {
+            console.log('Teléfonos eliminados correctamente.');
+
+            // Luego eliminar el rol del personal
+            if (rolId !== null) {
+              this.servicio.deleteRol(rolId).pipe(
+                catchError(error => {
+                  console.error(`Error al eliminar el rol con id ${rolId}:`, error);
+                  return throwError(error);
+                })
+              ).subscribe(
+                () => {
+                  console.log('Rol eliminado correctamente.');
+
+                  // Finalmente eliminar el personal
+                  this.servicio.deletePersonal(personalSeleccionado.cedula).pipe(
+                    catchError(error => {
+                      console.error(`Error al eliminar el personal con cédula ${personalSeleccionado.cedula}:`, error);
+                      return throwError(error);
+                    })
+                  ).subscribe(
+                    () => {
+                      console.log('Personal eliminado correctamente.');
+                      this.obtenerPersonal(); // Actualizar la lista después de eliminar el personal
+                    },
+                    error => {
+                      console.error('Error al eliminar el personal:', error);
+                    }
+                  );
+                },
+                error => {
+                  console.error('Error al eliminar el rol:', error);
+                }
+              );
+            }
+          },
+          error => {
+            console.error('Error al eliminar los teléfonos:', error);
+          }
+        );
+      });
+    });
   }
+
+
+
+
 
   guardarCambios() {
     const cedula1 = (document.getElementById('cedula') as HTMLInputElement).value.trim();

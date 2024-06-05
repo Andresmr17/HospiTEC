@@ -52,10 +52,18 @@ export class EquipoComponent {
 
   //metodo para modificar los registros en base al index
   eliminarEquipo(index: number) {
-    const equipoSeleccionado = this.dataSource[index]; //obtengo el dato especifco
-    //aca se hace el delete o el update
+    const equipoSeleccionado = this.dataSource[index];
     console.log('Se ha presionado el botón de eliminar para el elemento en el índice:', index);
-
+    this.servicio.deleteEquipo(equipoSeleccionado.idEquipo).subscribe(
+      response => {
+        console.log('Equipo eliminado:', response);
+        this.dataSource.splice(index, 1); // Eliminar el registro del dataSource
+      },
+      error => {
+        console.error('Error al eliminar el equipo:', error);
+        // Maneja el error adecuadamente aquí
+      }
+    );
   }
   guardarCambios() {
     const idEquipoElement = (document.getElementById('idEquipo') as HTMLInputElement).value.trim();

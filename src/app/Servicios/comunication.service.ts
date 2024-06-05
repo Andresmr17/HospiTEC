@@ -65,6 +65,10 @@ export class ComunicationService {
     return this.http.put<any>(`${this.servidorURL}/Equipo/${idEquipo}`, equipoData, httpOptions);
   }
 
+
+  deleteEquipo(idEquipo: number): Observable<any> {
+    return this.http.delete<any>(`${this.servidorURL}/Equipo/${idEquipo}`);
+  }
   //FIN VISTA CAMAS -------------------------
   //INICIO VISTA SALONES -------------------------
 
@@ -88,6 +92,11 @@ export class ComunicationService {
     };
     return this.http.put<any>(`${this.servidorURL}/Salon/${nombreSalon}`, equipoData, httpOptions);
   }
+
+  deleteSalon(nombreSalon: string): Observable<any> {
+    return this.http.delete<any>(`${this.servidorURL}/Salon/${nombreSalon}`);
+  }
+
 
   //FIN VISTA SALONES -------------------------
 

@@ -50,10 +50,19 @@ export class SalonesComponent {
 
   //metodo para modificar los registros en base al index
   eliminarRegistro(index: number) {
-    const salonSeleccionado = this.dataSource[index]; //obtengo el dato especifco
-    //aca se hace el delete o el update
+    const salonSeleccionado = this.dataSource[index];
     console.log('Se ha presionado el botón de eliminar para el elemento en el índice:', index);
-
+    this.servicio.deleteSalon(salonSeleccionado.nombreSalon).subscribe(
+      response => {
+        console.log('Salón eliminado:', response);
+        // Eliminar el registro del dataSource
+        this.dataSource.splice(index, 1);
+      },
+      error => {
+        console.error('Error al eliminar el salón:', error);
+        // Maneja el error adecuadamente aquí
+      }
+    );
   }
   guardarCambios() {
     // Aquí puedes acceder a los datos del formulario usando el objeto 'formulario.value'

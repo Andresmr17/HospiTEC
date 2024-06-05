@@ -26,23 +26,7 @@ export interface Salon {
 })
 export class CamasComponent {
   constructor(private servicio: ComunicationService) { }
-  dataSource: Camas[] = [
-    {
-      "idCama": 1,
-      "nombreSalon": "Salón A",
-      "estadoUCI": true
-    },
-    {
-      "idCama": 2,
-      "nombreSalon": "Salón B",
-      "estadoUCI": false
-    },
-    {
-      "idCama": 3,
-      "nombreSalon": "Salón C",
-      "estadoUCI": true
-    }
-  ];//aca se guardan los datos solicitados del servidor
+  dataSource: Camas[] = [];//aca se guardan los datos solicitados del servidor
 
   idCama = 0;
   modalVisible = false;

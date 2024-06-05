@@ -98,6 +98,7 @@ export class EquipoComponent {
       this.servicio. postEquipos(datatoSend1).subscribe(
         response => {
           console.log('Datos enviados a posgress', response);
+          this.obtenerEquipo();
         },
         error => {
           console.error('Error al enviar datos al servidor:', error);
@@ -110,6 +111,7 @@ export class EquipoComponent {
         .subscribe(
           () => {
             console.log('La cama se actualizó correctamente.');
+            this.obtenerEquipo();
             // Realizar cualquier otra acción necesaria después de la actualización
           },
           error => {

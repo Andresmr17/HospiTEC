@@ -85,6 +85,7 @@ export class SalonesComponent {
       this.servicio. postSalones(datatoSend1).subscribe(
         response => {
           console.log('Datos enviados a posgress', response);
+          this.obtenerReportes();;
         },
         error => {
           console.error('Error al enviar datos al servidor:', error);
@@ -98,6 +99,7 @@ export class SalonesComponent {
           () => {
             console.log('La cama se actualizó correctamente.');
             // Realizar cualquier otra acción necesaria después de la actualización
+            this.obtenerReportes();
           },
           error => {
             console.error('Error al actualizar la cama:', error);

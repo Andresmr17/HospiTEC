@@ -1,0 +1,58 @@
+.container {
+  max-width: 900px;
+  background-color: var(--background-color6);
+  color: white;
+  border-radius: 1rem;
+  margin-top: 50px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.report {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.stars {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5px;
+}
+
+.star {
+  font-size: 32px;
+  color: var(--stars);
+  transition: color 0.3s;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.star:last-child {
+  margin-right: 0;
+}
+
+.star:hover {
+  color: goldenrod;
+}
+
+.submit {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.submit button {
+  background-color: var(--navbar-light-primary);
+  color: var(--background-color7);
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.submit button:hover {
+  background-color: goldenrod;
+}

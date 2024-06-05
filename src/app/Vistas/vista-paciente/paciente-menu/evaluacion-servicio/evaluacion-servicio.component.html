@@ -1,1 +1,37 @@
+<div class="container">
+  <h1>Evaluación del Servicio Recibido</h1>
 
+  <div class="report">
+    <h3>Aseo</h3>
+    <div class="stars">
+      <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
+        <i class="bi star" (click)="rateAseo(star)" [ngClass]="{'bi-star-fill': star <= aseoRating, 'bi-star': star > aseoRating}"></i>
+      </ng-container>
+      <span>{{ aseoRating }} / 5</span>
+    </div>
+  </div>
+
+  <div class="report">
+    <h3>Trato</h3>
+    <div class="stars">
+      <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
+        <i class="bi star" (click)="rateTrato(star)" [ngClass]="{'bi-star-fill': star <= tratoRating, 'bi-star': star > tratoRating}"></i>
+      </ng-container>
+      <span>{{ tratoRating }} / 5</span>
+    </div>
+  </div>
+
+  <div class="report">
+    <h3>Puntualidad</h3>
+    <div class="stars">
+      <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
+        <i class="bi star" (click)="ratePuntualidad(star)" [ngClass]="{'bi-star-fill': star <= puntualidadRating, 'bi-star': star > puntualidadRating}"></i>
+      </ng-container>
+      <span>{{ puntualidadRating }} / 5</span>
+    </div>
+  </div>
+
+  <div class="submit">
+    <button (click)="submitRatings()">Enviar Calificaciones</button>
+  </div>
+</div>

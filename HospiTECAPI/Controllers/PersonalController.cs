@@ -179,6 +179,48 @@ public async Task<ActionResult> PostPersonal(PersonalRequest dto)
     return Ok();
 }
 
+[HttpPut("sp/{cedula}")]
+public async Task<IActionResult> PutPersonal(string cedula, [FromBody] PersonalUpdateRequest dto)
+{
+    var query = @"
+        CALL actualizar_paciente(
+            @cedula_personal,
+            @nombre_personal,
+            @apellido1_personal,
+            @apellido2_personal,
+            @fecha_nacimiento,
+            @direccion_personal,
+            @fecha_ingreso,
+            @telefono1,
+            @telefono2,
+            @rol_descripcion
+        )";
+
+    var parameters = new List<NpgsqlParameter>
+    {
+        new NpgsqlParameter("@cedula_personal", cedula),
+        new NpgsqlParameter("@nombre_personal", dto.Nombre ?? (object)DBNull.Value),
+        new NpgsqlParameter("@apellido1_personal", dto.Apellido1 ?? (object)DBNull.Value),
+        new NpgsqlParameter("@apellido2_personal", dto.Apellido2 ?? (object)DBNull.Value),
+        new NpgsqlParameter("@fecha_nacimiento", string.IsNullOrEmpty(dto.FechaNacimiento) ? (object)DBNull.Value : DateTime.Parse(dto.FechaNacimiento)),
+        new NpgsqlParameter("@direccion_personal", dto.Direccion ?? (object)DBNull.Value),
+        new NpgsqlParameter("@fecha_ingreso", string.IsNullOrEmpty(dto.FechaIngreso) ? (object)DBNull.Value : DateTime.Parse(dto.FechaIngreso)),
+        new NpgsqlParameter("@telefono1", dto.Telefono1 ?? (object)DBNull.Value),
+        new NpgsqlParameter("@telefono2", dto.Telefono2 ?? (object)DBNull.Value),
+        new NpgsqlParameter("@rol_descripcion", dto.Rol ?? (object)DBNull.Value)
+    };
+
+    await _context.Database.ExecuteSqlRawAsync(query, parameters.ToArray());
+
+    return NoContent();
+}
+
+
+
+
+
+
+
 
 
 

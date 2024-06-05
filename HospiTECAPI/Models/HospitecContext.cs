@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
+using Testcontextweas.Models;
 
 namespace HospiTECAPI.Models;
 
@@ -32,10 +33,12 @@ public partial class HospitecContext : DbContext
     public virtual DbSet<Horarioscama> Horarioscamas { get; set; }
 
     public virtual DbSet<Paciente> Pacientes { get; set; }
-
+    public DbSet<InformacionPaciente> InformacionPaciente { get; set; }
     public virtual DbSet<PacienteTelefono> PacienteTelefonos { get; set; }
 
     public virtual DbSet<Patologium> Patologia { get; set; }
+    
+    public virtual DbSet<Patologiaspresente> Patologiaspresentes { get; set; }
 
     public virtual DbSet<Personal> Personals { get; set; }
 
@@ -203,6 +206,31 @@ public partial class HospitecContext : DbContext
             entity.Property(e => e.Descripcion)
                 .HasMaxLength(255)
                 .HasColumnName("descripcion");
+        });
+        modelBuilder.Entity<Patologiaspresente>(entity =>
+        {
+            entity.HasKey(e => e.Idpatpresente).HasName("patologiaspresentes_pkey");
+
+            entity.ToTable("patologiaspresentes");
+
+            entity.Property(e => e.Idpatpresente).HasColumnName("idpatpresente");
+            entity.Property(e => e.Descripciontratamiento)
+                .HasMaxLength(200)
+                .HasColumnName("descripciontratamiento");
+            entity.Property(e => e.Nombrepatologia)
+                .HasMaxLength(100)
+                .HasColumnName("nombrepatologia");
+            entity.Property(e => e.Pacientecedula)
+                .HasMaxLength(20)
+                .HasColumnName("pacientecedula");
+
+            entity.HasOne(d => d.NombrepatologiaNavigation).WithMany(p => p.Patologiaspresentes)
+                .HasForeignKey(d => d.Nombrepatologia)
+                .HasConstraintName("fk_patologiapresentes_patologia");
+
+            entity.HasOne(d => d.PacientecedulaNavigation).WithMany(p => p.Patologiaspresentes)
+                .HasForeignKey(d => d.Pacientecedula)
+                .HasConstraintName("fk_patologiapresentes_paciente");
         });
 
         modelBuilder.Entity<Personal>(entity =>
@@ -376,6 +404,7 @@ public partial class HospitecContext : DbContext
         //clase de modelos solo para matear resultados de consultas
         modelBuilder.Entity<CamaYEquipos>().HasNoKey().ToView(null);
         modelBuilder.Entity<HistorialView>().HasNoKey();
+        modelBuilder.Entity<InformacionPaciente>().HasNoKey().ToView(null);
         OnModelCreatingPartial(modelBuilder);
         
         
@@ -400,6 +429,20 @@ public partial class HospitecContext : DbContext
             .FromSqlRaw("SELECT * FROM get_cama_y_equipos(@id_cama)", idCamaParam)
             .ToListAsync();
     }
+    //metodo para llamar el store procedure de la informacion del paciente
+    public async Task<InformacionPaciente> ObtenerInformacionPaciente(string cedula)
+    {
+        using (var context = new HospitecContext())
+        {
+            var cedulaParam = new NpgsqlParameter("cedula_paciente", cedula);
+            var result = await context.InformacionPaciente
+                .FromSqlRaw("SELECT * FROM obtener_informacion_paciente(@cedula_paciente)", cedulaParam)
+                .ToListAsync();
+
+            return result.FirstOrDefault();
+        }
+    }
+
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

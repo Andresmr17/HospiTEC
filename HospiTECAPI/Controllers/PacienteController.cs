@@ -132,6 +132,18 @@ public async Task<IActionResult> DeletePaciente(string cedula)
     await _context.SaveChangesAsync();
     return NoContent();
 }
+[HttpGet("sp/{cedula}")]
+public async Task<IActionResult> GetPacienteInfo(string cedula)
+{
+    var pacienteInfo = await _context.ObtenerInformacionPaciente(cedula);
+    if (pacienteInfo == null)
+    {
+        return NotFound();
+    }
+    return Ok(pacienteInfo);
+}
+
+
 
 
     [HttpPost]

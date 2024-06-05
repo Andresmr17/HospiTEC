@@ -31,6 +31,9 @@ SELECT * FROM Tratamiento;
 -- Verificación de los datos en la tabla Personal
 SELECT * FROM Personal;
 
+-- Verificación de los datos en la tabla patologiaspresentes
+SELECT * FROM patologiaspresentes;
+
 -- Verificación de los datos en la tabla Rol
 SELECT * FROM Rol;
 

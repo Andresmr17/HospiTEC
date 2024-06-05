@@ -42,3 +42,20 @@ public class PersonalRequest
     public string Rol { get; set; }
 }
 
+
+public class PersonalUpdateRequest
+{
+    public string Nombre { get; set; }
+    public string Apellido1 { get; set; }
+    public string Apellido2 { get; set; }
+    public string FechaNacimiento { get; set; }
+    public string Direccion { get; set; }
+    public string FechaIngreso { get; set; }
+    public string Telefono1 { get; set; }
+    public string Telefono2 { get; set; }
+    public string Rol { get; set; }
+}
+
+
+
+

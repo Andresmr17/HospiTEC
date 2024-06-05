@@ -103,7 +103,19 @@ CREATE TABLE Paciente_Telefono (
     telefono VARCHAR(20)
 );
 
+CREATE TABLE patologiaspresentes (
+    idPatPresente SERIAL PRIMARY KEY,
+    pacienteCedula VARCHAR(20),
+	nombrePatologia VARCHAR(100),
+    descripcionTratamiento VARCHAR(200)
+);
+
 -- Alter table para claves foráneas
+
+ALTER TABLE patologiaspresentes
+ADD CONSTRAINT fk_patologiapresentes_paciente FOREIGN KEY (pacienteCedula) REFERENCES Paciente (cedula),
+ADD CONSTRAINT fk_patologiapresentes_patologia FOREIGN KEY (nombrePatologia) REFERENCES Patologia (nombrePatologia);
+
 ALTER TABLE Historial
 ADD CONSTRAINT fk_historial_proced FOREIGN KEY (idProced) REFERENCES Procedimientos (idProced),
 ADD CONSTRAINT fk_historial_tratamiento FOREIGN KEY (idTratamiento) REFERENCES Tratamiento (idTratamiento),

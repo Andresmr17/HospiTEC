@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-reportes',
@@ -41,5 +42,25 @@ export class ReportesComponent {
   private calculateAverage(ratings: number[]): number {
     const sum = ratings.reduce((a, b) => a + b, 0);
     return sum / ratings.length;
+  }
+
+  generatePDF() {
+    const doc = new jsPDF();
+
+    doc.text('Reportes de Áreas de Mejora', 10, 10);
+
+    doc.text('Aseo', 10, 20);
+    doc.text(`Promedio: ${this.aseoAverage.toFixed(1)} / 5`, 10, 30);
+    doc.text(`Cantidad de calificaciones: ${this.aseoCount}`, 10, 40);
+
+    doc.text('Trato', 10, 50);
+    doc.text(`Promedio: ${this.tratoAverage.toFixed(1)} / 5`, 10, 60);
+    doc.text(`Cantidad de calificaciones: ${this.tratoCount}`, 10, 70);
+
+    doc.text('Puntualidad', 10, 80);
+    doc.text(`Promedio: ${this.puntualidadAverage.toFixed(1)} / 5`, 10, 90);
+    doc.text(`Cantidad de calificaciones: ${this.puntualidadCount}`, 10, 100);
+
+    doc.save('reportes.pdf');
   }
 }

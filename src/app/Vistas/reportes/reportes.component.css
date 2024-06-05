@@ -1,22 +1,39 @@
 .container {
   margin-top: 20px;
 }
-
 .report {
   margin-bottom: 20px;
 }
-
 .stars {
   display: flex;
   align-items: center;
 }
-
 .stars i {
   color: gold;
   margin-right: 5px;
 }
-
 .stars span, .stars small {
   margin-left: 10px;
   font-weight: bold;
+}
+h1 {
+  color: #FFF;
+}
+h3 {
+  color: #FFF;
+}
+span {
+  color: #FFF; /* Cambia el color del texto al que desees */
+}
+small {
+  color: #FFF; /* Cambia el color del texto al que desees */
+}
+.btn {
+  background-color: #C06C84; /* Cambia el color de fondo del botón */
+  color: #FFF; /* Cambia el color del texto del botón */
+  border-color: #C06C84; /* Cambia el color del borde del botón */
+}
+.btn:hover {
+  background-color: #F67280; /* Cambia el color de fondo del botón al pasar el ratón por encima */
+  border-color: #F67280; /* Cambia el color del borde del botón al pasar el ratón por encima */
 }

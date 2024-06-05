@@ -142,7 +142,11 @@ export class ComunicationService {
 
   // FIN PROCEDIMIENTOS
   //##################################################################
-
+//PARA LOGIN ***
+  Login(cedula:string): Observable<any> {
+    return this.http.get<any>(`${this.servidorURL}/Personal/${cedula}`);
+  }
+  //FIN LOGIN
 
 
   //#####################################################

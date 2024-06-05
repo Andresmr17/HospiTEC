@@ -53,10 +53,18 @@ export class ProcedimientosComponent {
 
   eliminarProcedimiento(index: number) {
     const procedimientoSeleccionado = this.dataSource[index];
-    // Realizar el delete o update según sea necesario
     console.log('eliminarProcedimiento:', procedimientoSeleccionado);
+    this.servicio.deleteProcedimiento(procedimientoSeleccionado.idProcedimiento).subscribe(
+      response => {
+        console.log('Procedimiento eliminado:', response);
+        this.dataSource.splice(index, 1); // Eliminar el registro del dataSource
+      },
+      error => {
+        console.error('Error al eliminar el procedimiento:', error);
+        // Maneja el error adecuadamente aquí
+      }
+    );
   }
-
   guardarCambios() {
     const idProcedimientoElement = (document.getElementById('idProcedimiento') as HTMLInputElement).value.trim();
     const idProcedimiento1 = parseInt(idProcedimientoElement, 10);

@@ -57,11 +57,19 @@ export class CamasComponent {
   }
 
   //metodo para modificar los registros en base al index
-  eliminarEquipo(index: number) {
-    const equipoSeleccionado = this.dataSource[index]; //obtengo el dato especifco
-    //aca se hace el delete o el update
+  eliminarCama(index: number) {
+    const camaSeleccionada = this.dataSource[index];
     console.log('Se ha presionado el botón de eliminar para el elemento en el índice:', index);
-
+    this.servicio.deleteCama(camaSeleccionada.idCama).subscribe(
+      response => {
+        console.log('Cama eliminada:', response);
+        this.dataSource.splice(index, 1); // Eliminar el registro del dataSource
+      },
+      error => {
+        console.error('Error al eliminar la cama:', error);
+        // Maneja el error adecuadamente aquí
+      }
+    );
   }
   guardarCambios() { //metodo para el post o update
     // Aquí puedes acceder a los datos del formulario usando el objeto 'formulario.value'

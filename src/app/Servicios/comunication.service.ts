@@ -40,6 +40,12 @@ export class ComunicationService {
     };
     return this.http.put<any>(`${this.servidorURL}/Cama/${idCama}`, camaData, httpOptions);
   }
+
+
+  deleteCama(idCama: number): Observable<any> {
+    return this.http.delete<any>(`${this.servidorURL}/Cama/${idCama}`);
+  }
+
   //FIN VISTA CAMAS------------
   //Para la VISTA EQUIPO MEDICO------
   getEquipos(): Observable<any> {
@@ -167,6 +173,10 @@ export class ComunicationService {
       })
     };
     return this.http.put<any>(`${this.servidorURL}/Procedimiento/${idProcedimiento}`, procedimientoData, httpOptions);
+  }
+
+  deleteProcedimiento(idProcedimiento: number): Observable<any> {
+    return this.http.delete<any>(`${this.servidorURL}/Procedimiento/${idProcedimiento}`);
   }
 
   // FIN PROCEDIMIENTOS

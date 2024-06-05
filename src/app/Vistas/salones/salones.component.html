@@ -54,12 +54,12 @@
     </ul>
   </nav>-->
   <!-- LO DE ABAJO ES EL MODAL PARA HACER EL UPDATE A LOS SALONES-->
-  <div class="modal fade" id="modalActualizar" tabindex="-1" role="dialog" aria-labelledby="modalAgregarLabel" aria-hidden="false" [class.show]="modalVisible">
+  <div class="modal fade" id="modalActualizar" tabindex="-1" role="dialog" aria-labelledby="modalAgregarLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="modalActualizarLabel">Agregar o actualizar camas</h5>
-          <button type="button" class="close"  data-bs-dismiss="modal" aria-label="Close">
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -67,7 +67,7 @@
           <!-- Formulario del MODAL-->
           <div class="form-group">
             <label for="nombreSalon">Nombre del Salón</label>
-            <input type="text" class="form-control" id="nombreSalon" placeholder="Ingrese el nombre del salón"  [value]="nombreSalon"  [readonly]="isReadonly">
+            <input type="text" class="form-control" id="nombreSalon" placeholder="Ingrese el nombre del salón" [value]="nombreSalon" [readonly]="isReadonly">
           </div>
           <div class="form-group">
             <label for="capacidadCamas">Capacidad en Camas</label>
@@ -88,7 +88,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-primary"  (click)="guardarCambios()">Guardar Cambios</button>
+          <button type="button" class="btn btn-primary" (click)="guardarCambios()">Guardar Cambios</button>
         </div>
       </div>
     </div>

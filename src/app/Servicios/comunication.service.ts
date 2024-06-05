@@ -10,17 +10,13 @@ export class ComunicationService {
   private servidorURL = 'https://hospiapi.azurewebsites.net/api';
 
   //metodos para setear y almacenar el id.
-
-
-
-
   constructor(private http: HttpClient) {}
   //obtiene los reportes de este usuario
 
   //Para la VISTA CAMAS------
   getCamas(): Observable<any> {//idOperador es como lo tengo en la bd
     //DEBE DE SER EXACTAMENTE IGUAL EN LA API
-    return this.http.get<any>(`${this.servidorURL}/Cama`);
+    return this.http.get<any>(`${this.servidorURL}/Cama/sp`);
   }
 
   //metodo para actualizar la información de las camas
@@ -41,6 +37,12 @@ export class ComunicationService {
     };
     return this.http.put<any>(`${this.servidorURL}/Cama/${idCama}`, camaData, httpOptions);
   }
+
+
+  deleteCama(idCama: number): Observable<any> {
+    return this.http.delete<any>(`${this.servidorURL}/Cama/${idCama}`);
+  }
+
   //FIN VISTA CAMAS------------
   //Para la VISTA EQUIPO MEDICO------
   getEquipos(): Observable<any> {
@@ -66,6 +68,10 @@ export class ComunicationService {
     return this.http.put<any>(`${this.servidorURL}/Equipo/${idEquipo}`, equipoData, httpOptions);
   }
 
+
+  deleteEquipo(idEquipo: number): Observable<any> {
+    return this.http.delete<any>(`${this.servidorURL}/Equipo/${idEquipo}`);
+  }
   //FIN VISTA CAMAS -------------------------
   //INICIO VISTA SALONES -------------------------
 
@@ -91,50 +97,21 @@ export class ComunicationService {
     return this.http.put<any>(`${this.servidorURL}/Salon/${nombreSalon}`, equipoData, httpOptions);
   }
 
-  //FIN VISTA SALONES -------------------------
+  deleteSalon(nombreSalon: string): Observable<any> {
+    return this.http.delete<any>(`${this.servidorURL}/Salon/${nombreSalon}`);
+  }
 
-  //solicitud reserva activos estudiantes.
-  solicitarReserva(reservaEdata: any): Observable<any> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-    return this.http.post<any>(`${this.servidorURL}/Prestamos`, reservaEdata,httpOptions);
+
+  //FIN VISTA SALONES -------------------------
+  //INICIO VISTA Reportes -------------------------
+  getEvaluaciones(): Observable<any> {
+    //DEBE DE SER EXACTAMENTE IGUAL EN LA API la estructura que pide
+    return this.http.get<any>(`${this.servidorURL}/Evaluaciones`);
   }
-  //solicitud reserva para profesores
-  solicitarReservaP(reservaPdata: any): Observable<any> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-    return this.http.post<any>(`${this.servidorURL}/Prestamos`, reservaPdata,httpOptions);
-  }
-  registrarse(registrarsedata: any): Observable<any> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-    return this.http.post<any>(`${this.servidorURL}/Operadores`, registrarsedata,httpOptions);
-  }
-  Averias(averiadata: any): Observable<any> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-    return this.http.post<any>(`${this.servidorURL}/averias`, averiadata,httpOptions);
-  }
-  logout(logoutData: any): Observable<any> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-    return this.http.post<any>(`${this.servidorURL}/SesionesOperador`, logoutData,httpOptions);
-  }
+  //FIN VISTA REPORTES----------------
+
+
+
 
 
 
@@ -162,9 +139,17 @@ export class ComunicationService {
     return this.http.put<any>(`${this.servidorURL}/Procedimiento/${idProcedimiento}`, procedimientoData, httpOptions);
   }
 
+  deleteProcedimiento(idProcedimiento: number): Observable<any> {
+    return this.http.delete<any>(`${this.servidorURL}/Procedimiento/${idProcedimiento}`);
+  }
+
   // FIN PROCEDIMIENTOS
   //##################################################################
-
+//PARA LOGIN ***
+  Login(cedula:string): Observable<any> {
+    return this.http.get<any>(`${this.servidorURL}/Personal/${cedula}`);
+  }
+  //FIN LOGIN
 
 
   //#####################################################
@@ -192,6 +177,10 @@ export class ComunicationService {
     return this.http.put<any>(`${this.servidorURL}/Personal/${idPersonal}`, personalData, httpOptions);
   }
 
+
+  deletePersonal(cedula: string): Observable<any> {
+    return this.http.delete<any>(`${this.servidorURL}/Personal/${cedula}`);
+  }
 
   // FIN PERSONAL
   //##################################################################
@@ -275,7 +264,6 @@ export class ComunicationService {
   // FIN TELEFONO PERSONAL
   //##################################################################
 
-
   //PARA VISTA DOCTOR
   //########################################################################
 
@@ -304,6 +292,16 @@ export class ComunicationService {
   getTreatments(): Observable<any[]> {
     return this.http.get<any[]>(`${this.servidorURL}/Tratamiento`);
   }
+
+  //#####################################################
+  //PARA PATOLOGIAS
+
+  getPatologias(): Observable<any> {
+    return this.http.get<any>(`${this.servidorURL}/Patologium`);
+  }
+  // FIN PATOLOGIAS
+  //##################################################################
+
 
 
 }

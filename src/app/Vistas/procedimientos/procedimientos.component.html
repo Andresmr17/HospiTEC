@@ -45,7 +45,11 @@
           </div>
           <div class="form-group">
             <label for="nombrePatologia">Nombre de la Patología</label>
-            <input type="text" class="form-control" id="nombrePatologia" placeholder="Ingrese el nombre de la patología" [value]="nombrePatologia">
+            <select class="form-control" id="nombrePatologia" [(ngModel)]="nombrePatologia">
+              <option *ngFor="let patologia of patologias" [value]="patologia.nombrePatologia">
+                {{ patologia.nombrePatologia }}
+              </option>
+            </select>
           </div>
           <div class="form-group">
             <label for="procedimientoNombre">Nombre del Procedimiento</label>

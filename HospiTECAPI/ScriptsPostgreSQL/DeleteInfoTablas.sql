@@ -7,6 +7,7 @@ DELETE FROM Historial;
 -- Eliminación de datos de la tabla Reserva
 DELETE FROM Reserva;
 
+
 -- Eliminación de datos de la tabla Procedimientos
 DELETE FROM Procedimientos;
 
@@ -39,3 +40,10 @@ DELETE FROM Personal_Telefono;
 
 -- Eliminación de datos de la tabla Paciente_Telefono
 DELETE FROM Paciente_Telefono;
+
+
+
+--eliminacion de cedulas personal
+DELETE FROM personal WHERE cedula = '8888888' ;
+DELETE FROM rol WHERE personalCedula =  '8888888';
+DELETE FROM personal_telefono WHERE personalCedula IN ('111111', '8888888');

@@ -328,11 +328,37 @@ DROP FUNCTION obtener_informacion_paciente(character varying)
 --dropear el procedure
 --DROP PROCEDURE insertar_paciente(character varying,character varying,character varying,character varying,timestamp without time zone,character varying,timestamp without time zone,character varying,character varying,character varying);
 
-
-
-
-
-
 --triggers
+
+
+-- Crear función trigger para aumentar la capacidad de camas
+CREATE OR REPLACE FUNCTION aumentar_capacidad_camas()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE Salon
+    SET capacidadCamas = capacidadCamas + 1
+    WHERE nombreSalon = NEW.nombreSalon;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Crear el trigger
+CREATE TRIGGER trigger_aumentar_capacidad_camas
+AFTER INSERT ON Cama
+FOR EACH ROW EXECUTE FUNCTION aumentar_capacidad_camas();
+
+-- prueba del trigger para aumentar la capacidad de camas
+INSERT INTO Salon (nombreSalon, capacidadCamas, tipoDeSalon, numeroDePiso)
+VALUES ('Salon A', 0, 'General', 1);
+
+INSERT INTO Cama (nombreSalon, estadoUCI)
+VALUES ('Salon A', FALSE);
+
+INSERT INTO Cama (nombreSalon, estadoUCI)
+VALUES ('Salon A', FALSE);
+
+SELECT * FROM Salon WHERE nombreSalon = 'Salon A';
+
+
 
 

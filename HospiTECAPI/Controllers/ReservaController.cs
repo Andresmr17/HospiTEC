@@ -100,7 +100,7 @@ public async Task<IActionResult> PostReserva([FromBody] ReservaDTO dto)
 
 // PUT: api/Reserva/{idReservacion}
 [HttpPut("{idReservacion}")]
-public async Task<IActionResult> UpdateReserva(int idReservacion, [FromBody] Reserva reservaUpdated)
+public async Task<IActionResult> UpdateReserva(int idReservacion, [FromBody] ReservaDTO reservaUpdated)
 {
     var reserva = await _context.Reservas.FindAsync(idReservacion);
     if (reserva == null)
@@ -110,8 +110,10 @@ public async Task<IActionResult> UpdateReserva(int idReservacion, [FromBody] Res
     if (reservaUpdated.Pacientecedula != null) reserva.Pacientecedula = reservaUpdated.Pacientecedula;
     if (reservaUpdated.Idcama != null) reserva.Idcama = reservaUpdated.Idcama;
     if (reservaUpdated.Idproced != null) reserva.Idproced = reservaUpdated.Idproced;
-    if (reservaUpdated.Fechaingreso != null) reserva.Fechaingreso = reservaUpdated.Fechaingreso;
-    if (reservaUpdated.Fechasalida != null) reserva.Fechasalida = reservaUpdated.Fechasalida;
+    if (!string.IsNullOrEmpty(reservaUpdated.Fechaingreso) && DateOnly.TryParse(reservaUpdated.Fechaingreso, out var fechaingresoParsed))
+        reserva.Fechaingreso = fechaingresoParsed;
+    if (!string.IsNullOrEmpty(reservaUpdated.Fechasalida) && DateOnly.TryParse(reservaUpdated.Fechasalida, out var fechasalidaParsed))
+        reserva.Fechasalida = fechasalidaParsed;
     _context.Reservas.Update(reserva);
     await _context.SaveChangesAsync();
     return NoContent();

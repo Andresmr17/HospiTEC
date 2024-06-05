@@ -16,6 +16,9 @@
         <th>Id cama</th>
         <th>Salon asociado</th>
         <th>Cuidados intesivos</th>
+        <th>Id equipo</th>
+        <th>nombre equipo</th>
+        <th>Cantidad</th>
         <th>Modificar</th>
         <th>Eliminar</th>
       </tr>
@@ -25,6 +28,9 @@
         <td>{{ element.idCama }}</td>
         <td>{{ element.nombreSalon }}</td>
         <td>{{ element.estadoUCI}}</td>
+        <td>{{ element.idEquipo }}</td>
+        <td>{{ element.nombre }}</td>
+        <td>{{ element.cantidad}}</td>
         <td><button class="btn btn-primary" (click)="modificarCamas(i,0)" data-bs-toggle="modal" data-bs-target="#modalActualizar" >Modificar</button></td>
         <td><button class="btn btn-primary" (click)="eliminarCama(i)" >Eliminar</button></td>
       </tr>

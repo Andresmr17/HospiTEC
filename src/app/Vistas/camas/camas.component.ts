@@ -6,6 +6,9 @@ export interface Camas {
   idCama: number;
   nombreSalon: string;
   estadoUCI: boolean;
+  idEquipo:number;
+  nombre:string;
+  cantidad:number;
 }
 
 export interface Salon {
@@ -127,13 +130,11 @@ export class CamasComponent {
         );
     }
   }
-
   addRegistro(numero: number) {
     this.tipoModal = numero;
     this.idCama = 0;
     this.isReadonly = false;
   }
-
   obtenerEquipo() {
     this.servicio.getCamas().subscribe(
       response => {

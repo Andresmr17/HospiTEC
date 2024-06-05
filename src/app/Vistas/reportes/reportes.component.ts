@@ -2,7 +2,15 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import jsPDF from 'jspdf';
+import {ComunicationService} from "../../Servicios/comunication.service";
 
+export interface Evaluacion {
+  id: string;
+  nombreServicio: string;
+  aseo: number;
+  trato: number;
+  puntualidad: number;
+}
 @Component({
   selector: 'app-reportes',
   standalone: true,
@@ -11,10 +19,43 @@ import jsPDF from 'jspdf';
   styleUrls: ['./reportes.component.css']
 })
 export class ReportesComponent {
+  evaluaciones: Evaluacion[] = []; //este es mi datasource
+
   aseoRatings: number[] = [4, 5, 3, 4, 5]; // Ejemplo de calificaciones
   tratoRatings: number[] = [5, 4, 4, 3, 5]; // Ejemplo de calificaciones
   puntualidadRatings: number[] = [3, 4, 4, 5, 3]; // Ejemplo de calificaciones
+  constructor(private servicio: ComunicationService) {
+  }
+  getEvaluaciones(){
+    this.servicio.getEvaluaciones().subscribe(
+      response => {
+        console.log('Datos recibidos de posgress', response);
 
+        this.evaluaciones = response; //aca igualo a mi datasource
+        //aca obtengo lo que necesito para los promedios:
+        // Limpiar arrays antes de agregar nuevos datos
+        this.aseoRatings.splice(0, this.aseoRatings.length);
+        this.tratoRatings.splice(0, this.tratoRatings.length);
+        this.puntualidadRatings.splice(0, this.puntualidadRatings.length);
+        //aca se actualiza all
+        for (const evaluacion of this.evaluaciones) {
+          // Agregar el puntaje de aseo al array aseoRatings
+          this.aseoRatings.push(evaluacion.aseo);
+
+          // Agregar el puntaje de trato al array tratoRatings
+          this.tratoRatings.push(evaluacion.trato);
+
+          // Agregar el puntaje de puntualidad al array puntualidadRatings
+          this.puntualidadRatings.push(evaluacion.puntualidad);
+        }
+      },
+      error => {
+        console.error('Error al enviar datos al servidor:', error);
+        // Maneja el error adecuadamente aquí
+      }
+    );
+    console.log("se cambio el array ahora es:",this.puntualidadRatings)
+  }
   get aseoAverage(): number {
     return this.calculateAverage(this.aseoRatings);
   }
@@ -43,6 +84,7 @@ export class ReportesComponent {
     const sum = ratings.reduce((a, b) => a + b, 0);
     return sum / ratings.length;
   }
+
 
   generatePDF() {
     const doc = new jsPDF();

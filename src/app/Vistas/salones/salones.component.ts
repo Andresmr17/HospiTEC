@@ -48,7 +48,7 @@ export class SalonesComponent {
 
   }
 
-  //metodo para modificar los registros en base al index
+  //metodo para eliminar los registros en base al index
   eliminarRegistro(index: number) {
     const salonSeleccionado = this.dataSource[index];
     console.log('Se ha presionado el botón de eliminar para el elemento en el índice:', index);

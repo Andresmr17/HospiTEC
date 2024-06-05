@@ -7,19 +7,14 @@ import { Observable } from 'rxjs';
 })
 export class ComunicationService {
   private servidorURL = 'http://localhost:5276/api';
-
   //metodos para setear y almacenar el id.
-
-
-
-
   constructor(private http: HttpClient) {}
   //obtiene los reportes de este usuario
 
   //Para la VISTA CAMAS------
   getCamas(): Observable<any> {//idOperador es como lo tengo en la bd
     //DEBE DE SER EXACTAMENTE IGUAL EN LA API
-    return this.http.get<any>(`${this.servidorURL}/Cama`);
+    return this.http.get<any>(`${this.servidorURL}/Cama/sp`);
   }
 
   //metodo para actualizar la información de las camas
@@ -105,49 +100,15 @@ export class ComunicationService {
 
 
   //FIN VISTA SALONES -------------------------
+  //INICIO VISTA Reportes -------------------------
+  getEvaluaciones(): Observable<any> {
+    //DEBE DE SER EXACTAMENTE IGUAL EN LA API la estructura que pide
+    return this.http.get<any>(`${this.servidorURL}/Evaluaciones`);
+  }
+  //FIN VISTA REPORTES----------------
 
-  //solicitud reserva activos estudiantes.
-  solicitarReserva(reservaEdata: any): Observable<any> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-    return this.http.post<any>(`${this.servidorURL}/Prestamos`, reservaEdata,httpOptions);
-  }
-  //solicitud reserva para profesores
-  solicitarReservaP(reservaPdata: any): Observable<any> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-    return this.http.post<any>(`${this.servidorURL}/Prestamos`, reservaPdata,httpOptions);
-  }
-  registrarse(registrarsedata: any): Observable<any> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-    return this.http.post<any>(`${this.servidorURL}/Operadores`, registrarsedata,httpOptions);
-  }
-  Averias(averiadata: any): Observable<any> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-    return this.http.post<any>(`${this.servidorURL}/averias`, averiadata,httpOptions);
-  }
-  logout(logoutData: any): Observable<any> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-    return this.http.post<any>(`${this.servidorURL}/SesionesOperador`, logoutData,httpOptions);
-  }
+
+
 
 
 

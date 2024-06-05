@@ -2,7 +2,8 @@
 
 import { Component } from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {NgClass} from "@angular/common";
+import {NgIf} from "@angular/common";
+import { Router } from '@angular/router';
 import {ComunicationService} from "../../Servicios/comunication.service";
 
 @Component({
@@ -10,58 +11,46 @@ import {ComunicationService} from "../../Servicios/comunication.service";
   templateUrl: './add-patient.component.html',
   standalone: true,
   styleUrls: ['./add-patient.component.css'],
-  imports: [FormsModule, NgClass]
+  imports: [FormsModule, NgIf]
 })
 export class AddPatientComponent {
-  patient: any = {}; // Object to store form data
+  Nombre: string ="";
+  Apellido1: string ="";
+  Apellido2: string ="";
+  Cedula: string ="";
+  Telefono: string ="";
+  Direccion: string ="";
+  Fecha: string ="";
 
-  constructor(private servicio:ComunicationService) { }
+  constructor(private servicio:ComunicationService, private router: Router) { }
 
-  submitForm(form: any) {
-    if (form.valid) {
-      // Handle form submission logic here, such as saving the patient data
-      console.log('Form submitted:', this.patient);
-      // Reset the form after submission
-      form.resetForm();
-      // Optionally, navigate to another route or perform any other action
-    } else {
-      // Form is invalid, display validation errors or handle accordingly
-    }
-  }
+  async crearCuenta(nombre: string, apellido1: string, apellido2: string,  cedula: string, telefono: string, direccion: string, fechanacimiento: string) {
 
-  guardarCambios() {
-    // Aquí puedes acceder a los datos del formulario usando el objeto 'formulario.value'
-    const nombre = (document.getElementById('nombre') as HTMLInputElement).value;
-    const lastName1 = (document.getElementById('lastName1') as HTMLInputElement).value;
-    const lastName2 = (document.getElementById('lastName2') as HTMLSelectElement).value;
-    const id = (document.getElementById('id') as HTMLInputElement).value;
-    const phone = (document.getElementById('phone') as HTMLInputElement).value;
-    //esta es la data que se va a enviar
+    const data = JSON.stringify({nombre, apellido1, apellido2, cedula, telefono, direccion, fechanacimiento});
+    console.log(data);
 
-
-    const datatoSend1={
-      cedula : id,
-      //direccion: ,
-      //fechanacimiento: ,
-      nombre: nombre,
-      apellido1: lastName1,
-      apellido2: lastName2,
-
-    } // todo igual a los modelos
-    //console.log('el tipo de salon es :', datatoSend1.Tipodesalon);
-      this.servicio. postPaciente(datatoSend1).subscribe(
-        response => {
-          console.log('Datos enviados a posgress', response);
+    try {
+      const response = await fetch('http://localhost:5276/api/Paciente', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
         },
-        error => {
-          console.error('Error al enviar datos al servidor:', error);
-          // Maneja el error adecuadamente aquí
-        }
-      );
+        body: data
+      });
+
+      if (!response.ok) {
+        console.error('Error:', response.text());
+        throw new Error("Algo malo está pasando");
+      }
+
+
+
+    } catch (error) {
+      console.error('Error:', error);
+      // Manejar el error, mostrar un mensaje al usuario, etc.
+    }
+
   }
 
-
-
-  protected readonly FormData = FormData;
 }
 

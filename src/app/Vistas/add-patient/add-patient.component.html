@@ -5,34 +5,34 @@
 </div>
 
 <div class="container">
-  <form (ngSubmit)="submitForm(patientForm)" #patientForm="ngForm">
+  <form (ngSubmit)="crearCuenta(Nombre, Apellido1, Apellido2, Cedula, Telefono, Direccion, Fecha)" #patientForm="ngForm">
     <div class="form-group">
       <label for="nombre">Nombre:</label>
-      <input type="text" class="form-control" id="nombre" name="name" required [(ngModel)]="patient.name">
+      <input type="text" class="form-control" id="Nombre" name="name" [(ngModel)]="Nombre" #nombre="ngModel" required>
     </div>
     <div class="form-group">
       <label for="lastName1">Primer apellido:</label>
-      <input type="text" class="form-control" id="lastName1" name="lastName" required [(ngModel)]="patient.lastName">
+      <input type="text" class="form-control" id="lastName1" name="lastName" required [(ngModel)]="Apellido1">
     </div>
     <div class="form-group">
       <label for="lastName2">Segundo apellido:</label>
-      <input type="text" class="form-control" id="lastName2" name="lastName" required [(ngModel)]="patient.lastName">
+      <input type="text" class="form-control" id="lastName2" name="lastName" required [(ngModel)]="Apellido2">
     </div>
     <div class="form-group">
       <label for="id">ID:</label>
-      <input type="number" class="form-control" id="id" name="id" required [(ngModel)]="patient.id">
+      <input type="text" class="form-control" id="id" name="id" required [(ngModel)]="Cedula">
     </div>
     <div class="form-group">
       <label for="phone">Teléfono:</label>
-      <input type="number" class="form-control" id="phone" name="phone" [(ngModel)]="patient.phone">
+      <input type="number" class="form-control" id="phone" name="phone" [(ngModel)]="Telefono">
     </div>
     <div class="form-group">
       <label for="address">Dirección:</label>
-      <input type="text" class="form-control" id="address" name="address" [(ngModel)]="patient.address">
+      <input type="text" class="form-control" id="address" name="address" [(ngModel)]="Direccion">
     </div>
     <div class="form-group">
       <label for="birthdate">Fecha de Nacimiento:</label>
-      <input type="date" class="form-control" id="birthdate" name="birthdate" [(ngModel)]="patient.birthdate">
+      <input type="date" class="form-control" id="birthdate" name="birthdate" [(ngModel)]="Fecha">
     </div>
     <button type="submit" class="btn btn-primary">Guardar</button>
   </form>

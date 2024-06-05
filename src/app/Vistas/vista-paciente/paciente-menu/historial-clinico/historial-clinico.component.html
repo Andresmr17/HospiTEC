@@ -1,5 +1,5 @@
 <div class="div-titulo">
-  <p>Historial clinico</p>
+  <h1>Historial clínico</h1>
 </div>
 
 <div class="div-tabla">
@@ -8,19 +8,19 @@
     <thead>
     <tr>
       <th scope="col">Número de historial</th>
-      <th scope="col">Número de procedimiento</th>
-      <th scope="col">Número de tratamiento</th>
-      <th scope="col">Cédula del paciente</th>
+      <th scope="col">Nombre de patología</th>
+      <th scope="col">Nombre de procedimiento</th>
+      <th scope="col">Nombre del tratamiento</th>
       <th scope="col">Fecha del procedimiento</th>
     </tr>
     </thead>
     <tbody>
     <tr *ngFor="let item of data">
-      <td>{{ item.idhistorial }}</td>
-      <td>{{ item.idproced }}</td>
-      <td>{{ item.idtratamiento }}</td>
-      <td>{{ item.pacientecedula }}</td>
-      <td>{{ item.fechaprocedimiento }}</td>
+      <td>{{ item.idHistorial }}</td>
+      <td>{{ item.nombrePatologia }}</td>
+      <td>{{ item.procedNombre }}</td>
+      <td>{{ item.nombreTratamiento }}</td>
+      <td>{{ item.fechaProcedimiento }}</td>
     </tr>
     </tbody>
   </table>

@@ -17,7 +17,6 @@ import {ComunicationService} from "../../../Servicios/Paciente/auth.service";
 export class CrearCuentaComponent  {
   Nombre: string ="";
   Apellidos: string ="";
-
   Cedula: string ="";
   Telefono: string ="";
   Direccion: string ="";
@@ -26,14 +25,19 @@ export class CrearCuentaComponent  {
 
   constructor(private servicio:ComunicationService, private router: Router) {}
 
-  async crearCuenta(Nombre: string, Apellidos: string, Cedula: string, Telefono: string, Direccion: string, fechanacimiento: string, Patologias: string) {
+  crearCuentaYEnviarPatologias(Nombre: string, Apellidos: string, Cedula: string, Telefono: string, Direccion: string, fechanacimiento: string, Patologias: string): void {
+    this.crearCuenta(Nombre, Apellidos, Cedula, Telefono, Direccion, fechanacimiento);
+    this.enviarPatologias(Cedula, Patologias);
+  }
+
+  async crearCuenta(Nombre: string, Apellidos: string, Cedula: string, Telefono: string, Direccion: string, fechanacimiento: string) {
 
     const apellidosArray = Apellidos.split(" ");
     const Apellido1 = apellidosArray[0] || "";
     const Apellido2 = apellidosArray[1] || "";
 
 
-    const data = JSON.stringify({Nombre, Apellido1, Apellido2, Cedula, Telefono, Direccion, fechanacimiento, Patologias});
+    const data = JSON.stringify({Nombre, Apellido1, Apellido2, Cedula, Telefono, Direccion, fechanacimiento});
     console.log(data);
 
     try {
@@ -57,5 +61,45 @@ export class CrearCuentaComponent  {
       // Manejar el error, mostrar un mensaje al usuario, etc.
     }
 
+  }
+
+  async enviarPatologias(Cedula: string, Patologias: string): Promise<void> {
+    const url = 'http://localhost:5276/api/PalotogiasPresente';
+
+    const cedula = Cedula;
+    const patologias = Patologias.split('.');
+
+    for (const patologia of patologias) {
+      if (patologia.trim() !== '') {
+        const [nombrePatologia, descripcion] = patologia.split(':');
+        const body = {
+          pacientecedula: cedula,
+          nombrepatologia: nombrePatologia.trim(),
+          descripciontratamiento: descripcion.trim()
+        };
+        console.log(body)
+
+
+        try {
+          console.log(body)
+          const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+          });
+
+          if (!response.ok) {
+            throw new Error(`Error en la solicitud: ${response.statusText}`);
+          }
+
+          const result = await response.json();
+          console.log('Respuesta del servidor:', result);
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      }
+    }
   }
 }

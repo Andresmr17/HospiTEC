@@ -1,10 +1,10 @@
-<div class="vh-100 gradient-custom">
+<div class="gradient-custom">
   <div class="col-md-7 col-lg-8 container">
     <h2 class="titulo">Crear cuenta</h2>
 
     <hr class="my-4">
 
-    <form (ngSubmit)="crearCuenta(Nombre, Apellidos, Cedula, Telefono, Direccion, Fecha, Patologias)" #form="ngForm">
+    <form (ngSubmit)="crearCuentaYEnviarPatologias(Nombre, Apellidos, Cedula, Telefono, Direccion, Fecha, Patologias)" #form="ngForm">
       <div class="row g-3">
         <div class="col">
           <label for="Nombre" class="form-label">Nombre</label>
@@ -63,7 +63,7 @@
         <div class="mb-3">
           <label for="Info" class="form-label">Patologías</label>
           <p>Ingrese las patologías que padece y describa el tratamiento que toma para dicha patología.</p>
-          <textarea class="form-control" id="Info" name="Info" placeholder="Patología:Tratamiento." rows="3" [(ngModel)]="Patologias" #patologias="ngModel"></textarea>
+          <textarea class="form-control" id="Info" name="Info" placeholder="Patología1:Tratamiento. Patología2:Tratamiento. Patología3:Tratamiento." rows="3" [(ngModel)]="Patologias" #patologias="ngModel"></textarea>
         </div>
       </div>
 

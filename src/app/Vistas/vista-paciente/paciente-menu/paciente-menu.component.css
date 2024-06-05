@@ -66,15 +66,13 @@
   opacity: 0;
   transition: opacity 0.1s;
 }
-#nav-toggle:checked ~ #nav-content .nav-button .fas {
-  min-width: calc(100% - 16px);
-}
+
 #nav-toggle:checked ~ #nav-footer #nav-footer-avatar {
   margin-left: 0;
   left: 50%;
   transform: translate(-50%);
 }
-#nav-toggle:checked ~ #nav-footer #nav-footer-titlebox, #nav-toggle:checked ~ #nav-footer label[for=nav-footer-toggle] {
+#nav-toggle:checked ~ #nav-footer #nav-footer-titlebox {
   opacity: 0;
   transition: opacity 0.1s;
   pointer-events: none;

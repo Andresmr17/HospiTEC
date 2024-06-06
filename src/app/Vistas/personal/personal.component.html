@@ -1,12 +1,17 @@
 <div class="container">
   <h1>Gestión de Personal</h1>
-  <div class="contenedorBotones">
+  <div class="contenedorBotones d-flex justify-content-between">
     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalActualizar" (click)="addRegistro(1)">
       Añadir personal
     </button>
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-secondary me-2" (click)="filtrarPersonal('Administrativo')">Personal Administrativo</button>
+      <button class="btn btn-secondary me-2" (click)="filtrarPersonal('Medico')">Personal Médico</button>
+      <button class="btn btn-secondary" (click)="mostrarPersonalCompleto()">Personal Completo</button>
+    </div>
   </div>
 
-  <div class="table-responsive">
+<div class="table-responsive">
     <table class="table">
       <thead>
       <tr>

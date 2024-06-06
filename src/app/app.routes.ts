@@ -23,19 +23,14 @@ import {
 } from "./Vistas/vista-paciente/paciente-menu/evaluacion-servicio/evaluacion-servicio.component";
 import {CargaPacientesComponent} from "./Vistas/carga-pacientes/carga-pacientes.component";
 import {AddPathologiesComponent} from "./Vistas/add-pathologies/add-pathologies.component";
+import {InicioComponent} from "./Vistas/inicio/inicio.component";
+
 
 export const routes: Routes = [
-  {path: 'login', component: LoginComponent},
-  {path: 'crear-cuenta', component: CrearCuentaComponent},
-  {path: '', redirectTo: 'login', pathMatch: 'full'},
-  {path: 'mainDoctor', component: MainDoctorComponent,
-    children: [
-      {path: 'nuevoPaciente', component: AddPatientComponent},
-      {path: 'history', component: HistoryComponent},
-      {path: 'pathology', component: AddPathologiesComponent}
-    ]
-  },
-
+  { path: 'login', component: LoginComponent },
+    {path: 'crear-cuenta', component: CrearCuentaComponent},
+  { path: 'inicio', component: InicioComponent },
+  { path: '', redirectTo: 'inicio', pathMatch: 'full' },
   { path: 'sidenav', component: SidenavComponent,
     children: [
       { path: 'salones', component: SalonesComponent },
@@ -45,6 +40,13 @@ export const routes: Routes = [
       { path: 'personal', component: PersonalComponent },
       { path: 'reportes', component: ReportesComponent },
       { path: 'carga', component: CargaPacientesComponent }
+    ]
+  },
+  {path: 'mainDoctor', component: MainDoctorComponent,
+    children: [
+      {path: 'nuevoPaciente', component: AddPatientComponent},
+      {path: 'history', component: HistoryComponent},
+      {path: 'pathology', component: AddPathologiesComponent}
     ]
   },
   {path: 'paciente-menu', component: PacienteMenuComponent,

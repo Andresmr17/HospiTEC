@@ -42,25 +42,19 @@ export class CargaPacientesComponent {
 
     const formData: FormData = new FormData();
     formData.append('file', this.selectedFile, this.selectedFile.name);
-    /*
-    this.http.post('URL_DEL_SERVIDOR', formData).subscribe(
-      (response) => {
-        console.log('Archivo subido exitosamente', response);
-        this.clearFile();
-      },
-      (error) => {
-        console.error('Error al subir el archivo', error);
-      }
-    );*//*
-    this.servicio. postEquipos(datatoSend1).subscribe(
+
+    this.servicio. postPacientes(formData).subscribe(
       response => {
-        console.log('Datos enviados a posgress', response);
+
+        // Maneja la respuesta como texto plano
+        console.log(response);
+
       },
       error => {
         console.error('Error al enviar datos al servidor:', error);
         // Maneja el error adecuadamente aquí
       }
-    );*/
+    );
 
   }
   clearFile() {

@@ -6,6 +6,29 @@ INSERT INTO Patologia (nombrePatologia, descripcion) VALUES
 ('Insuficiencia renal', 'Disminución de la función de los riñones.'),
 ('Artritis', 'Inflamación de las articulaciones.');
 
+-- Patologias
+INSERT INTO Patologia (nombrePatologia, descripcion) 
+VALUES
+('Apendicitis', 'Inflamación del apéndice.'),
+('Cáncer de mama', 'Crecimiento anormal de células en el tejido mamario.'),
+('Cataratas', 'Opacidad en la lente del ojo que afecta la visión.'),
+('Embarazo', 'Estado en el cual una mujer lleva un embrión o feto en su útero.'),
+('Problemas uterinos', 'Trastornos que afectan al útero.'),
+('Dolor de espalda baja', 'Dolor o malestar en la parte inferior de la espalda.'),
+('Amígdalas inflamadas', 'Inflamación de las amígdalas, generalmente debido a una infección.');
+
+-- Patologias
+INSERT INTO Patologia (nombrePatologia, descripcion) 
+VALUES
+('Apendicitis', 'Inflamación del apéndice.'),
+('Cáncer de mama', 'Crecimiento anormal de células en el tejido mamario.'),
+('Cataratas', 'Opacidad en la lente del ojo que afecta la visión.'),
+('Embarazo', 'Estado en el cual una mujer lleva un embrión o feto en su útero.'),
+('Problemas uterinos', 'Trastornos que afectan al útero.'),
+('Dolor de espalda baja', 'Dolor o malestar en la parte inferior de la espalda.'),
+('Amígdalas inflamadas', 'Inflamación de las amígdalas, generalmente debido a una infección.');
+
+
 --  salones
 INSERT INTO Salon (capacidadCamas, nombreSalon, tipoDeSalon, numeroDePiso) VALUES
 (10, 'Sala A', 'Mujeres', 1),
@@ -30,15 +53,31 @@ INSERT INTO Procedimientos (nombrePatologia, procedNombre, descripcion, duracion
 ('Insuficiencia renal', 'Procedimiento 4', 'Procedimiento para insuficiencia renal.', 6),
 ('Artritis', 'Procedimiento 5', 'Procedimiento para artritis.', 1);
 
+INSERT INTO Procedimientos (nombrePatologia, procedNombre, descripcion, duracionDias) 
+VALUES
+('Apendicitis', 'Apendicectomía', 'Procedimiento para tratar la apendicitis.', 2),
+('Cáncer de mama', 'Biopsia de mama', 'Procedimiento para obtener muestras de tejido mamario para su análisis.', 1),
+('Cataratas', 'Cirugía de cataratas', 'Procedimiento para remover cataratas en el ojo.', 1),
+('Embarazo', 'Cesárea', 'Procedimiento quirúrgico para el parto.', 3),
+('Problemas uterinos', 'Histerectomía', 'Procedimiento para extirpar el útero.', 4),
+('Dolor de espalda baja', 'Cirugía para la lumbalgia', 'Procedimiento para tratar el dolor de espalda baja.', 1),
+('Cáncer de mama', 'Mastectomía', 'Procedimiento quirúrgico para extirpar una o ambas mamas.', 5),
+('Amígdalas inflamadas', 'Amigdalectomía', 'Procedimiento para extirpar las amígdalas.', 2);
+
 -- Población de la tabla Cama
 INSERT INTO Cama (nombreSalon, estadoUCI) VALUES
+('Sala A', TRUE),
+('Sala A', TRUE),
+('Sala A', TRUE),
 ('Sala A', TRUE),
 ('Sala B', FALSE),
 ('Sala B', TRUE),
 ('Sala C', FALSE),
 ('Sala C', TRUE),
 ('Sala D', FALSE),
-('Sala D', TRUE);
+('Sala D', TRUE),
+('Sala D', FALSE),
+('Sala D', FALSE);
 
 -- personal
 INSERT INTO Personal (cedula, fechaNacimiento, direccion, nombre, apellido1, apellido2, fechaIngreso) VALUES
@@ -68,11 +107,16 @@ INSERT INTO Personal_Telefono (personalCedula, telefono) VALUES
 
 -- Insertar equipos
 INSERT INTO Equipo (idCama, proveedor, nombre, cantidad) VALUES
-(15, 'Proveedor A', 'Monitor', 5),
-(15, 'Proveedor B', 'Respirador', 2),
-(16, 'Proveedor C', 'Monitor', 4),
-(17, 'Proveedor D', 'Respirador', 3),
-(18, 'Proveedor E', 'Monitor', 1);
+(1, 'Proveedor A', 'Monitor', 5),
+(2, 'Proveedor B', 'Respirador', 2),
+(3, 'Proveedor C', 'Monitor', 4),
+(4, 'Proveedor D', 'Respirador', 3),
+(5, 'Proveedor F', 'luces quirúrgicas', 1),
+(6, 'Proveedor G', 'ultrasonidos', 1),
+(7, 'Proveedor H', 'esterilizadores', 1),
+(8, 'Proveedor U', 'desfibriladores', 1),
+(9, 'Proveedor A', 'Monitor', 1),
+(10, 'Proveedor A', ' electrocardiógrafos', 1);
 
 
 

@@ -445,6 +445,15 @@ public partial class HospitecContext : DbContext
             return result.FirstOrDefault();
         }
     }
+    //metodo para llamar el store procedure de camas disponibles en una fecha
+    public List<Cama> GetCamasDisponibles(DateTime fecha)
+    {
+        var camasDisponibles = Camas
+            .FromSqlRaw("SELECT * FROM camas_disponibles({0})", fecha)
+            .ToList();
+
+        return camasDisponibles;
+    }
 
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

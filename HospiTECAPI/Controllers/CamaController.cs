@@ -103,6 +103,35 @@ public class CamaController : ControllerBase
 
        return Ok(result);
    }
+   // GET: api/camas/disponibles?fecha=2024-06-10
+   [HttpGet("disponibles")]
+   public ActionResult<Cama> GetCamaDisponible([FromQuery] string fecha)
+   {
+       if (string.IsNullOrEmpty(fecha))
+       {
+           return BadRequest("La fecha es requerida.");
+       }
+
+       if (!DateTime.TryParse(fecha, out DateTime parsedFecha))
+       {
+           return BadRequest("La fecha proporcionada no es válida.");
+       }
+
+       // Convertir la fecha a UTC
+       var fechaUtc = DateTime.SpecifyKind(parsedFecha, DateTimeKind.Utc);
+
+       // Ajustar la conversión explícita en el comando SQL y obtener solo la primera cama disponible
+       var cama = _context.Camas
+           .FromSqlRaw("SELECT * FROM camas_disponibles({0}::TIMESTAMP WITHOUT TIME ZONE) LIMIT 1", fechaUtc)
+           .FirstOrDefault();
+
+       if (cama == null)
+       {
+           return NotFound("No hay camas disponibles para la fecha proporcionada.");
+       }
+
+       return Ok(cama);
+   }
 
 
 }

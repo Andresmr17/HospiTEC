@@ -182,10 +182,12 @@ export class ComunicationService {
   // FIN PERSONAL
   //##################################################################
 
-
-
-
-
+  //post para la carga de pacientes
+  postPacientes(formData: FormData): Observable<any> {
+    // No necesitas especificar el tipo de contenido ni configurar HttpHeaders,
+    // ya que FormData manejará eso automáticamente
+    return this.http.post<any>(`${this.servidorURL}/Paciente/cargar`, formData);
+  }
   //#####################################################
   //PARA ROL PERSONAL
 

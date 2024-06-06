@@ -94,6 +94,7 @@ public async Task<IActionResult> PostPaciente([FromBody] PacienteDTO dto)
         Apellido1 = dto.Apellido1,
         Apellido2 = dto.Apellido2
     };
+    
     _context.Pacientes.Add(nuevoPaciente);
     await _context.SaveChangesAsync();
     return CreatedAtAction("GetALLPacientes", new { id = nuevoPaciente.Cedula }, nuevoPaciente);

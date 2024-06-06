@@ -143,10 +143,7 @@ public async Task<IActionResult> GetPacienteInfo(string cedula)
     return Ok(pacienteInfo);
 }
 
-
-
-
-    [HttpPost]
+[HttpPost]
         [Route("cargar")]
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> CargarPacientes(IFormFile file)
@@ -199,24 +196,41 @@ public async Task<IActionResult> GetPacienteInfo(string cedula)
                             worksheet.Cells[1, 6].Text,
                             worksheet.Cells[1, 7].Text,
                             worksheet.Cells[1, 8].Text,
-                            worksheet.Cells[1, 9].Text
+                            
                         };
 
-                        if (!headers.SequenceEqual(new List<string> { "Nombre", "Apellido", "Cedula", "FechaNacimiento", "Direccion", "Telefono1", "Telefono2", "Correo", "Usuario", "PWD" }))
+                        if (!headers.SequenceEqual(new List<string> { "Nombre", "Cedula", "FechaNacimiento", "Direccion", "Telefono1", "Telefono2", "Correo", "Usuario" }))
                         {
                             return BadRequest("Los encabezados del archivo no son correctos.");
                         }
 
                         for (int row = 2; row <= rowCount; row++)
                         {
+                            string nombreCompleto = worksheet.Cells[row, 1].Text.Trim();
+                            string[] partesNombre = nombreCompleto.Split(',');
+
+                            string apellido = partesNombre.Length > 1 ? partesNombre[0].Trim() : "";
+                            string nombre = partesNombre.Length > 1 ? partesNombre[1].Trim() : partesNombre[0].Trim();
+
+
+                            string fechaTexto = worksheet.Cells[row, 3].Text.Trim();
+                            DateTime fechaNacimiento;
+                            if (!DateTime.TryParseExact(fechaTexto, new string[] { "MM-dd-yy", "MMM d, yyyy" }, CultureInfo.InvariantCulture, DateTimeStyles.None, out fechaNacimiento))
+                            {
+                                // Si no se puede analizar en los formatos esperados, puedes manejar el caso aquí
+                                // Por ejemplo, puedes asignar una fecha predeterminada o mostrar un mensaje de error
+                                // En este ejemplo, estamos asignando la fecha mínima posible
+                                fechaNacimiento = DateTime.MinValue;
+                            }
+
                             var paciente = new Paciente
                             {
-                                Nombre = worksheet.Cells[row, 1].Text,
-                                Apellido1 = worksheet.Cells[row, 2].Text.Split(' ')[0],
-                                Apellido2 = worksheet.Cells[row, 2].Text.Split(' ').Length > 1 ? worksheet.Cells[row, 2].Text.Split(' ')[1] : "",
-                                Cedula = worksheet.Cells[row, 3].Text,
-                                Direccion = worksheet.Cells[row, 5].Text,
-                                Fechanacimiento = DateOnly.FromDateTime(DateTime.Parse(worksheet.Cells[row, 4].Text))
+                                Nombre = nombre,
+                                Apellido1 = apellido,
+                                Apellido2 = "",
+                                Cedula = worksheet.Cells[row, 2].Text,
+                                Direccion = worksheet.Cells[row, 4].Text,
+                                Fechanacimiento = DateOnly.FromDateTime(fechaNacimiento)
                             };
 
                             var telefono1 = new PacienteTelefono
@@ -246,8 +260,4 @@ public async Task<IActionResult> GetPacienteInfo(string cedula)
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error al procesar el archivo: {ex.Message}");
             }
         }
-        
-    
-
-
     }

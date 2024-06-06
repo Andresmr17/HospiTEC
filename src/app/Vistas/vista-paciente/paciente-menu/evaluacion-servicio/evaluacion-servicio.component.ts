@@ -37,7 +37,7 @@ export class EvaluacionServicioComponent {
     const data = JSON.stringify({nombreServicio, aseo, trato, puntualidad});
     console.log(data);
     try {
-      const response = await fetch('http://localhost:5276/api/Evaluaciones', {
+      const response = await fetch('https://hospiapi.azurewebsites.net/api/Evaluaciones', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

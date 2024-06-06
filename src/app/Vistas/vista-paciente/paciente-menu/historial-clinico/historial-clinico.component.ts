@@ -23,7 +23,7 @@ export class HistorialClinicoComponent implements OnInit {
 
   async consultarHistorial(): Promise<void> {
     const cedula = this.servicio.getCedulaPaciente();
-    fetch(`http://localhost:5276/api/Historial/sp/${cedula}`, {
+    fetch(`https://hospiapi.azurewebsites.net/api/Historial/sp/${cedula}`, {
       method: 'GET',
     })
       .then(response => response.json())

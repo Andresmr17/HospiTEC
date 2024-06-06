@@ -12,7 +12,7 @@ import {Router} from "@angular/router";
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent {
+export class LoginPacienteComponent {
 
   constructor(private servicio:ComunicationService, private router: Router) {}
 
@@ -24,7 +24,7 @@ export class LoginComponent {
     console.log(data);
 
     try {
-      const response = await fetch('hospiapi.azurewebsites.net/api/Paciente/login', {
+      const response = await fetch('https://hospiapi.azurewebsites.net/api/Paciente/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

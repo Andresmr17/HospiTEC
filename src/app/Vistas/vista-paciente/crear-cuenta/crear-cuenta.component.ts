@@ -26,19 +26,17 @@ export class CrearCuentaComponent  {
   constructor(private servicio:ComunicationService, private router: Router) {}
 
   crearCuentaYEnviarPatologias(Nombre: string, Apellidos: string, Cedula: string, Telefono: string, Direccion: string, fechanacimiento: string, Patologias: string): void {
-    this.crearCuenta(Nombre, Apellidos, Cedula, Direccion, fechanacimiento);
-    this.enviarPatologias(Cedula, Patologias);
-    this.enviarTelefono(Cedula, Telefono);
+    this.crearCuenta(Nombre, Apellidos, Cedula, Direccion, fechanacimiento, Patologias,Telefono);
   }
 
-  async crearCuenta(Nombre: string, Apellidos: string, Cedula: string, Direccion: string, fechanacimiento: string) {
+  async crearCuenta(Nombre: string, Apellidos: string, Cedula: string, Direccion: string, fechanacimiento: string, Patologias: string, Telefono: string) {
 
     const apellidosArray = Apellidos.split(" ");
     const Apellido1 = apellidosArray[0] || "";
     const Apellido2 = apellidosArray[1] || "";
     const pacienteData  = JSON.stringify({Nombre, Apellido1, Apellido2, Cedula, Direccion, fechanacimiento});
     try {
-      const response = await fetch('hospiapi.azurewebsites.net/api/Paciente', {
+      const response = await fetch('http://localhost:5276/api/Paciente', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -50,6 +48,8 @@ export class CrearCuentaComponent  {
         console.error('Error:', response.text());
         throw new Error("Algo malo está pasando");
       }
+      this.enviarPatologias(Cedula, Patologias);
+      this.enviarTelefono(Cedula, Telefono);
       this.router.navigate(['/login-paciente']);
 
     } catch (error) {
@@ -63,6 +63,7 @@ export class CrearCuentaComponent  {
 
     const cedula = Cedula;
     const patologias = Patologias.split('.');
+    console.log(patologias);
 
     for (const patologia of patologias) {
       if (patologia.trim() !== '') {
@@ -82,7 +83,6 @@ export class CrearCuentaComponent  {
             },
             body: JSON.stringify(body)
           });
-
           if (!response.ok) {
             throw new Error(`Error en la solicitud: ${response.statusText}`);
           }
@@ -93,10 +93,9 @@ export class CrearCuentaComponent  {
     }
   }
 
-  async enviarTelefono(Cedula: string, Telefono: string) {
-
-    const telefonoData = JSON.stringify({Cedula, Telefono});
-
+  async enviarTelefono(pacientecedula: string, Telefono: string) {
+    const telefonoData = JSON.stringify({pacientecedula, Telefono});
+    console.log(telefonoData);
     try {
       const response = await fetch('http://localhost:5276/api/PacienteTelefono', {
         method: 'POST',
@@ -114,7 +113,6 @@ export class CrearCuentaComponent  {
 
     } catch (error) {
       console.error('Error:', error);
-      // Manejar el error, mostrar un mensaje al usuario, etc.
     }
   }
   }

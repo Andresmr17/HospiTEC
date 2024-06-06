@@ -67,7 +67,7 @@ export class GestionReservacionComponent implements OnInit  {
    * @brief Esto es para obtener los procedimientos que se van a mostrar en los checkbox
    */
   async obtenerProcedimientos(): Promise<void> {
-    fetch('http://localhost:5276/api/Procedimiento', {
+    fetch('https://hospiapi.azurewebsites.net/api/Procedimiento', {
       method: 'GET'
     })
       .then(response => response.json())
@@ -100,7 +100,7 @@ export class GestionReservacionComponent implements OnInit  {
       if (idcama !== null) {
         const data = JSON.stringify({ pacientecedula, idcama, idproced, fechaingreso, fechaSalida: fechaSalidaFormateada });
         try {
-          const response = await fetch('http://localhost:5276/api/Reserva', {
+          const response = await fetch('https://hospiapi.azurewebsites.net/api/Reserva', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -131,7 +131,7 @@ export class GestionReservacionComponent implements OnInit  {
 
   async obtenerCamaDisponible(fechaIngreso: string): Promise<number | null> {
 
-    return fetch(`http://localhost:5276/api/Cama/disponibles?fecha=${fechaIngreso}`, {
+    return fetch(`https://hospiapi.azurewebsites.net/api/Cama/disponibles?fecha=${fechaIngreso}`, {
       method: 'GET',
     })
       .then(response => response.json())
@@ -148,7 +148,7 @@ export class GestionReservacionComponent implements OnInit  {
 
   async consultarReservas(): Promise<void> {
     const cedula = this.servicio.getCedulaPaciente();
-    fetch(`http://localhost:5276/api/Reserva/ObtieneReservas/${cedula}`, {
+    fetch(`https://hospiapi.azurewebsites.net/api/Reserva/ObtieneReservas/${cedula}`, {
       method: 'GET',
     })
       .then(response => response.json())
@@ -160,7 +160,7 @@ export class GestionReservacionComponent implements OnInit  {
   }
 
   eliminarReserva(idreservacion: string) {
-    fetch(`http://localhost:5276/api/Reserva/${idreservacion}`, {
+    fetch(`https://hospiapi.azurewebsites.net/api/Reserva/${idreservacion}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
@@ -183,7 +183,7 @@ export class GestionReservacionComponent implements OnInit  {
       const data = JSON.stringify({ pacientecedula, idcama, idproced, fechaingreso,fechasalida });
       console.log(idReservacion);
       console.log(data);
-      fetch(`http://localhost:5276/api/Reserva/${idReservacion}`, {
+      fetch(`https://hospiapi.azurewebsites.net/api/Reserva/${idReservacion}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'

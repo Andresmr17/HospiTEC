@@ -49,6 +49,7 @@ export class PersonalComponent {
   }
 
   dataSource: Personal[] = [];
+  originalDataSource: Personal[] = [];
   cedula = '';
   modalVisible = false;
   tipoModal = 2;
@@ -96,8 +97,6 @@ export class PersonalComponent {
 
     console.log('modificarPersonal:', personalSeleccionado);
   }
-
-
 
   eliminarPersonal(index: number) {
     const personalSeleccionado = this.dataSource[index];
@@ -171,10 +170,6 @@ export class PersonalComponent {
       });
     });
   }
-
-
-
-
 
   guardarCambios() {
     const cedula1 = (document.getElementById('cedula') as HTMLInputElement).value.trim();
@@ -308,6 +303,9 @@ export class PersonalComponent {
               const rolDescripcion = rolesList.find(r => r.personalCedula === personal.cedula)?.descripcion || 'No disponible';
               return { ...personal, telefono, rolDescripcion };
             });
+
+            // Guardar una copia del dataSource original
+            this.originalDataSource = [...this.dataSource];
           },
           error => {
             console.error('Error al obtener los datos adicionales del personal:', error);
@@ -341,5 +339,17 @@ export class PersonalComponent {
     this.rolDescripcion = '';
     this.rolId = null;
     this.telefonoItems = [];
+  }
+
+  filtrarPersonal(rol: string) {
+    if (rol === 'Administrativo') {
+      this.dataSource = this.originalDataSource.filter(personal => personal.rolDescripcion === 'Administrativo');
+    } else if (rol === 'Medico') {
+      this.dataSource = this.originalDataSource.filter(personal => personal.rolDescripcion === 'Enfermero' || personal.rolDescripcion === 'Doctor');
+    }
+  }
+
+  mostrarPersonalCompleto() {
+    this.dataSource = [...this.originalDataSource];
   }
 }

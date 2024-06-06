@@ -297,8 +297,32 @@ SELECT * FROM obtener_informacion_paciente('305370401');
 
 DROP FUNCTION obtener_informacion_paciente(character varying)
 
+CREATE OR REPLACE FUNCTION camas_disponibles(fecha TIMESTAMP WITHOUT TIME ZONE)
+RETURNS TABLE(idCama INT, nombreSalon VARCHAR, estadoUCI BOOLEAN) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT c.idCama, c.nombreSalon, c.estadoUCI
+    FROM Cama c
+    WHERE NOT EXISTS (
+        SELECT 1
+        FROM Reserva r
+        WHERE r.idCama = c.idCama
+        AND (
+            (r.fechaIngreso <= fecha AND r.fechaSalida >= fecha)
+            OR (r.fechaIngreso <= fecha + INTERVAL '3 days' AND r.fechaSalida >= fecha)
+        )
+    );
+END;
+$$ LANGUAGE plpgsql;
 
 
+	
+SELECT * FROM camas_disponibles('2024-06-10');
+
+
+
+DROP FUNCTION IF EXISTS camas_disponibles(TIMESTAMP WITHOUT TIME ZONE);
+DROP FUNCTION IF EXISTS camas_disponibles(DATE);
 
 
 

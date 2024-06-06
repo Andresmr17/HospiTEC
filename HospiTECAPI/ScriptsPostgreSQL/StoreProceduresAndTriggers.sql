@@ -115,6 +115,9 @@ BEGIN
 END;
 $$;
 
+CALL update_historial(1, 'Nuevo Procedimiento', 'Nuevo Tratamiento', '2024-06-01');
+--tienen que ser procedimientos y tratamientos que ya existen en la base de datos
+
 
 --sp para las camas y los equipos relacioandos
 CREATE OR REPLACE FUNCTION get_cama_y_equipos()
@@ -147,7 +150,7 @@ $$;
 SELECT * FROM get_cama_y_equipos();
 
 
---sp de post personal
+--sp de post personal ignorar el nombre de paciente, error confusion
 CREATE OR REPLACE PROCEDURE insertar_paciente(
     cedula_personal VARCHAR(20),
     nombre_personal VARCHAR(50),
@@ -183,9 +186,10 @@ BEGIN
     COMMIT;
 END;
 $$;
+CALL insertar_paciente('123456789', 'Nombre', 'Apellido1', 'Apellido2', '1990-01-01', 'Dirección', '2024-01-01', '555-1234', '555-5678', 'Doctor');
 
 
---sp para el PUT de personal
+--sp para el PUT de personal ignorar el nombre de paciente, error, confusion
 CREATE OR REPLACE FUNCTION actualizar_paciente(
     cedula_personal VARCHAR,
     nombre_personal VARCHAR,
@@ -236,6 +240,10 @@ END IF;
 
 END;
 $$ LANGUAGE plpgsql;
+
+CALL actualizar_paciente('123456789', 'Nuevo Nombre', 'Nuevo Apellido1', 'Nuevo Apellido2', '1990-01-01', 'Nueva Dirección', '2024-01-01', '555-1234', '555-5678', 'Jefe');
+
+
 --dropear el procedue anterior
 --DROP FUNCTION IF EXISTS actualizar_paciente( cedula_personal VARCHAR, nombre_personal VARCHAR,apellido1_personal VARCHAR, apellido2_personal VARCHAR,fecha_nacimiento DATE, direccion_personal VARCHAR,
 --    fecha_ingreso DATE,
@@ -244,39 +252,10 @@ $$ LANGUAGE plpgsql;
   --  rol_descripcion VARCHAR
 --);
 
---sp para informacion paciente
-CREATE OR REPLACE FUNCTION obtener_informacion_paciente(cedula_paciente VARCHAR)
-RETURNS TABLE (
-    cedula VARCHAR(20),
-    direccion VARCHAR(255),
-    fechaNacimiento DATE,
-    nombre VARCHAR(50),
-    apellido1 VARCHAR(50),
-    apellido2 VARCHAR(50),
-    telefonos VARCHAR[],
-    patologias_patentes VARCHAR[]
-)
-AS $$
-BEGIN
-    RETURN QUERY
-    SELECT
-        p.cedula,
-        p.direccion,
-        p.fechaNacimiento,
-        p.nombre,
-        p.apellido1,
-        p.apellido2,
-        ARRAY(SELECT pt.telefono FROM Paciente_Telefono pt WHERE pt.pacienteCedula = p.cedula),
-        ARRAY(SELECT pp.nombrePatologia FROM patologiaspresentes pp WHERE pp.pacienteCedula = p.cedula)
-    FROM Paciente p
-    WHERE p.cedula = cedula_paciente;
-END;
-$$ LANGUAGE plpgsql;
-
-DROP FUNCTION IF EXISTS obtener_informacion_paciente(cedula_paciente VARCHAR);
 
 
---sp de historial
+
+--sp de paciente informacion por cedula
 CREATE OR REPLACE FUNCTION obtener_informacion_paciente(cedula_paciente VARCHAR)
 RETURNS TABLE (
     cedula VARCHAR(20),
@@ -358,6 +337,92 @@ INSERT INTO Cama (nombreSalon, estadoUCI)
 VALUES ('Salon A', FALSE);
 
 SELECT * FROM Salon WHERE nombreSalon = 'Salon A';
+
+
+-- función para el trigger para validar la fecha de ingreso
+CREATE OR REPLACE FUNCTION validar_fecha_ingreso()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.fechaIngreso > NEW.fechaSalida THEN
+        RAISE EXCEPTION 'La fecha de ingreso no puede ser posterior a la fecha de salida.';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+--trigger para validar la fecha de ingreso
+CREATE TRIGGER trigger_validar_fecha_ingreso
+BEFORE INSERT OR UPDATE ON Reserva
+FOR EACH ROW EXECUTE FUNCTION validar_fecha_ingreso();
+
+
+-- función para el trigger para asegurar integridad referencial en Personal_Telefono
+CREATE OR REPLACE FUNCTION validar_telefono_unico_paciente()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM Paciente_Telefono WHERE telefono = NEW.telefono) THEN
+        RAISE EXCEPTION 'El número de teléfono ya está registrado en Paciente_Telefono.';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- función para el trigger para asegurar integridad referencial en Paciente_Telefono
+CREATE OR REPLACE FUNCTION validar_telefono_unico_personal()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM Personal_Telefono WHERE telefono = NEW.telefono) THEN
+        RAISE EXCEPTION 'El número de teléfono ya está registrado en Personal_Telefono.';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+-- trigger para Personal_Telefono
+CREATE TRIGGER trigger_validar_telefono_unico_paciente
+BEFORE INSERT OR UPDATE ON Paciente_Telefono
+FOR EACH ROW EXECUTE FUNCTION validar_telefono_unico_paciente();
+
+-- trigger para Paciente_Telefono
+CREATE TRIGGER trigger_validar_telefono_unico_personal
+BEFORE INSERT OR UPDATE ON Personal_Telefono
+FOR EACH ROW EXECUTE FUNCTION validar_telefono_unico_personal();
+
+--Pruebas para los triggers de fechas y telefonos
+
+INSERT INTO Reserva (pacienteCedula, idCama, idProced, fechaIngreso, fechaSalida)
+VALUES ('305370404', 65, 13, '2024-06-01', '2024-06-05');
+
+INSERT INTO Reserva (pacienteCedula, idCama, idProced, fechaIngreso, fechaSalida)
+VALUES ('305370404', 65, 13, '2024-06-10', '2024-06-05');
+
+
+-- Insertar un teléfono para un personal
+INSERT INTO Personal_Telefono (personalCedula, telefono)
+VALUES ('test', '555-1234');
+
+-- Insertar otro teléfono diferente para el mismo personal
+INSERT INTO Personal_Telefono (personalCedula, telefono)
+VALUES ('test', '555-5678');
+
+-- Insertar un teléfono para un paciente
+INSERT INTO Paciente_Telefono (pacienteCedula, telefono)
+VALUES ('305370404', '555-8765');
+
+-- Insertar otro teléfono diferente para el mismo paciente
+INSERT INTO Paciente_Telefono (pacienteCedula, telefono)
+VALUES ('305370404', '555-4321');
+
+
+-- Intentar insertar un teléfono duplicado en Personal_Telefono
+INSERT INTO Personal_Telefono (personalCedula, telefono)
+VALUES ('test', '555-1234');
+
+-- Intentar insertar un teléfono duplicado en Paciente_Telefono
+INSERT INTO Paciente_Telefono (pacienteCedula, telefono)
+VALUES ('987654321', '555-8765');
 
 
 

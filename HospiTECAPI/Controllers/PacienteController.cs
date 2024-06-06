@@ -261,7 +261,7 @@ public async Task<IActionResult> GetPacienteInfo(string cedula)
                     }
                 }
 
-                return Ok("Datos cargados exitosamente.");
+                return Ok();
             }
             catch (Exception ex)
             {

@@ -13,11 +13,11 @@ import {
 } from "./Vistas/vista-paciente/paciente-menu/evaluacion-servicio/evaluacion-servicio.component";
 
 export const routes: Routes = [
-  {path: 'login', component: LoginComponent},
+  {path: 'login-paciente', component: LoginComponent},
   {path: 'crear-cuenta', component: CrearCuentaComponent},
   {path: 'paciente-menu', component: PacienteMenuComponent,
     children:[{path: 'historial-clinico',component: HistorialClinicoComponent},
       {path:'gestion-reservacion',component:GestionReservacionComponent},
       {path:'evaluacion-servicio',component: EvaluacionServicioComponent}]},
-  {path: '', redirectTo: 'login', pathMatch: 'full'}
+  {path: '', redirectTo: 'login-paciente', pathMatch: 'full'}
 ];

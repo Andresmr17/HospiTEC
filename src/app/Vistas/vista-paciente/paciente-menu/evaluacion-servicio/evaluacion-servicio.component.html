@@ -1,13 +1,17 @@
 <div class="container">
   <h1>Evaluación del Servicio Recibido</h1>
+  <div class="report">
+    <h3>Nombre del servicio</h3>
+    <input type="email" id="nombreServicio" class="form-control form-control-lg" [(ngModel)]="nombreServicio" />
+  </div>
 
   <div class="report">
     <h3>Aseo</h3>
     <div class="stars">
       <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
-        <i class="bi star" (click)="rateAseo(star)" [ngClass]="{'bi-star-fill': star <= aseoRating, 'bi-star': star > aseoRating}"></i>
+        <i class="bi star" (click)="rateAseo(star)" [ngClass]="{'bi-star-fill': star <= aseo, 'bi-star': star > aseo}"></i>
       </ng-container>
-      <span>{{ aseoRating }} / 5</span>
+      <span>{{ aseo }} / 5</span>
     </div>
   </div>
 
@@ -15,9 +19,9 @@
     <h3>Trato</h3>
     <div class="stars">
       <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
-        <i class="bi star" (click)="rateTrato(star)" [ngClass]="{'bi-star-fill': star <= tratoRating, 'bi-star': star > tratoRating}"></i>
+        <i class="bi star" (click)="rateTrato(star)" [ngClass]="{'bi-star-fill': star <= trato, 'bi-star': star > trato}"></i>
       </ng-container>
-      <span>{{ tratoRating }} / 5</span>
+      <span>{{ trato }} / 5</span>
     </div>
   </div>
 
@@ -25,13 +29,13 @@
     <h3>Puntualidad</h3>
     <div class="stars">
       <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
-        <i class="bi star" (click)="ratePuntualidad(star)" [ngClass]="{'bi-star-fill': star <= puntualidadRating, 'bi-star': star > puntualidadRating}"></i>
+        <i class="bi star" (click)="ratePuntualidad(star)" [ngClass]="{'bi-star-fill': star <= puntualidad, 'bi-star': star > puntualidad}"></i>
       </ng-container>
-      <span>{{ puntualidadRating }} / 5</span>
+      <span>{{ puntualidad }} / 5</span>
     </div>
   </div>
 
   <div class="submit">
-    <button (click)="submitRatings()">Enviar Calificaciones</button>
+    <button (click)="submitRatings(nombreServicio, aseo, trato, puntualidad)">Enviar Calificaciones</button>
   </div>
 </div>

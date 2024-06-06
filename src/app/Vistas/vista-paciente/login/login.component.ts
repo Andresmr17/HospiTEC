@@ -4,7 +4,7 @@ import {ComunicationService} from "../../../Servicios/Paciente/auth.service";
 import {Router} from "@angular/router";
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-login-paciente',
   standalone: true,
   imports: [
     FormsModule

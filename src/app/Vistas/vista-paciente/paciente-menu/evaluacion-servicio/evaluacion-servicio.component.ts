@@ -1,47 +1,58 @@
 import { Component } from '@angular/core';
 import {NgClass, NgForOf} from "@angular/common";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-evaluacion-servicio',
   standalone: true,
   imports: [
     NgClass,
-    NgForOf
+    NgForOf,
+    ReactiveFormsModule,
+    FormsModule
   ],
   templateUrl: './evaluacion-servicio.component.html',
   styleUrl: './evaluacion-servicio.component.css'
 })
 export class EvaluacionServicioComponent {
 
-  aseoRating = 0;
-  tratoRating = 0;
-  puntualidadRating = 0;
-
-  aseoAverage = 4.2;
-  aseoCount = 15;
-  tratoAverage = 3.8;
-  tratoCount = 20;
-  puntualidadAverage = 4.5;
-  puntualidadCount = 10;
+  aseo = 0;
+  trato = 0;
+  puntualidad = 0;
+  nombreServicio: any;
 
   rateAseo(star: number) {
-    this.aseoRating = star;
+    this.aseo = star;
   }
 
   rateTrato(star: number) {
-    this.tratoRating = star;
+    this.trato = star;
   }
 
   ratePuntualidad(star: number) {
-    this.puntualidadRating = star;
+    this.puntualidad = star;
   }
 
-  submitRatings() {
-    // Implementa la lógica para enviar las calificaciones al servidor
-    console.log('Calificaciones enviadas:');
-    console.log('Aseo:', this.aseoRating);
-    console.log('Trato:', this.tratoRating);
-    console.log('Puntualidad:', this.puntualidadRating);
+  async submitRatings(nombreServicio: string, aseo: number, trato: number, puntualidad: number) {
+    const data = JSON.stringify({nombreServicio, aseo, trato, puntualidad});
+    console.log(data);
+    try {
+      const response = await fetch('http://localhost:5276/api/Evaluaciones', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: data
+      });
+
+      if (!response.ok) {
+        throw new Error("Algo malo está pasando");
+      }
+
+    } catch (error) {
+      console.error('Error:', error);
+
+    }
   }
 
 }

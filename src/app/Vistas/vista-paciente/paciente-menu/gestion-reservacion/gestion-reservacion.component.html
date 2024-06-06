@@ -12,7 +12,7 @@
   <!-- Esta parte es para la de Crear reservación-->
   <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
     <div class="col-md-7 col-lg-8 container">
-      <form (ngSubmit)="crearReserva(fechaingreso, Procedimientos)" #form="ngForm">
+      <form (ngSubmit)="crearReserva(fechaingreso, selectedProcedimiento)" #form="ngForm">
         <div class="row g-3">
 
           <div class="col-12">
@@ -24,14 +24,20 @@
           </div>
         </div>
 
-
         <hr class="my-4">
 
         <div class="col-12">
-          <label  class="form-label">Procedimientos Quirúrgicos:</label>
+          <label class="form-label">Procedimientos Quirúrgicos:</label>
           <div *ngFor="let procedimiento of procedimientos">
-            <input class="form-check-input me-2" type="checkbox" id="{{procedimiento.nombre}}" [(ngModel)]="procedimiento.seleccionado" name="procedimientos_{{procedimiento.nombre}}" >
-            <label for="{{procedimiento.nombre}}">{{procedimiento.nombre}}</label>
+            <input
+              class="form-check-input me-2"
+              type="radio"
+              id="{{procedimiento.descripcion}}"
+              [(ngModel)]="selectedProcedimiento"
+              name="procedimientos"
+              [value]="procedimiento"
+            />
+            <label for="{{procedimiento.descripcion}}">{{procedimiento.descripcion}}</label>
           </div>
         </div>
 
@@ -43,8 +49,9 @@
       <p class="fst-italic text-center">Importante: La reservación se hará sólo si en la fecha indicada existen camas disponibles.</p>
 
     </div>
-
   </div>
+
+
 
   <!-- Esta parte es para la de Modificar reservación-->
   <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
@@ -64,15 +71,18 @@
         </tr>
         </thead>
         <tbody>
+
         <tr *ngFor="let item of data">
           <td>{{ item.idreservacion }}</td>
           <td>{{ item.pacientecedula }}</td>
           <td>{{ item.idcama }}</td>
           <td>{{ item.idproced }}</td>
           <td>{{ item.fechaingreso }}</td>
-          <td>{{ item.fechasalida }}</td>
           <td>
-            <button type="button" class="btn btn-primary" > <i class="fas fa-pen-to-square"></i></button>
+            <input type="date" id="salida-{{ item.fechasalida }}" class="form-control form-control-lg" [(ngModel)]="item.fechasalida" name="salida-{{ item.fechasalida }}" />
+          </td>
+          <td>
+            <button type="button" class="btn btn-primary" (click)="modificarReserva(item.idreservacion, item.fechasalida, item.pacientecedula, item.idcama, item.idproced, item.fechaingreso )"> <i class="fas fa-pen-to-square"></i></button>
           </td>
         </tr>
         </tbody>
@@ -81,6 +91,7 @@
     </div>
 
   </div>
+
 
   <!-- Esta parte es para la de Eliminar reservación-->
   <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">
@@ -118,8 +129,5 @@
 
 
   </div>
-</div>
-
-
-
+  </div>
 

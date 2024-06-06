@@ -26,35 +26,31 @@ export class CrearCuentaComponent  {
   constructor(private servicio:ComunicationService, private router: Router) {}
 
   crearCuentaYEnviarPatologias(Nombre: string, Apellidos: string, Cedula: string, Telefono: string, Direccion: string, fechanacimiento: string, Patologias: string): void {
-    this.crearCuenta(Nombre, Apellidos, Cedula, Telefono, Direccion, fechanacimiento);
+    this.crearCuenta(Nombre, Apellidos, Cedula, Direccion, fechanacimiento);
     this.enviarPatologias(Cedula, Patologias);
+    this.enviarTelefono(Cedula, Telefono);
   }
 
-  async crearCuenta(Nombre: string, Apellidos: string, Cedula: string, Telefono: string, Direccion: string, fechanacimiento: string) {
+  async crearCuenta(Nombre: string, Apellidos: string, Cedula: string, Direccion: string, fechanacimiento: string) {
 
     const apellidosArray = Apellidos.split(" ");
     const Apellido1 = apellidosArray[0] || "";
     const Apellido2 = apellidosArray[1] || "";
-
-
-    const data = JSON.stringify({Nombre, Apellido1, Apellido2, Cedula, Telefono, Direccion, fechanacimiento});
-    console.log(data);
-
+    const pacienteData  = JSON.stringify({Nombre, Apellido1, Apellido2, Cedula, Direccion, fechanacimiento});
     try {
       const response = await fetch('hospiapi.azurewebsites.net/api/Paciente', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: data
+        body: pacienteData
       });
 
       if (!response.ok) {
         console.error('Error:', response.text());
         throw new Error("Algo malo está pasando");
       }
-
-      this.router.navigate(['/login']);
+      this.router.navigate(['/login-paciente']);
 
     } catch (error) {
       console.error('Error:', error);
@@ -64,7 +60,6 @@ export class CrearCuentaComponent  {
   }
 
   async enviarPatologias(Cedula: string, Patologias: string): Promise<void> {
-    const url = 'http://localhost:5276/api/PalotogiasPresente';
 
     const cedula = Cedula;
     const patologias = Patologias.split('.');
@@ -77,12 +72,10 @@ export class CrearCuentaComponent  {
           nombrepatologia: nombrePatologia.trim(),
           descripciontratamiento: descripcion.trim()
         };
-        console.log(body)
-
+        console.log(body);
 
         try {
-          console.log(body)
-          const response = await fetch(url, {
+          const response = await fetch('http://localhost:5276/api/PalotogiasPresente', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -93,13 +86,36 @@ export class CrearCuentaComponent  {
           if (!response.ok) {
             throw new Error(`Error en la solicitud: ${response.statusText}`);
           }
-
-          const result = await response.json();
-          console.log('Respuesta del servidor:', result);
         } catch (error) {
           console.error('Error:', error);
         }
       }
     }
   }
-}
+
+  async enviarTelefono(Cedula: string, Telefono: string) {
+
+    const telefonoData = JSON.stringify({Cedula, Telefono});
+
+    try {
+      const response = await fetch('http://localhost:5276/api/PacienteTelefono', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: telefonoData
+      });
+
+      if (!response.ok) {
+        console.error('Error:', response.text());
+        throw new Error("Algo malo está pasando");
+      }
+      this.router.navigate(['/login-paciente']);
+
+    } catch (error) {
+      console.error('Error:', error);
+      // Manejar el error, mostrar un mensaje al usuario, etc.
+    }
+  }
+  }
+

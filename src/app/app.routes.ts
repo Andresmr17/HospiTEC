@@ -49,11 +49,12 @@ export const routes: Routes = [
       {path: 'pathology', component: AddPathologiesComponent}
     ]
   },
+  {path: 'login-paciente', component: LoginComponent},
+  {path: 'crear-cuenta', component: CrearCuentaComponent},
   {path: 'paciente-menu', component: PacienteMenuComponent,
     children:[{path: 'historial-clinico',component: HistorialClinicoComponent},
       {path:'gestion-reservacion',component:GestionReservacionComponent},
       {path:'evaluacion-servicio',component: EvaluacionServicioComponent}]},
-  {path: '', redirectTo: 'login', pathMatch: 'full'},
-  ];
-
+  {path: '', redirectTo: 'login-paciente', pathMatch: 'full'}
+];
 

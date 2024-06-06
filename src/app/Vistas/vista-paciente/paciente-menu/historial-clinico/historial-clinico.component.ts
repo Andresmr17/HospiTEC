@@ -31,7 +31,7 @@ export class HistorialClinicoComponent implements OnInit {
         this.data = data.sort((a: any, b: any) => {
           return new Date(b.fechaProcedimiento).getTime() - new Date(a.fechaProcedimiento).getTime();
         });
-        console.log(this.data); // Verifica que los datos están ordenados correctamente
+        console.log(this.data);
       })
       .catch(error => console.error('Error:', error));
   }

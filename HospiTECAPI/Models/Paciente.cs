@@ -40,6 +40,7 @@ public partial class PacienteLogin
 
 }
 
+//modelo para recibir el formato y realizar una consulta consumiendo un stored procedure
 public class InformacionPaciente
 {
     public string Cedula { get; set; }

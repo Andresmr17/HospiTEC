@@ -53,6 +53,8 @@ public partial class HospitecContext : DbContext
     public virtual DbSet<Salon> Salons { get; set; }
 
     public virtual DbSet<Tratamiento> Tratamientos { get; set; }
+    
+    //metodo pára insertar paciente a través de un stored procedure
     public async Task InsertarPacienteAsync(string nombre, string apellidos, string cedula, string telefono, string direccion, DateTime fechaNacimiento, string patologias, string tratamiento)
     {
         await Database.ExecuteSqlRawAsync("CALL insertar_paciente(@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7)", 
@@ -60,11 +62,13 @@ public partial class HospitecContext : DbContext
     }
 
 
-
+    //Builder para la conexión con la base de datos en la nube de azure
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseNpgsql("Server=hospitecdb.postgres.database.azure.com;Database=hospitec;Port=5432;User Id=administrador;Password=Bases2024hospitec;Ssl Mode=Require;\n");
 
+    
+    // constructores de los modelos para definir primary keys, tipos de datos en las tablas, foreign keys, etc
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Cama>(entity =>
@@ -401,7 +405,7 @@ public partial class HospitecContext : DbContext
         });
 
         
-        //clase de modelos solo para matear resultados de consultas
+        //clase de modelos solo para mapear resultados de consultas
         modelBuilder.Entity<CamaYEquipos>().HasNoKey().ToView(null);
         modelBuilder.Entity<HistorialView>().HasNoKey();
         modelBuilder.Entity<InformacionPaciente>().HasNoKey().ToView(null);

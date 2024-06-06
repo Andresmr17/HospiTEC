@@ -13,6 +13,8 @@ namespace HospiTECAPI.Models
             _context = context;
         }
 
+        
+        //mnetodo para consumir stored procedure
         public async Task<Personal> GetPersonalAndRoleAsync(string cedula)
         {
             return await _context.Personals

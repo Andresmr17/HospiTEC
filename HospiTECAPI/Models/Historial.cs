@@ -27,6 +27,7 @@ public partial class Historial
     
 }
 
+//modelo para mostrar el resultado de la consulta de un stored procedure
 public class HistorialView
 {
     public int IdHistorial { get; set; }
@@ -36,6 +37,8 @@ public class HistorialView
     public DateTime FechaProcedimiento { get; set; }
 }
 
+
+//modelo para recibir el formato y realizar una consulta consumiendo un stored procedure
 public class HistorialRequest
 {
     public string NombreProcedimiento { get; set; }

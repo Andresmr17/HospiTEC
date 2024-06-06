@@ -28,6 +28,7 @@ public partial class Personal
 }
 
 
+//modelo para recibir el formato y realizar una consulta consumiendo un stored procedure
 public class PersonalRequest
 {
     public string Cedula { get; set; }
@@ -43,6 +44,7 @@ public class PersonalRequest
 }
 
 
+//modelo para recibir el formato y realizar una consulta consumiendo un stored procedure
 public class PersonalUpdateRequest
 {
     public string Nombre { get; set; }

@@ -115,6 +115,7 @@ public async Task<IActionResult> DeletePersonal(string cedula)
     return NoContent();
 }
 
+//http post request para consumir store procedure de añadir_paciente (añadir un nuevo personal)
 [HttpPost("sp")]
 public async Task<ActionResult> PostPersonal(PersonalRequest dto)
 {
@@ -179,6 +180,7 @@ public async Task<ActionResult> PostPersonal(PersonalRequest dto)
     return Ok();
 }
 
+//http put request para consumir store procedure de actualizar_paciente (actualizar una dupla de personal)
 [HttpPut("sp/{cedula}")]
 public async Task<IActionResult> PutPersonal(string cedula, [FromBody] PersonalUpdateRequest dto)
 {

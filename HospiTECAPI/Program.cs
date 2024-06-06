@@ -38,7 +38,7 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-
+// para permitir el acceso al api desde el frontend
 app.UseCors(builder => builder
     .AllowAnyOrigin()
     .AllowAnyMethod()

@@ -24,6 +24,7 @@ public partial class Cama
 }
 
 
+//modelo para mostrar el resultado de la consulta de un stored procedure
 public class CamaYEquipos
 {
     public int IdCama { get; set; }

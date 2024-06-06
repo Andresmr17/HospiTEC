@@ -17,7 +17,8 @@ namespace HospiTECAPI.Controllers
         {
             _personalService = personalService;
         }
-
+    
+        //http get request para consumir el stored procedure de obtener información del personal y sus relacionados
         [HttpGet("{cedula}")]
         public async Task<IActionResult> GetPersonalAndRole(string cedula)
         {

@@ -8,10 +8,12 @@ import { ProcedimientosComponent } from "./Vistas/procedimientos/procedimientos.
 import { PersonalComponent } from "./Vistas/personal/personal.component";
 import { ReportesComponent } from "./Vistas/reportes/reportes.component";
 import {CargaPacientesComponent} from "./Vistas/carga-pacientes/carga-pacientes.component";
+import {InicioComponent} from "./Vistas/inicio/inicio.component";
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: 'inicio', component: InicioComponent },
+  { path: '', redirectTo: 'inicio', pathMatch: 'full' },
   { path: 'sidenav', component: SidenavComponent,
     children: [
       { path: 'salones', component: SalonesComponent },

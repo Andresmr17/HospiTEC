@@ -1,10 +1,9 @@
-<!-- new-patient-form.component.html -->
 <div class="text-center">
   <h1>Crear un nuevo paciente</h1>
   <h1> </h1>
 </div>
 
-<div class="container">
+<div class="container" *ngIf="!createdPatient">
   <form (ngSubmit)="crearCuenta(Nombre, Apellido1, Apellido2, Cedula, Telefono, Direccion, Fecha)" #patientForm="ngForm">
     <div class="form-group">
       <label for="nombre">Nombre:</label>
@@ -37,3 +36,24 @@
     <button type="submit" class="btn btn-primary">Guardar</button>
   </form>
 </div>
+
+<div class="container" *ngIf="createdPatient">
+  <h2>{{ Nombre}} {{ Apellido1}}</h2>
+  <form (ngSubmit)="addPathologyAndTreatment(Cedula, selectedPathology, selectedTreatment)">
+    <div class="form-group">
+      <label for="pathology">Patología:</label>
+      <select id="pathology" class="form-control" [(ngModel)]="selectedPathology" name="pathology" (change)="onPathologyChange($event)" required>
+        <option *ngFor="let pathology of pathologies" [value]="pathology.nombrePatologia">{{ pathology.nombrePatologia }}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="treatment">Tratamiento:</label>
+      <select id="treatment" class="form-control" [(ngModel)]="selectedTreatment" name="treatment" required>
+        <option *ngFor="let treatment of treatments" [value]="treatment.nombretratamiento">{{ treatment.nombretratamiento }}</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Agregar</button>
+  </form>
+  <button class="btn btn-secondary" (click)="finishAdding()">Terminar</button>
+</div>
+

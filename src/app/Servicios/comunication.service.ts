@@ -293,11 +293,19 @@ export class ComunicationService {
     return this.http.get<any[]>(`${this.servidorURL}/Tratamiento`);
   }
 
+  getTreatmentforPath(data: any): Observable<any[]> {
+    return this.http.get<any[]>(`${this.servidorURL}/Tratamiento/pat/${data}`);
+  }
+
   //#####################################################
   //PARA PATOLOGIAS
 
   getPatologias(): Observable<any> {
     return this.http.get<any>(`${this.servidorURL}/Patologium`);
+  }
+
+  postPathology(procedureData: any): Observable<any> {
+    return this.http.post<any>(`${this.servidorURL}/PatologiasPresente`, procedureData);
   }
   // FIN PATOLOGIAS
   //##################################################################

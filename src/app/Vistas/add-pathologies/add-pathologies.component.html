@@ -1,0 +1,45 @@
+<div class="search-container">
+  <h2>Modificar historial</h2>
+  <form (ngSubmit)="onSearch()">
+    <label for="search">Cédula del paciente</label>
+    <input type="text" id="search" [(ngModel)]="searchTerm" name="searchTerm" required>
+    <button type="submit">Buscar</button>
+  </form>
+
+  <div class="search-results" *ngIf="patients.length > 0">
+    <ul>
+      <li *ngFor="let patient of patients">
+        <div>
+          <h3>{{ patient.nombre }} {{ patient.apellido1 }}</h3>
+        </div>
+        <form (ngSubmit)="onSubmitProcedure(patient)">
+          <label for="procedure">Procedimiento:</label>
+          <select id="procedure" [(ngModel)]="patient.procedure" name="procedure" required>
+            <option *ngFor="let procedure of procedures" [value]="procedure.procedimientoNombre">{{ procedure.procedimientoNombre }}</option>
+          </select>
+
+          <label for="treatment">Tratamiento:</label>
+          <select id="treatment" [(ngModel)]="patient.treatment" name="treatment" required>
+            <option *ngFor="let treatment of treatments" [value]="treatment.nombreTratamiento">{{ treatment.nombreTratamiento }}</option>
+          </select>
+
+          <label for="date">Fecha del procedimiento:</label>
+          <input type="date" id="date" [(ngModel)]="patient.date" name="date" required>
+
+          <button type="submit">Agregar al historial</button>
+        </form>
+
+        <div *ngIf="submissionStatus[patient.cedula] === 'success'" class="success-message">
+          Se ha agregado al historial clínico de {{patient.nombre}}
+        </div>
+        <div *ngIf="submissionStatus[patient.cedula] === 'error'" class="error-message">
+          No se ha agregado, verifique informacion
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div *ngIf="patients.length === 0 && searchExecuted">
+    <p>No hay registros</p>
+  </div>
+</div>

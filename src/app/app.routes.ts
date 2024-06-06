@@ -22,6 +22,7 @@ import {
   EvaluacionServicioComponent
 } from "./Vistas/vista-paciente/paciente-menu/evaluacion-servicio/evaluacion-servicio.component";
 import {CargaPacientesComponent} from "./Vistas/carga-pacientes/carga-pacientes.component";
+import {AddPathologiesComponent} from "./Vistas/add-pathologies/add-pathologies.component";
 
 export const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -30,7 +31,8 @@ export const routes: Routes = [
   {path: 'mainDoctor', component: MainDoctorComponent,
     children: [
       {path: 'nuevoPaciente', component: AddPatientComponent},
-      {path: 'history', component: HistoryComponent}
+      {path: 'history', component: HistoryComponent},
+      {path: 'pathology', component: AddPathologiesComponent}
     ]
   },
 
